@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+NIX_DIR=/etc/nixos
+sudo chmod -R 774 "$NIX_DIR"
+sudo chown -R root:wheel "$NIX_DIR"

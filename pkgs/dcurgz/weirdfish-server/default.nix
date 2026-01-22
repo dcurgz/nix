@@ -1,0 +1,8 @@
+{
+  pkgs,
+  naersk',
+  ...
+}:
+
+naersk'.buildPackage ./.;
+

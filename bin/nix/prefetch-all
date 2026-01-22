@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+FILE="$1"
+
+if [ -z "$FILE" ]; then
+    echo "Usage: prefetch-all [path/to/file]"
+    exit 0
+fi
+
+COUNT=$(wc -l "$FILE")
+echo "prefetching hash for $COUNT URLs..."
+
+while read LINE; do
+    HASH=$(prefetch "$LINE")
+    echo "$LINE"
+    echo "  $HASH"
+done <"$FILE"

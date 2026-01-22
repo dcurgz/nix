@@ -1,0 +1,15 @@
+[debug]
+persistent_logging = true
+
+[font]
+size = 15.0
+
+[font.normal]
+family = "Maple Mono NF"
+style = "Regular"
+
+[terminal.shell]
+program = "@fish@"
+
+[window]
+dynamic_padding = true

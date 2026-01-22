@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/alex-courtis/way-displays/refs/heads/master/schema/cfg-1.0.0.yaml
+ORDER:
+  - 'HDMI-A-1'
+  - 'DP-2'
+  - 'eDP-1'
+ARRANGE: ROW
+ALIGN: TOP
+SCALING: FALSE
+AUTO_SCALE: FALSE
+MODE:
+  - NAME_DESC: HDMI-A-1
+    WIDTH: 2560
+    HEIGHT: 1440
+    HZ: 144 
+  - NAME_DESC: DP-2
+    WIDTH: 2560
+    HEIGHT: 1440
+    HZ: 360
+  - NAME_DESC: eDP-1
+    WIDTH: 1920
+    HEIGHT: 1080
+    HZ: 60
+VRR_OFF:
+  - "!.*$"
+CALLBACK_CMD: notify-send "way-displays ${CALLBACK_LEVEL}" "${CALLBACK_MSG}"
+
