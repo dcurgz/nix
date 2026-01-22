@@ -18,6 +18,9 @@
       "11-buffers" = {
         "link.max-buffers" = 64;
       };
+      "12-no-suspend" = {
+        "session.suspend-timeout-seconds" = 0;
+      };
     };
   };
 }

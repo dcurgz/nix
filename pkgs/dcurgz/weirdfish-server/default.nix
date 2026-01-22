@@ -4,5 +4,4 @@
   ...
 }:
 
-naersk'.buildPackage ./.;
-
+naersk'.buildPackage ./.

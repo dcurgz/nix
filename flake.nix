@@ -410,13 +410,25 @@
         );
 
       # Deploy-rs configuration
-      deploy.nodes.weirdfish-cax11-4gb = {
-        hostname = "weirdfi.sh";
-        sshUser = "root";
-        remoteBuild = true;
-        profiles.system = {
-          user = "root";
-          path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.weirdfish-cax11-4gb;
+      deploy.nodes = {
+        weirdfish-cax11-4gb = {
+          hostname = "weirdfi.sh";
+          sshUser = "root";
+          remoteBuild = true;
+          profiles.system = {
+            user = "root";
+            path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.weirdfish-cax11-4gb;
+          };
+        };
+
+        hyperberry = {
+          hostname = "hyperberry";
+          sshUser = "dcurgz";
+          remoteBuild = true;
+          profiles.system = {
+            user = "dcurgz";
+            path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.hyperberry;
+          };
         };
       };
 
