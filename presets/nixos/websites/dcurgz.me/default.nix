@@ -31,13 +31,28 @@ let
     {
       name = "index.html";
       path = (pkgs.replaceVars site-index {
-        nix-gitrev = toString (self.shortRev or self.dirtyShortRev or self.lastModified or "unknown");
-        nix-date = nix-time.lib.ISO-8601 self.lastModified;
+        nix-gitrev =
+          toString (self.shortRev or self.dirtyShortRev or self.lastModified or "unknown");
+        nix-rfc822 = nix-time.lib.RFC-822 "GMT" self.lastModified;
+        nix-date =
+          with nix-time.lib.splitSecondsSinceEpoch {} self.lastModified;
+          let
+            month = toString B;
+            day   = toString d;
+            year  = toString Y;
+          in
+            "${month} ${day}, ${year}";
       });
     }
     {
       name = "style.css";
       path = "${FLAKE_ROOT}/www/${domain}/style.css";
+    }
+    {
+      name = "rss.xml";
+      path = (pkgs.replaceVars "${FLAKE_ROOT}/www/${domain}/rss.xml" {
+        nix-rfc822 = nix-time.lib.RFC-822 "GMT" self.lastModified;
+      });
     }
   ]);
 in

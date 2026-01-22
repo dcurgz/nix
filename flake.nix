@@ -71,7 +71,7 @@
     weirdfish-server.url = "path:./pkgs/dcurgz/weirdfish-server";
     weirdfish-server.inputs.nixpkgs.follows = "nixpkgs";
 
-    nix-time.url = "github:balsoft/Flockenzeit";
+    nix-time.url = "path:./pkgs/3rd-party/Flockenzeit";
   };
 
   outputs =
