@@ -409,6 +409,16 @@
 
       # Deploy-rs configuration
       deploy.nodes = {
+        blueberry = {
+          hostname = "blueberry";
+          sshUser = "dcurgz";
+          remoteBuild = true;
+          profiles.system = {
+            user = "root";
+            path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.blueberry;
+          };
+        };
+
         hyperberry = {
           hostname = "hyperberry";
           sshUser = "dcurgz";
