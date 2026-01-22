@@ -37,8 +37,9 @@ C-DC-L14:
 bootstrap-weirdfi.sh:
 	nix run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./systems/weirdfi.sh-cax11-4gb/hardware-configuration.nix --flake .#weirdfish-cax11-4gb --target-host "root@weirdfi.sh"
 
-weirdfi.sh:
-	deploy --skip-checks --remote-build --fast-connection false 
+# e.g. deploy .#hyperberry
+deploy:
+	deploy --skip-checks --fast-connection false -- --builders 'ssh://builder@hyperberry x86_64-linux,aarch64-linux 16 1' --max-jobs 0
 
 # Update flake inputs and lock file
 update:

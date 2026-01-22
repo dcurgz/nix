@@ -8,7 +8,7 @@
 with lib;
 
 let
-  secrets = config.by.secrets.weirdfish;
+  secrets = config.by.secrets.weirdfish-acme;
   inherit (globals) FLAKE_ROOT;
 
   cfg = config.by.websites;
@@ -111,7 +111,7 @@ in
 
   config = mkIf (cfg.enable) {
     security.acme = {
-      email = secrets.acme.email;
+      email = secrets.email;
       acceptTerms = true;
     };
 

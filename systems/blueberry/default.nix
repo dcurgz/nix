@@ -77,6 +77,7 @@ in
     home = "/home/dcurgz";
   };
   users.groups.dcurgz = { };
+  nix.settings.trusted-users = [ "dcurgz" ];
 
   services.tailscale.enable = true;
   services.tailscale.useRoutingFeatures = lib.mkDefault "both";

@@ -1,40 +1,50 @@
-{ lib, ... }:
+{
+  lib,
+  ...
+}:
 with lib;
 
-let
-  generalOptions = {
-    tailscale.address = mkOption {
-      description = "The tailscale MagicDNS address for this host.";
-      type = types.str;
-    };
-  };
-in
 {
   options.by.secrets = {
-    hyperberry = generalOptions;
-    miniberry = generalOptions;
-    piberry = generalOptions // {
-      # Add more piberry specific secrets.
-      home-assistant = {
-        domain = mkOption {
-          description = "The root domain that the Home Assistant instance is accessible under.";
-          type = types.str;
+    hosts = mkOption {
+      type = types.attrsOf (types.submodule ({ config, name, ... }: {
+        options = {
+          ssh = {
+            host = mkOption {
+              type = types.str;
+              description = "The SSH host configuration name.";
+            };
+            hostname = mkOption {
+              type = types.str;
+              description = "The SSH hostname to connect to.";
+            };
+            user = mkOption {
+              type = types.str;
+              description = "The SSH username to connect with.";
+            };
+          };
         };
-        subdomain = mkOption {
-          description = "The subdomain that the Home Assistant instance is accessible under.";
-          type = types.str;
-        };
-        acme.email = mkOption {
-          description = "The email address with which to perform automatic DNS-0 SSL certificate generation.";
-          type = types.str;
-        };
+      }));
+    };
+    home-assistant = {
+      domain = mkOption {
+        description = "The root domain that the Home Assistant instance is accessible under.";
+        type = types.str;
+      };
+      subdomain = mkOption {
+        description = "The subdomain that the Home Assistant instance is accessible under.";
+        type = types.str;
+      };
+      acme.email = mkOption {
+        description = "The email address with which to perform automatic DNS-0 SSL certificate generation.";
+        type = types.str;
       };
     };
-    weirdfish = {
-        acme.email = mkOption {
-          description = "The email address with which to perform automatic certificate generation.";
-          type = types.str;
-        };
+    weirdfish-acme = {
+      email = mkOption {
+        description = "The email address with which to perform automatic certificate generation.";
+        type = types.str;
+      };
     };
   };
 }

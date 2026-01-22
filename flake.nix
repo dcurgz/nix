@@ -202,6 +202,7 @@
             # Main configuration files
             ./systems/blueberry/hardware.nix
             ./systems/blueberry
+            ./presets/common/ssh.nix
             ./presets/nixos/misc/nix-daemon.nix
             ./presets/nixos/security/sudo
             ./presets/nixos/packages/core
@@ -214,9 +215,6 @@
             ./presets/nixos/desktop/xdg
             ./presets/nixos/desktop/audio
             ./presets/nixos/desktop/gpg
-            # Enable VPN
-            # Currently DCs every 2 minutes..try different endpoint?
-            #./presets/nixos/networking/vpns/proton.nix
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
@@ -411,6 +409,37 @@
 
       # Deploy-rs configuration
       deploy.nodes = {
+        hyperberry = {
+          hostname = "hyperberry";
+          sshUser = "dcurgz";
+          remoteBuild = true;
+          profiles.system = {
+            user = "root";
+            path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.hyperberry;
+          };
+        };
+
+        piberry = {
+          hostname = "piberry";
+          sshUser = "piberry";
+          remoteBuild = false;
+          profiles.system = {
+            user = "root";
+            path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.piberry;
+          };
+        };
+
+        # Need to reinstall Nix on this machine.
+        #miniberry = {
+        #  hostname = "miniberry";
+        #  sshUser = "dcurgz";
+        #  remoteBuild = true;
+        #  profiles.system = {
+        #    user = "dcurgz";
+        #    path = deploy-rs.lib.aarch64-darwin.activate.darwin self.darwinConfigurations.miniberry;
+        #  };
+        #};
+
         weirdfish-cax11-4gb = {
           hostname = "weirdfi.sh";
           sshUser = "root";
@@ -418,16 +447,6 @@
           profiles.system = {
             user = "root";
             path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.weirdfish-cax11-4gb;
-          };
-        };
-
-        hyperberry = {
-          hostname = "hyperberry";
-          sshUser = "dcurgz";
-          remoteBuild = true;
-          profiles.system = {
-            user = "dcurgz";
-            path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.hyperberry;
           };
         };
       };

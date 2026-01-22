@@ -27,31 +27,7 @@ in
       description = "A list of ssh key configuration groups.";
       type = types.listOf group;
     };
-    hosts = mkOption {
-      description = "The list of hosts that should be accessible by hostname in the ssh configuration.";
-      type = types.listOf types.str;
-      default = builtins.attrNames config.by.constants.hosts;
-    };
   };
-
-  config.programs.ssh = mkIf cfg.enable (
-      let
-        mkHostConfig = (
-          hostname: hostConfig:
-          let
-            address = hostConfig.networking.tailscale.address;
-            user = hostConfig.ssh.user;
-          in
-          ''
-          Host ${hostname}:
-            HostName ${address}
-            User ${user}
-          '');
-        hosts = (mapAttrsToList mkHostConfig config.by.constants.hosts);
-      in
-      {
-        extraConfig = (concatStringsSep "\n" hosts);
-      });
 
   config.users.users = mkIf cfg.enable (
     mkMerge (builtins.map (group:

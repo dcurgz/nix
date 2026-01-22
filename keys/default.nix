@@ -10,6 +10,7 @@
         ./ssh/hyperberry/host_ed25519.pub
         ./ssh/hyperberry/dcurgz_ed25519.pub
         ./ssh/blueberry/host_ed25519.pub
+        ./ssh/blueberry/root_ed25519.pub
         ./ssh/blueberry/dcurgz_ed25519.pub
         ./ssh/swiss/id_ed25519.pub
       ];

@@ -8,7 +8,7 @@
 
 let
   keys = import ../../keys { };
-  secrets = config.by.secrets.piberry;
+  secrets = config.by.secrets;
 
   by = config.by.constants;
   inherit (by) NIXOS_PRESETS;
@@ -121,33 +121,38 @@ in
   services.nginx = {
     enable = true;
     recommendedProxySettings = true;
-    virtualHosts = {
-      "${secrets.home-assistant.subdomain}" = {
-        forceSSL = true;
-        enableACME = true;
-        # Disable ACME challenge generation to force DNS-01.
-        acmeRoot = null;
-        extraConfig = ''
-          proxy_buffering off;
-        '';
-        locations."/" = {
-          proxyPass = "http://[::1]:8123";
-          proxyWebsockets = true;
+    virtualHosts =
+      let
+        tailscale = secrets.hosts.piberry.ssh.hostname;
+      in
+      {
+        "${secrets.home-assistant.subdomain}" = {
+          forceSSL = true;
+          enableACME = true;
+          # Disable ACME challenge generation to force DNS-01.
+          acmeRoot = null;
+          extraConfig = ''
+            proxy_buffering off;
+          '';
+          locations."/" = {
+            proxyPass = "http://[::1]:8123";
+            proxyWebsockets = true;
+          };
+        };
+        # tailscale address
+        "${tailscale}" = {
+          forceSSL = true;
+          sslCertificate = "/etc/ssl/certs/${tailscale}.crt";
+          sslCertificateKey = "/etc/ssl/certs/${tailscale}.key";
+          extraConfig = ''
+            proxy_buffering off;
+          '';
+          locations."/" = {
+            proxyPass = "http://[::1]:8123";
+            proxyWebsockets = true;
+          };
         };
       };
-      "${secrets.tailscale.address}" = {
-        forceSSL = true;
-        sslCertificate = "/etc/ssl/certs/${secrets.tailscale.address}.crt";
-        sslCertificateKey = "/etc/ssl/certs/${secrets.tailscale.address}.key";
-        extraConfig = ''
-          proxy_buffering off;
-        '';
-        locations."/" = {
-          proxyPass = "http://[::1]:8123";
-          proxyWebsockets = true;
-        };
-      };
-    };
   };
 
   security.acme = {
