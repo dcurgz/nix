@@ -326,6 +326,10 @@
           inherit self nix-homebrew inputs;
         };
         modules = [
+          ./modules/common
+          #./modules/darwin
+          ./secrets/berry.enc.nix
+          ./presets/common/ssh.nix
           ./presets/darwin/misc/nix-daemon.nix
           ./systems/airberry
           {
