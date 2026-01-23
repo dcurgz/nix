@@ -230,7 +230,7 @@ in
     group = "builder";
   };
   users.groups.builder = { };
-  nix.settings.trusted-users = [ "builder" ];
+  nix.settings.trusted-users = [ "dcurgz" "builder" ];
 
   services.tailscale.enable = true;
   services.tailscale.useRoutingFeatures = lib.mkDefault "both";
