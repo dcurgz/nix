@@ -82,12 +82,12 @@
       # Nix stuff
       nix-index
       agenix
+      deploy-rs
     ]
     ++ lib.optionals stdenv.isLinux (
       with pkgs;
       [
         isd
-        deploy-rs
       ]
     );
 }

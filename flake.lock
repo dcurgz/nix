@@ -95,15 +95,16 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1766051518,
-        "narHash": "sha256-znKOwPXQnt3o7lDb3hdf19oDo0BLP4MfBOYiWkEHoik=",
-        "owner": "serokell",
+        "lastModified": 1769160989,
+        "narHash": "sha256-N5sHSGlyPMC0kg6LuUsUnBmC9Wddr249rcQcrCqrVBs=",
+        "owner": "dcurgz",
         "repo": "deploy-rs",
-        "rev": "d5eff7f948535b9c723d60cd8239f8f11ddc90fa",
+        "rev": "b80d90fd8b47ab8adafe82f891181ed72a3acb21",
         "type": "github"
       },
       "original": {
-        "owner": "serokell",
+        "owner": "dcurgz",
+        "ref": "dcurgz/add-skip-failures",
         "repo": "deploy-rs",
         "type": "github"
       }

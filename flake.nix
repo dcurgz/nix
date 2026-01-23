@@ -59,7 +59,7 @@
     microvm.inputs.nixpkgs.follows = "nixpkgs";
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
 
-    deploy-rs.url = "github:serokell/deploy-rs";
+    deploy-rs.url = "github:dcurgz/deploy-rs/dcurgz/add-skip-failures";
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
 
     disko.url = "github:nix-community/disko/latest";
@@ -457,7 +457,7 @@
         weirdfish-cax11-4gb = {
           hostname = "weirdfi.sh";
           sshUser = "root";
-          remoteBuild = true;
+          remoteBuild = false;
           profiles.system = {
             user = "root";
             path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.weirdfish-cax11-4gb;
