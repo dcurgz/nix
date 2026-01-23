@@ -10,51 +10,11 @@
 let
   secrets = config.by.secrets.weirdfish;
   ports   = config.by.portmap;
-  inherit (inputs) nix-time;
   inherit (globals) FLAKE_ROOT;
 
   domain = "dcurgz.me";
 
-  inherit (pkgs) stdenv;
-  site-index = stdenv.mkDerivation {
-    name = "site-index";
-    src = "${FLAKE_ROOT}/www/${domain}";
-    nativeBuildInputs = with pkgs; [ mandoc ];
-    buildPhase = ''
-      mandoc -T html -O style=style.css index.7 > index.html
-    '';
-    installPhase = ''
-      cp ./index.html "$out"
-    '';
-  };
-  site-webroot = (pkgs.linkFarm "site-webroot" [
-    {
-      name = "index.html";
-      path = (pkgs.replaceVars site-index {
-        nix-gitrev =
-          toString (self.shortRev or self.dirtyShortRev or self.lastModified or "unknown");
-        nix-rfc822 = nix-time.lib.RFC-822 "GMT" self.lastModified;
-        nix-date =
-          with nix-time.lib.splitSecondsSinceEpoch {} self.lastModified;
-          let
-            month = toString B;
-            day   = toString d;
-            year  = toString Y;
-          in
-            "${month} ${day}, ${year}";
-      });
-    }
-    {
-      name = "style.css";
-      path = "${FLAKE_ROOT}/www/${domain}/style.css";
-    }
-    {
-      name = "rss.xml";
-      path = (pkgs.replaceVars "${FLAKE_ROOT}/www/${domain}/rss.xml" {
-        nix-rfc822 = nix-time.lib.RFC-822 "GMT" self.lastModified;
-      });
-    }
-  ]);
+  inherit (config.by.www."${domain}") webroot;
 in
 {
   config.by.websites.enable = true;
@@ -72,7 +32,7 @@ in
     };
     web-server = {
       enable = true;
-      webroot = "${site-webroot}";
+      webroot = "${webroot}";
     };
   };
 }

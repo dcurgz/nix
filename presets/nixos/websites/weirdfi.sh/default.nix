@@ -30,7 +30,8 @@ in
   weirdfish-server = {
     enable = true;
     listen = "[::]:${toString ports.internal.weirdfish}";
-    parameters = {
+    webroot = toString config.by.www."${domain}".webroot;
+    template_params = {
       git-rev = toString (self.shortRev or self.dirtyShortRev or self.lastModified or "unknown");
     };
   };

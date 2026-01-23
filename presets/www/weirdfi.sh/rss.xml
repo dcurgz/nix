@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>weirdfi.sh</title>
+    <link>https://weirdfi.sh</link>
+    <description>varied, incoherent thoughts from a declarative goblin</description>
+    <language>en-gb</language>
+    <lastBuildDate>@nix-rfc822@</lastBuildDate>
+    <atom:link href="https://weirdfi.sh/rss.xml" rel="self" type="application/rss+xml" />
+  </channel>
+</rss>

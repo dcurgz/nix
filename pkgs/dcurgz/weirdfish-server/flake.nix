@@ -35,7 +35,11 @@
                 default = "127.0.0.1:8080";
                 description = "The host string to serve weirdfi.sh on.";
               };
-              parameters = mkOption {
+              webroot = mkOption {
+                type = types.path;
+                description = "A path to the weirdfi.sh resource webroot.";
+              };
+              template_params = mkOption {
                 type = types.attrs;
                 default = {};
               };
@@ -47,10 +51,10 @@
                 after = [ "network.target" ];
                 script =
                   let
-                    parameters-str = (concatStrings (mapAttrsToList (k: v: "--key ${k} ${v} ") cfg.parameters));
+                    params = (concatStrings (mapAttrsToList (k: v: "--template-key ${k} ${v} ") cfg.template_params));
                   in
                   ''
-                    exec ${package}/bin/weirdfish-server --listen ${cfg.listen} ${parameters-str}
+                    exec ${package}/bin/weirdfish-server --listen ${cfg.listen} --webroot ${cfg.webroot} ${params}
                   '';
               };
             };

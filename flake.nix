@@ -287,6 +287,7 @@
             }
             ./modules/common
             ./modules/nixos
+            ./modules/www
             # git-crypt protected variables
             ./secrets/berry.enc.nix
             # Main configuration files
@@ -301,6 +302,8 @@
             ./presets/nixos/packages/python
             # Websites
             weirdfish-server.nixosModules.${system}.default
+            ./presets/www/dcurgz.me
+            ./presets/www/weirdfi.sh
             ./presets/nixos/websites/dcurgz.me
             ./presets/nixos/websites/weirdfi.sh
             # 3rd party modules
@@ -457,7 +460,7 @@
         weirdfish-cax11-4gb = {
           hostname = "weirdfi.sh";
           sshUser = "root";
-          remoteBuild = false;
+          remoteBuild = true;
           profiles.system = {
             user = "root";
             path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.weirdfish-cax11-4gb;
