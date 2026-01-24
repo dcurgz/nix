@@ -48,6 +48,8 @@
     "zed"
     # services
     "tailscale-app"
+    # browser
+    "firefox"
   ];
 
   environment.systemPackages = with pkgs; [

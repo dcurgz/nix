@@ -19,9 +19,11 @@ in
     "${HM_PRESETS}/packages/core"
     "${HM_PRESETS}/desktop/programs/fish"
     "${HM_PRESETS}/desktop/programs/vim"
+    "${HM_PRESETS}/desktop/programs/firefox"
   ];
 
   programs.home-manager.enable = true;
+
 
   by.programs.alacritty.enable = true;
   by.programs.alacritty.package = null;

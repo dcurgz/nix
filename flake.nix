@@ -348,6 +348,7 @@
               # Pass arguments to home
               inherit globals;
             };
+            home-manager.backupFileExtension = "bak";
           }
           # 3rd party modules
           nix-homebrew.darwinModules.nix-homebrew
