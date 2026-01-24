@@ -72,6 +72,9 @@
     weirdfish-server.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-time.url = "path:./pkgs/3rd-party/Flockenzeit";
+
+    neoforge-server.url = "path:./pkgs/dcurgz/minecraft/neoforge-server";
+    neoforge-server.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -99,6 +102,7 @@
       naersk,
       weirdfish-server,
       nix-time,
+      neoforge-server,
     }@inputs:
 
     let
@@ -152,7 +156,8 @@
                 ./presets/nixos/containers/open-webui
                 ./presets/nixos/vms/immich
                 ./presets/nixos/vms/minecraft-wg-0
-                ./presets/nixos/vms/minecraft-wg-1
+                #./presets/nixos/vms/minecraft-wg-1
+                ./presets/nixos/vms/minecraft-slime
                 ./presets/nixos/vms/teamspeak
                 {
                   home-manager.useGlobalPkgs = true;
@@ -412,6 +417,7 @@
             # Custom packages
             #keylight = pkgs.local.keylight;
             weirdfish-server = pkgs.local.weirdfish-server;
+            neoforge-1-21-1 = pkgs.local.neoforge-1-21-1;
           }
         );
 

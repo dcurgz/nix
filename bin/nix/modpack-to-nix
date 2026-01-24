@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# This script expects a list of direct download URLs for Minecraft mods. It will convert it to a Nix source file that uses fetchurl to get the files.
+FILE="$1"
+URLS=$(cat "$FILE")
+PACKAGES=()
+
+for URL in $URLS; do
+    FILENAME=$(echo "$URL" | cut -d@ -f2 | cut -d/ -f2- | cut -d? -f1)
+    FILENAME=${FILENAME##/*/}
+    FILENAME=$(echo "$FILENAME" | tr % _)
+    HASH=$(prefetch "$URL")
+    PACKAGES+=("{ name = \"$FILENAME\"; path = pkgs.fetchurl { url = \"$URL\"; hash = \"$HASH\"; }; }")
+done
+
+echo "\
+{
+  pkgs,
+  ...
+}:
+
+pkgs.linkFarm \"my-modpack\" [
+$(printf '  %s\n' "${PACKAGES[@]}")
+]"

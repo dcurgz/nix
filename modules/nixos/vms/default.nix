@@ -144,12 +144,10 @@ in
     systemd.tmpfiles.rules = flatten (
       mapAttrsToList (
         hostname: vmConfig:
-        let
-          journalPath = "/var/lib/microvms/${hostname}/journal";
-        in
         optionals vmConfig.enable (
           [
-            "d ${journalPath} 0750 microvm kvm"
+            "d /var/lib/microvms/${hostname} 0750 microvm kvm"
+            "d /var/lib/microvms/${hostname}/journal 0750 microvm kvm"
             "d /var/lib/microvms/${hostname}/tailscale 0750 microvm kvm"
             "d /var/lib/microvms/${hostname}/ssh-host-keys 0755 root root"
           ]

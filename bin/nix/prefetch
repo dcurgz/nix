@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
 SCRIPT="$0"
 URL="$1"
+FILENAME=$(echo "$URL" | cut -d@ -f2 | cut -d/ -f2- | cut -d? -f1)
+FILENAME=${FILENAME##/*/}
+FILENAME=$(echo "$FILENAME" | tr % _)
 
 if [ -z "$URL" ]; then
     echo "Usage: $SCRIPT [url]"
     exit 0
 fi
 
-HASH_SHA256=$(nix-prefetch-url "$URL")
+HASH_SHA256=$(nix-prefetch-url --name "$FILENAME" "$URL")
 HASH_SRI=$(nix-hash --to-sri --type sha256 "$HASH_SHA256")
 
 echo "$HASH_SRI"
