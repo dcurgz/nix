@@ -10,21 +10,31 @@ let
   inherit (globals) FLAKE_ROOT;
   inherit (pkgs) stdenv;
   inherit (inputs) nix-time;
-  index = stdenv.mkDerivation {
-    name = "index";
+  html = stdenv.mkDerivation {
+    name = "html";
     src = ./.;
     nativeBuildInputs = with pkgs; [ mandoc ];
     buildPhase = ''
-      mandoc -T html -O style=style.css index.7 > index.html
+      FILES=$(find . -name "*.7")
+      for f in $FILES; do
+        DEST="''${f%.7}.html"
+        mandoc -T html -O style="/style.css" $f > $DEST
+      done
     '';
     installPhase = ''
-      cp ./index.html "$out"
+      mkdir -p "$out"
+      FILES=$(find . -name "*.html")
+      for f in $FILES; do
+        DIR=$(dirname "$f")
+        mkdir -p $out/"$DIR"
+        cp "$f" $out/"$f"
+      done
     '';
   };
-  webroot = (pkgs.linkFarm "webroot" [
-    {
-      name = "index.html";
-      path = (pkgs.replaceVars index {
+  inherit (pkgs.local.lib) replaceOptionalVars;
+  mkTemplate = name: path: {
+    inherit name;
+    path = (replaceOptionalVars path {
         nix-gitrev =
           toString (self.shortRev or self.dirtyShortRev or self.lastModified or "unknown");
         nix-rfc822 = nix-time.lib.RFC-822 "GMT" self.lastModified;
@@ -36,8 +46,11 @@ let
             year  = toString Y;
           in
             "${month} ${day}, ${year}";
-      });
-    }
+    });
+  };
+  webroot = (pkgs.linkFarm "webroot" [
+    (mkTemplate "index.html" "${html}/index.html")
+    (mkTemplate "posts/why.html" "${html}/posts/why.html")
     {
       name = "style.css";
       path = ./style.css;
