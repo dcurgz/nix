@@ -370,9 +370,10 @@
           config.allowUnfree = true;
         };
         specialArgs = {
-          inherit self nix-homebrew;
+          inherit self nix-homebrew globals;
         };
         modules = [
+          ./modules/common
           ./systems/miniberry
           {
             home-manager.useGlobalPkgs = true;

@@ -1,9 +1,14 @@
 {
   self,
   pkgs,
+  globals,
   ...
 }:
 
+let
+  inherit (globals) FLAKE_ROOT;
+  keys = import "${FLAKE_ROOT}/keys" { };
+in
 {
   # The platform the configuration will be used on.
   nixpkgs.hostPlatform = "aarch64-darwin";
@@ -59,6 +64,17 @@
 
   environment.shells = [ pkgs.fish ];
   programs.fish.enable = true;
+
+  services.openssh.enable = true;
+  by.configure-ssh = {
+    enable = true;
+    groups = [
+      {
+        users = [ "root" "dcurgz" ];
+        keys = keys.ssh.groups.privileged;
+      }
+    ];
+  };
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
