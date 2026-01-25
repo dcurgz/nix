@@ -2,12 +2,19 @@
   self,
   config,
   pkgs,
+  globals,
   ...
 }:
 
+let
+  inherit (globals) FLAKE_ROOT;
+  keys = import "${FLAKE_ROOT}/keys" { };
+in
 {
   # The platform the configuration will be used on.
   nixpkgs.hostPlatform = "aarch64-darwin";
+
+  networking.hostName = "airberry";
 
   nix = {
     enable = true;
@@ -68,10 +75,16 @@
   environment.shells = [ pkgs.fish ];
   programs.fish.enable = true;
 
-  # Import modules.
-  imports = [
-    # TODO: add common or darwin modules for e.g. core packages and Nix daemon settings
-  ];
+  services.openssh.enable = true;
+  by.configure-ssh = {
+    enable = true;
+    groups = [
+      {
+        users = [ "root" "dylan" ];
+        keys = keys.ssh.groups.privileged;
+      }
+    ];
+  };
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog

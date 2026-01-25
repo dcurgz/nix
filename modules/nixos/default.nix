@@ -5,7 +5,6 @@
 {
   imports = [
     ./vms
-    ./ssh
     ./websites
   ];
 }

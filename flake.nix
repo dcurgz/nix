@@ -331,7 +331,7 @@
           config.allowUnfree = true;
         };
         specialArgs = {
-          inherit self nix-homebrew inputs;
+          inherit self nix-homebrew inputs globals;
         };
         modules = [
           ./modules/common
@@ -345,7 +345,6 @@
             home-manager.useUserPackages = true;
             home-manager.users.dylan = import ./users/dcurgz/airberry;
             home-manager.sharedModules = [
-              ./modules/common
               ./modules/home-manager/common
               ./modules/home-manager/darwin
             ];
