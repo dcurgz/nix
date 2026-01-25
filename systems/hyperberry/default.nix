@@ -182,11 +182,12 @@ in
     internalInterfaces = [
       "br0"
     ];
+    #TODO: isn't this abstracted?
     forwardPorts =
     let
       vms = config.hyperberry.virtualization.vms;
       wg-0 = vms.vm-mc-wg-0.networking.ipAddress;
-      wg-1 = vms.vm-mc-wg-1.networking.ipAddress;
+      #wg-1 = vms.vm-mc-wg-1.networking.ipAddress;
     in
     [
       {
@@ -199,16 +200,16 @@ in
         destination = "${wg-0}:25565";
         proto = "udp";
       }
-      {
-        sourcePort = 25566;
-        destination = "${wg-1}:25565";
-        proto = "tcp";
-      }
-      {
-        sourcePort = 25566;
-        destination = "${wg-1}:25565";
-        proto = "udp";
-      }
+      #{
+      #  sourcePort = 25566;
+      #  destination = "${wg-1}:25565";
+      #  proto = "tcp";
+      #}
+      #{
+      #  sourcePort = 25566;
+      #  destination = "${wg-1}:25565";
+      #  proto = "udp";
+      #}
     ];
   };
 

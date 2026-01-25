@@ -164,7 +164,6 @@
                   home-manager.useUserPackages = true;
                   home-manager.users.dcurgz = import ./users/dcurgz/hyperberry;
                   home-manager.sharedModules = [
-                    ./modules/common
                     ./modules/home-manager/common
                     ./modules/home-manager/nixos
                     # 3rd party modules
@@ -224,7 +223,6 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.sharedModules = [
-		./modules/common
 		./modules/home-manager/common
 		./modules/home-manager/nixos
                 # 3rd party modules
@@ -452,16 +450,15 @@
           };
         };
 
-        # Need to reinstall Nix on this machine.
-        #miniberry = {
-        #  hostname = "miniberry";
-        #  sshUser = "dcurgz";
-        #  remoteBuild = true;
-        #  profiles.system = {
-        #    user = "dcurgz";
-        #    path = deploy-rs.lib.aarch64-darwin.activate.darwin self.darwinConfigurations.miniberry;
-        #  };
-        #};
+        miniberry = {
+          hostname = "miniberry";
+          sshUser = "dcurgz";
+          remoteBuild = true;
+          profiles.system = {
+            user = "root";
+            path = deploy-rs.lib.aarch64-darwin.activate.darwin self.darwinConfigurations.miniberry;
+          };
+        };
 
         weirdfish-cax11-4gb = {
           hostname = "weirdfi.sh";
