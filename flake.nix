@@ -273,6 +273,33 @@
           ];
         };
 
+        tauberry = nixpkgs.lib.nixosSystem {
+          system = "aarch64-linux";
+          specialArgs = {
+            inherit self nixpkgs;
+            inputs = {
+              inherit self nixpkgs;
+            };
+          };
+          modules = [
+            {
+              nixpkgs.overlays = [
+                (final: prev: import ./overlays.nix { inherit inputs final prev; })
+              ];
+            }
+            ./modules/common
+            ./modules/nixos
+            # git-crypt protected variables
+            ./secrets/berry.enc.nix
+            ./systems/tauberry
+            ./presets/nixos/misc/nix-daemon.nix
+            ./presets/nixos/packages/core
+            # 3rd party modules
+            microvm.nixosModules.host
+            agenix.nixosModules.default
+          ];
+        };
+
         weirdfish-cax11-4gb = nixpkgs.lib.nixosSystem rec {
           system = "aarch64-linux";
           specialArgs = {
