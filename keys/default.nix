@@ -8,6 +8,7 @@
         ./ssh/airberry/host_ed25519.pub
         ./ssh/airberry/dcurgz_ed25519.pub
         ./ssh/hyperberry/host_ed25519.pub
+        ./ssh/hyperberry/root_ed25519.pub
         ./ssh/hyperberry/dcurgz_ed25519.pub
         ./ssh/blueberry/host_ed25519.pub
         ./ssh/blueberry/root_ed25519.pub

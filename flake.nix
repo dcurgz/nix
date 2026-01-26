@@ -147,13 +147,12 @@
                 # Main configuration files
                 ./systems/hyperberry/hardware.nix
                 ./systems/hyperberry
+                ./presets/common/ssh.nix
                 ./presets/nixos/misc/nix-daemon.nix
                 ./presets/nixos/security/sudo
                 ./presets/nixos/packages/core
                 ./presets/nixos/packages/encryption
                 ./presets/nixos/packages/python
-                ./presets/nixos/containers/dropbox
-                ./presets/nixos/containers/open-webui
                 ./presets/nixos/vms/immich
                 ./presets/nixos/vms/minecraft-wg-0
                 #./presets/nixos/vms/minecraft-wg-1
