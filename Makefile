@@ -39,7 +39,10 @@ bootstrap-weirdfi.sh:
 
 # e.g. deploy .#hyperberry
 deploy:
-	deploy --skip-checks --skip-failures --fast-connection false -- --builders 'ssh://builder@hyperberry x86_64-linux,aarch64-linux 16 1' --builders-use-substitutes --max-jobs 0
+	deploy $(HOST) --skip-checks --skip-failures --fast-connection false -- --builders 'ssh://builder@hyperberry x86_64-linux,aarch64-linux 16 1' --builders-use-substitutes --max-jobs 0
+
+weirdfi.sh:
+	HOST=.#weirdfish-cax11-4gb make deploy 
 
 # Update flake inputs and lock file
 update:

@@ -1,5 +1,4 @@
 /* shamelessly copied and tweaked from https://causal.agency <3 */
-/* i'm aware i need to define a scheme */
 table.head, table.foot { width: 100%; }
 td.head-rtitle, td.foot-os { text-align: right; }
 td.head-vol { text-align: center; }
