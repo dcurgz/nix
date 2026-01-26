@@ -26,14 +26,14 @@ blueberry:
 piberry:
 	sudo nixos-rebuild $(REMOTE_BUILDER) --max-jobs 0 switch --flake .#piberry  
 
-piberry-iso:
-	sudo $(NIX) build $(REMOTE_BUILDER) --max-jobs 0 .#nixosConfigurations.piberry.config.system.build.images.iso
+piberry-sdcard:
+	sudo $(NIX) build .#nixosConfigurations.piberry.config.system.build.images.sd-card
 
 tauberry:
 	sudo nixos-rebuild $(REMOTE_BUILDER) --max-jobs 0 switch --flake .#tauberry
 
-tauberry-iso:
-	sudo $(NIX) build $(REMOTE_BUILDER) --max-jobs 0 .#nixosConfigurations.tauberry.config.system.build.images.iso
+tauberry-sdcard:
+	sudo $(NIX) build .#nixosConfigurations.tauberry.config.system.build.images.sd-card
 
 airberry:
 	sudo darwin-rebuild switch --flake .#airberry 

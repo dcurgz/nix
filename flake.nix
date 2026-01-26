@@ -291,6 +291,7 @@
             # git-crypt protected variables
             ./secrets/berry.enc.nix
             ./systems/tauberry
+            ./presets/nixos/misc/rpi-disable-kernel-modules.nix
             ./presets/nixos/misc/nix-daemon.nix
             ./presets/nixos/packages/core
             # 3rd party modules
@@ -474,6 +475,16 @@
           profiles.system = {
             user = "root";
             path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.piberry;
+          };
+        };
+
+        tauberry = {
+          hostname = "tauberry";
+          sshUser = "tauberry";
+          remoteBuild = false;
+          profiles.system = {
+            user = "root";
+            path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.tauberry;
           };
         };
 
