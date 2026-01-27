@@ -24,7 +24,7 @@ blueberry:
 	sudo nixos-rebuild switch --flake .#blueberry 
 
 piberry:
-	sudo nixos-rebuild $(REMOTE_BUILDER) --max-jobs 0 switch --flake .#piberry  
+	sudo nixos-rebuild $(REMOTE_BUILDER) --max-jobs 0 switch --flake .#piberry
 
 piberry-sdcard:
 	sudo $(NIX) build .#nixosConfigurations.piberry.config.system.build.images.sd-card
