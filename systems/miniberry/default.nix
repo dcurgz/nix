@@ -83,8 +83,7 @@ in
   users.knownUsers = [ "builder" ];
 
   # Note, trusted-users is effectively root.
-  nix.settings.trusted-users = [ "@admin" "dcurgz" ];
-  nix.settings.allowed-users = [ "builder" ];
+  nix.settings.trusted-users = [ "@admin" "dcurgz" "builder" ];
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
