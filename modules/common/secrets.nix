@@ -22,6 +22,14 @@ with lib;
               type = types.str;
               description = "The SSH username to connect with.";
             };
+            builder = {
+              enable = mkEnableOption "Enable SSH configuration for a Nix remote builder.";
+              user = mkOption {
+                type = types.str;
+                default = "builder";
+                description = "The SSH username to connect with (default is 'builder').";
+              };
+            };
           };
         };
       }));
