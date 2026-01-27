@@ -10,8 +10,5 @@ with lib;
     # Image editing
     darktable
     aseprite
-    # Code editors
-    zed-editor
-    jetbrains.idea-community
   ];
 }
