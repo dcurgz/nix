@@ -1,3 +1,4 @@
+# slime-v1
 https://cdn.modrinth.com/data/1RaTTUPz/versions/ItAjFaTb/scarecrowsterritory-1.1.11a-neoforge-mc1.21.jar
 https://cdn.modrinth.com/data/1bokaNcj/versions/puXrtfcK/xaerominimap-neoforge-1.21.1-25.3.5.jar
 https://cdn.modrinth.com/data/2BwBOmBQ/versions/I52NZ1qK/YungsBetterEndIsland-1.21.1-NeoForge-3.1.2.jar
@@ -133,3 +134,8 @@ https://mediafilez.forgecdn.net/files/7469/725/wunderlib-21.0.10.jar
 https://mediafilez.forgecdn.net/files/7492/121/ApothicSpawners-1.21.1-1.3.4.jar
 https://mediafilez.forgecdn.net/files/7499/671/worldweaver-21.0.17.jar
 https://mediafilez.forgecdn.net/files/7499/686/BetterEnd-21.0.21.jar
+# slime-v2
+https://cdn.modrinth.com/data/SaCpeal4/versions/3kpPjcTc/comforts-neoforge-9.0.5%2B1.21.1.jar
+https://cdn.modrinth.com/data/UrJT3OKO/versions/pWxSfFcm/gdbuax-1.0.0-neoforge-1.21.1.jar
+https://cdn.modrinth.com/data/fFEIiSDQ/versions/7UoJJAp8/supplementaries-1.21-3.5.18-neoforge.jar
+https://cdn.modrinth.com/data/twkfQtEc/versions/xnc12XKg/moonlight-1.21-2.29.16-neoforge.jar

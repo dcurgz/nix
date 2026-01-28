@@ -139,4 +139,8 @@ pkgs.linkFarm "my-modpack" [
   { name = "ApothicSpawners-1.21.1-1.3.4.jar"; path = pkgs.fetchurl { url = "https://mediafilez.forgecdn.net/files/7492/121/ApothicSpawners-1.21.1-1.3.4.jar"; hash = "sha256-324XbZsAWTrm5xL4RA7nX/6LH8WvOfd5cOigJVoZPhU="; }; }
   { name = "worldweaver-21.0.17.jar"; path = pkgs.fetchurl { url = "https://mediafilez.forgecdn.net/files/7499/671/worldweaver-21.0.17.jar"; hash = "sha256-UpR8WbBu+NoK0KoozHqUKBmJnQbe2IhJIovR63oB5b0="; }; }
   { name = "BetterEnd-21.0.21.jar"; path = pkgs.fetchurl { url = "https://mediafilez.forgecdn.net/files/7499/686/BetterEnd-21.0.21.jar"; hash = "sha256-vmbsuQmFNv1MOGlwROKC1bimikClWmFYn8hk07wuuxk="; }; }
+  { name = "comforts-neoforge-9.0.5_2B1.21.1.jar"; path = pkgs.fetchurl { url = "https://cdn.modrinth.com/data/SaCpeal4/versions/3kpPjcTc/comforts-neoforge-9.0.5%2B1.21.1.jar"; hash = "sha256-aw/TWhNJEH4IpFU5rb3paDuyA/68Q6MwX2/ErHPllhU="; }; }
+  { name = "gdbuax-1.0.0-neoforge-1.21.1.jar"; path = pkgs.fetchurl { url = "https://cdn.modrinth.com/data/UrJT3OKO/versions/pWxSfFcm/gdbuax-1.0.0-neoforge-1.21.1.jar"; hash = "sha256-5L/wXaGaFySdvBzzfOJYgm1dai9ZNiniwtdtfjq9E88="; }; }
+  { name = "supplementaries-1.21-3.5.18-neoforge.jar"; path = pkgs.fetchurl { url = "https://cdn.modrinth.com/data/fFEIiSDQ/versions/7UoJJAp8/supplementaries-1.21-3.5.18-neoforge.jar"; hash = "sha256-fC9RMohANVsccR+H+ogdzkRa3IWeG5Utegir+Z/O8J0="; }; }
+  { name = "moonlight-1.21-2.29.16-neoforge.jar"; path = pkgs.fetchurl { url = "https://cdn.modrinth.com/data/twkfQtEc/versions/xnc12XKg/moonlight-1.21-2.29.16-neoforge.jar"; hash = "sha256-RaqO8ay0cscHFARK5ZghfObFOWIzlmX9aGdepRp2u0k="; }; }
 ]

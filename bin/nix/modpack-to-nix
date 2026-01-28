@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # This script expects a list of direct download URLs for Minecraft mods. It will convert it to a Nix source file that uses fetchurl to get the files.
 FILE="$1"
-URLS=$(cat "$FILE")
+URLS=$(cat "$FILE" | grep -v '^#')
 PACKAGES=()
 
 for URL in $URLS; do
