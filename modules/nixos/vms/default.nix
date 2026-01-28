@@ -291,7 +291,7 @@ in
             };
 
             # Configure root user SSH keys
-            users.users.root.openssh.authorizedKeys.keyFiles = keys.ssh.hyperberry;
+            users.users.root.openssh.authorizedKeys.keyFiles = keys.ssh.hosts.hyperberry;
 
             # Network diagnostics and utilities
             environment.systemPackages = mkDefault (
