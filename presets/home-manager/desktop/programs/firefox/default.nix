@@ -1,9 +1,17 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  lib,
+  ...
+}:
+with lib;
 
+let
+  system = pkgs.stdenv.hostPlatform.system;
+in
 {
   programs.firefox = {
     enable = true;
-    languagePacks = [ "en-GB" ];
+    package = mkIf (system == "aarch64-darwin") null;
 
     # https://github.com/jwiegley/nix-config/blob/3923dcd280f7c34175fbf434e9b6aafb8f627ff6/config/firefox.nix#L4
     policies = {
