@@ -488,15 +488,15 @@
           };
         };
 
-        #airberry = {
-        #  hostname = "airberry";
-        #  sshUser = "dylan";
-        #  remoteBuild = false;
-        #  profiles.system = {
-        #    user = "root";
-        #    path = deploy-rs.lib.aarch64-darwin.activate.darwin self.darwinConfigurations.airberry;
-        #  };
-        #};
+        airberry = {
+          hostname = "airberry";
+          sshUser = "dylan";
+          remoteBuild = false;
+          profiles.system = {
+            user = "root";
+            path = deploy-rs.lib.aarch64-darwin.activate.darwin self.darwinConfigurations.airberry;
+          };
+        };
 
         miniberry = {
           hostname = "miniberry";
