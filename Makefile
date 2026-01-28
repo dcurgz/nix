@@ -38,7 +38,7 @@ tauberry-sdcard:
 	sudo $(NIX) build .#nixosConfigurations.tauberry.config.system.build.images.sd-card
 
 airberry:
-	sudo darwin-rebuild switch --flake .#airberry 
+	sudo darwin-rebuild switch --option builders "ssh://builder@miniberry aarch64-darwin - 16 1" --max-jobs 0 --flake .#airberry 
 
 miniberry:
 	sudo darwin-rebuild switch --flake .#miniberry --show-trace

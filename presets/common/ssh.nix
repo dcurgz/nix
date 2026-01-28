@@ -1,10 +1,15 @@
 {
   config,
   lib,
+  globals,
   ...
 }:
 with lib;
 
+let
+  inherit (globals) FLAKE_ROOT;
+  keys = import "${FLAKE_ROOT}/keys" { };
+in
 {
   programs.ssh =
     let
@@ -18,5 +23,6 @@ with lib;
     in
     {
       extraConfig = (concatStringsSep "\n" hosts);
+      knownHosts = keys.ssh.knownHosts;
     };
 }
