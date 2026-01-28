@@ -451,7 +451,7 @@
         blueberry = {
           hostname = "blueberry";
           sshUser = "dcurgz";
-          remoteBuild = true;
+          remoteBuild = false;
           profiles.system = {
             user = "root";
             path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.blueberry;
