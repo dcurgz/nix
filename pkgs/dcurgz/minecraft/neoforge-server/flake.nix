@@ -28,9 +28,15 @@
                 type = types.package;
                 description = "The neoforge server package to use.";
               };
-              modpack = mkOption {
-                type = types.path;
-                description = "A modpack given as a pkgs.linkFarm derivation.";
+              overlays = {
+                modpack = mkOption {
+                  type = types.path;
+                  description = "A modpack overlay, given as a pkgs.linkFarm derivation.";
+                };
+                config = mkOption {
+                  type = types.path;
+                  description = "A config overlay, given as a pkgs.linkFarm derivation.";
+                };
               };
               dataDir = mkOption {
                 type = types.path;
@@ -48,9 +54,10 @@
                 modpackDir = pkgs.linkFarm "modpack-overlay" [
                   {
                     name = "mods";
-                    path = cfg.modpack;
+                    path = cfg.overlays.modpack;
                   }
                 ];
+                configDir = cfg.overlays.config;
               in
               {
                 users = {
@@ -97,7 +104,7 @@
                     fi
                     mkdir -vp "${workDir}"
                     # Configure overlayfs mount
-                    mount -t overlay overlay -o lowerdir="${cfg.package}":"${modpackDir}",upperdir="${serverDir}",workdir="${workDir}",userxattr ${mountDir}
+                    mount -t overlay overlay -o lowerdir="${cfg.package}":"${modpackDir}:${configDir}",upperdir="${serverDir}",workdir="${workDir}",userxattr ${mountDir}
                     # Start the server
                     cd "${mountDir}"
                     ./run.sh

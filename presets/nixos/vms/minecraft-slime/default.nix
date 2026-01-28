@@ -63,7 +63,15 @@ in
         minecraft.neoforge = {
           enable = true;
           package = pkgs.local.neoforge-1-21-1;
-          modpack = pkgs.local.modpack-slime;
+          overlays = {
+            modpack = pkgs.local.modpack-slime;
+            config = pkgs.linkFarm "config-overlay" [
+              {
+                name = "server.properties";
+                path = ./server.properties;
+              }
+            ];
+          };
           dataDir = dataDir;
         };
       };
