@@ -28,7 +28,6 @@ https://cdn.modrinth.com/data/EmNhnNnt/versions/pTvdAfwg/alexsmobs-1.22.16.jar
 https://cdn.modrinth.com/data/EsAfCjCV/versions/8X2x5cPC/appleskin-neoforge-mc1.21-3.0.8.jar
 https://cdn.modrinth.com/data/FTeXqI9v/versions/eQ9rbApE/create-new-age-1.1.7c%2Bneoforge-mc1.21.1.jar
 https://cdn.modrinth.com/data/FoVacERa/versions/RdsxgL41/lionfishapi-2.6.jar
-https://cdn.modrinth.com/data/Fsvx2bdR/versions/48F54T6r/ParCool-1.21.1-3.4.3.1-NF.jar
 https://cdn.modrinth.com/data/GFqBpmHU/versions/MtmdYref/artifactscrafting-1.1.1-neoforge-1.21.1.jar
 https://cdn.modrinth.com/data/GmjmRQ0A/versions/DwseRoo3/sliceanddice-forge-4.2.2.jar
 https://cdn.modrinth.com/data/HZmhgdJk/versions/5db3GZzg/wunderlib-21.0.10.jar
@@ -139,3 +138,4 @@ https://cdn.modrinth.com/data/SaCpeal4/versions/3kpPjcTc/comforts-neoforge-9.0.5
 https://cdn.modrinth.com/data/UrJT3OKO/versions/pWxSfFcm/gdbuax-1.0.0-neoforge-1.21.1.jar
 https://cdn.modrinth.com/data/fFEIiSDQ/versions/7UoJJAp8/supplementaries-1.21-3.5.18-neoforge.jar
 https://cdn.modrinth.com/data/twkfQtEc/versions/xnc12XKg/moonlight-1.21-2.29.16-neoforge.jar
+#removed: https://cdn.modrinth.com/data/Fsvx2bdR/versions/48F54T6r/ParCool-1.21.1-3.4.3.1-NF.jar
