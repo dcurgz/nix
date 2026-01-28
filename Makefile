@@ -1,10 +1,12 @@
 # Makefile to apply the Nix flake configuration to the system
 
-REMOTE_BUILDER := --builders "ssh://builder@hyperberry x86_64-linux,aarch64-linux 16 1"
+REMOTE_BUILDER := --builders "ssh://builder@hyperberry x86_64-linux,aarch64-linux - 16 1 ; ssh://builder@miniberry aarch64-darwin - 16 1"
 
 HOME_MANAGER := home-manager --extra-experimental-features "nix-command flakes"
 
 NIX := nix --extra-experimental-features "nix-command flakes"
+
+HOSTNAME := $(shell cat /etc/hostname)
 
 .PHONY: hyperberry piberry airberry update
 
@@ -45,10 +47,13 @@ bootstrap-weirdfi.sh:
 	$(NIX) run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./systems/weirdfi.sh-cax11-4gb/hardware-configuration.$(NIX) --flake .#weirdfish-cax11-4gb --target-host "root@weirdfi.sh"
 
 deploy:
-	deploy $(HOST) --skip-checks --skip-failures --fast-connection false -- --builders 'ssh://builder@hyperberry x86_64-linux,aarch64-linux 16 1' --builders-use-substitutes --max-jobs 0
-
-deploy-build-local:
-	deploy $(HOST) --skip-checks --skip-failures --fast-connection false
+ifeq ($(HOSTNAME),hyperberry)
+	# build locally
+	deploy $(HOST) --skip-checks --skip-offline --fast-connection false -- --builders 'ssh://builder@miniberry aarch64-darwin - 16 1' --builders-use-substitutes --max-jobs 16
+else
+	# build remotely
+	deploy $(HOST) --skip-checks --skip-offline --fast-connection false -- $(REMOTE_BUILDER) --builders-use-substitutes --max-jobs 0
+endif
 
 weirdfi.sh:
 	HOST=.#weirdfish-cax11-4gb make deploy 

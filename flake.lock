@@ -92,16 +92,16 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1769160989,
-        "narHash": "sha256-N5sHSGlyPMC0kg6LuUsUnBmC9Wddr249rcQcrCqrVBs=",
+        "lastModified": 1769607847,
+        "narHash": "sha256-JwqFG0zfq9cqFaFYIiJ2YiHyeBiLlAxTaP4nRZCarcU=",
         "owner": "dcurgz",
         "repo": "deploy-rs",
-        "rev": "b80d90fd8b47ab8adafe82f891181ed72a3acb21",
+        "rev": "07cf2c76906ee32770c9383cbf21935985cb897f",
         "type": "github"
       },
       "original": {
         "owner": "dcurgz",
-        "ref": "dcurgz/add-skip-failures",
+        "ref": "dcurgz/add-skip-offline",
         "repo": "deploy-rs",
         "type": "github"
       }

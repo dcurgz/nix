@@ -59,7 +59,7 @@
     microvm.inputs.nixpkgs.follows = "nixpkgs";
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
 
-    deploy-rs.url = "github:dcurgz/deploy-rs/dcurgz/add-skip-failures";
+    deploy-rs.url = "github:dcurgz/deploy-rs/dcurgz/add-skip-offline";
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
 
     disko.url = "github:nix-community/disko/latest";
@@ -487,6 +487,16 @@
             path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.tauberry;
           };
         };
+
+        #airberry = {
+        #  hostname = "airberry";
+        #  sshUser = "dylan";
+        #  remoteBuild = false;
+        #  profiles.system = {
+        #    user = "root";
+        #    path = deploy-rs.lib.aarch64-darwin.activate.darwin self.darwinConfigurations.airberry;
+        #  };
+        #};
 
         miniberry = {
           hostname = "miniberry";
