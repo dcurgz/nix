@@ -275,6 +275,7 @@ in
         "--keep-weekly=1"
         "--keep-monthly=1"
       ];
+      repository = "s3:s3.eu-central-1.s4.mega.io/restic-hyperberry-media";
       timerConfig.OnCalendar = "*-*-* 06:00:00";
     };
     hyperberry-data-immich = {
