@@ -142,9 +142,7 @@ https://cdn.modrinth.com/data/twkfQtEc/versions/xnc12XKg/moonlight-1.21-2.29.16-
 # slime-v3
 https://cdn.modrinth.com/data/7YjclEGc/versions/necGsua8/dynamiclights-v1.9.1-mc1.17-1.21.11-mod.jar
 https://cdn.modrinth.com/data/9k1pAsfR/versions/SCwvgDbO/create-integrated-farming-1.2.0c.jar
-# required by AmbientSounds
-https://cdn.modrinth.com/data/OsZiaDHq/versions/bsTflTIq/CreativeCore_NEOFORGE_v2.13.26_mc1.21.1.jar
-https://cdn.modrinth.com/data/fM515JnW/versions/6gGI0nu8/AmbientSounds_NEOFORGE_v6.3.3_mc1.21.1.jar
 https://cdn.modrinth.com/data/e0bNACJD/versions/SPj5bJoM/SereneSeasons-neoforge-1.21.1-10.1.0.3.jar
 https://cdn.modrinth.com/data/gHoB7SHO/versions/iLXWmfax/TreeChop-1.21.1-neoforge-0.19.3.jar
-https://cdn.modrinth.com/data/zJpHMkdD/versions/NGk8VAMH/immersive-portals-6.0.3-mc1.21.1-fabric.jar
+https://cdn.modrinth.com/data/vRYk0bv7/versions/xyqrX19y/trashslot-neoforge-1.21.1-21.1.4.jar
+https://cdn.modrinth.com/data/zf4Szzx2/versions/HbBv6YVB/immersive_portals-6.0.7-all.jar

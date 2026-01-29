@@ -25,8 +25,8 @@ in
       memory = 1024 * 12;
 
       networking = {
-        macAddress = "02:00:00:00:00:06";
-        ipAddress = "10.0.0.16";
+        macAddress = "02:00:00:00:00:07";
+        ipAddress = "10.0.0.17";
       };
 
       # Additional tmpfiles for minecraft data directory
