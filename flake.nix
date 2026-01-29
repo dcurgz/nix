@@ -148,6 +148,7 @@
                 ./systems/hyperberry/hardware.nix
                 ./systems/hyperberry
                 ./presets/common/ssh.nix
+                ./presets/common/git.nix
                 ./presets/nixos/misc/nix-daemon.nix
                 ./presets/nixos/security/sudo
                 ./presets/nixos/packages/core
@@ -205,6 +206,7 @@
             ./systems/blueberry/hardware.nix
             ./systems/blueberry
             ./presets/common/ssh.nix
+            ./presets/common/git.nix
             ./presets/nixos/misc/nix-daemon.nix
             ./presets/nixos/security/sudo
             ./presets/nixos/packages/core
@@ -362,6 +364,7 @@
           #./modules/darwin
           ./secrets/berry.enc.nix
           ./presets/common/ssh.nix
+          ./presets/common/git.nix
           ./presets/darwin/misc/nix-daemon.nix
           ./systems/airberry
           {
@@ -401,6 +404,7 @@
         modules = [
           ./modules/common
           ./systems/miniberry
+          ./presets/common/git.nix
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
