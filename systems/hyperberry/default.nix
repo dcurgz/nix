@@ -251,41 +251,66 @@ in
     restic-envvars.file = "${FLAKE_ROOT}/secrets/backup/restic-envvars.age";
   };
 
-  services.restic.backups = {
-    hyperberry-data = {
-      paths = [ "/data" ];
-      pruneOpts = [
-        "--keep-daily=3"
-        "--keep-weekly=3"
-        "--keep-monthly=3"
-      ];
-      initialize = true;
-      repository = "s3:s3.eu-central-1.s4.mega.io/restic-hyperberry-data";
-      passwordFile = config.age.secrets.restic-password.path;
-      environmentFile = config.age.secrets.restic-envvars.path;
-      timerConfig = {
-        OnCalendar = "*-*-* 06:00:00";
-        Persistent = true;
-      };
-      progressFps = 0.5;
+  by.restic.enable = true;
+  by.restic.defaults = {
+    initialize = true;
+    pruneOpts = [
+      "--keep-daily=2"
+      "--keep-weekly=2"
+    ];
+    timerConfig = {
+      OnCalendar = "*-*-* 06:00:00";
+      Persistent = true;
     };
-
-    hyperberry-media = {
-      paths = [ "/media" ];
+    repository = "s3:s3.eu-central-1.s4.mega.io/restic-hyperberry-data";
+    passwordFile = config.age.secrets.restic-password.path;
+    environmentFile = config.age.secrets.restic-envvars.path;
+    progressFps = 0.5;
+  };
+  by.restic.backups = {
+    hyperberry-media-photos = {
+      paths = [ "/media/photos" ];
       pruneOpts = [
-        "--keep-daily=3"
+        "--keep-daily=7"
         "--keep-weekly=1"
         "--keep-monthly=1"
       ];
-      initialize = true;
-      repository = "s3:s3.eu-central-1.s4.mega.io/restic-hyperberry-media";
-      passwordFile = config.age.secrets.restic-password.path;
-      environmentFile = config.age.secrets.restic-envvars.path;
-      timerConfig = {
-        OnCalendar = "*-*-* 07:00:00";
-        Persistent = true;
-      };
-      progressFps = 0.5;
+      timerConfig.OnCalendar = "*-*-* 06:00:00";
+    };
+    hyperberry-data-immich = {
+      paths = [
+        "/data/immich"
+        "/data/immich-db"
+      ];
+      timerConfig.OnCalendar = "*-*-* 06:15:00";
+    };
+    hyperberry-data-mc-slime = {
+      paths = [
+        "/data/minecraft-slime"
+      ];
+      pruneOpts = [
+        "--keep-daily=7"
+        "--keep-weekly=1"
+        "--keep-monthly=1"
+      ];
+      timerConfig.OnCalendar = "*-*-* 06:30:00";
+    };
+    hyperberry-data-mc-wg-0 = {
+      paths = [
+        "/data/minecraft-wg-0"
+      ];
+      pruneOpts = [
+        "--keep-daily=7"
+        "--keep-weekly=1"
+        "--keep-monthly=1"
+      ];
+      timerConfig.OnCalendar = "*-*-* 06:45:00";
+    };
+    hyperberry-data-teamspeak = {
+      paths = [
+        "/data/teamspeak"
+      ];
+      timerConfig.OnCalendar = "*-*-* 07:00:00";
     };
   };
 
