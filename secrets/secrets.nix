@@ -9,4 +9,6 @@ let
 in
 {
   "piberry/cloudflare-key.age".publicKeys = privileged_keys ++ wg_keys;
+  "backup/restic-password.age".publicKeys = privileged_keys;
+  "backup/restic-envvars.age".publicKeys = privileged_keys;
 }

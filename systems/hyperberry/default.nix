@@ -2,11 +2,13 @@
   config,
   lib,
   pkgs,
+  globals,
   ...
 }:
 
 let
-  keys = import ../../keys { };
+  inherit (globals) FLAKE_ROOT;
+  keys = import "${FLAKE_ROOT}/keys" { };
   by = config.by.constants;
 in
 {
@@ -242,6 +244,49 @@ in
   programs.gnupg.agent = {
     enable = true;
     pinentryPackage = pkgs.pinentry-gtk2;
+  };
+
+  age.secrets = {
+    restic-password.file = "${FLAKE_ROOT}/secrets/backup/restic-password.age";
+    restic-envvars.file = "${FLAKE_ROOT}/secrets/backup/restic-envvars.age";
+  };
+
+  services.restic.backups = {
+    hyperberry-data = {
+      paths = [ "/data" ];
+      pruneOpts = [
+        "--keep-daily=3"
+        "--keep-weekly=3"
+        "--keep-monthly=3"
+      ];
+      initialize = true;
+      repository = "s3:s3.eu-central-1.s4.mega.io/restic-hyperberry-data";
+      passwordFile = config.age.secrets.restic-password.path;
+      environmentFile = config.age.secrets.restic-envvars.path;
+      timerConfig = {
+        OnCalendar = "*-*-* 06:00:00";
+        Persistent = true;
+      };
+      progressFps = 0.5;
+    };
+
+    hyperberry-media = {
+      paths = [ "/media" ];
+      pruneOpts = [
+        "--keep-daily=3"
+        "--keep-weekly=1"
+        "--keep-monthly=1"
+      ];
+      initialize = true;
+      repository = "s3:s3.eu-central-1.s4.mega.io/restic-hyperberry-media";
+      passwordFile = config.age.secrets.restic-password.path;
+      environmentFile = config.age.secrets.restic-envvars.path;
+      timerConfig = {
+        OnCalendar = "*-*-* 07:00:00";
+        Persistent = true;
+      };
+      progressFps = 0.5;
+    };
   };
 
   ##########################################################################################
