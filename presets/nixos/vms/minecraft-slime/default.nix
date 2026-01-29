@@ -64,7 +64,7 @@ in
           enable = true;
           package = pkgs.local.neoforge-1-21-1;
           overlays = {
-            modpack = pkgs.local.modpack-slime;
+            modpack = pkgs.local.modpack-slime-v3;
             config = pkgs.linkFarm "config-overlay" [
               {
                 name = "server.properties";

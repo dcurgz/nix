@@ -157,7 +157,7 @@
                 ./presets/nixos/vms/immich
                 ./presets/nixos/vms/minecraft-wg-0
                 ./presets/nixos/vms/minecraft-slime
-                ./presets/nixos/vms/minecraft-slime_staging
+                #./presets/nixos/vms/minecraft-slime_staging
                 ./presets/nixos/vms/teamspeak
                 {
                   home-manager.useGlobalPkgs = true;
