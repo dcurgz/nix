@@ -23,7 +23,7 @@ blueberry:
 	sudo chown -R root:wheel /etc/nixos
 	sudo chmod -R 774 /etc/nixos
 	# Go!
-	sudo nixos-rebuild switch --flake .#blueberry 
+	sudo nixos-rebuild switch --flake .#blueberry --show-trace
 
 piberry:
 	sudo nixos-rebuild $(REMOTE_BUILDER) --max-jobs 0 switch --flake .#piberry

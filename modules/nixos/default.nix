@@ -7,5 +7,6 @@
     ./backup
     ./vms
     ./websites
+    ./programs
   ];
 }

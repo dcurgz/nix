@@ -220,6 +220,8 @@
             ./presets/nixos/desktop/xdg
             ./presets/nixos/desktop/audio
             ./presets/nixos/desktop/gpg
+            # Minecraft modpacks
+            ./presets/nixos/programs/prism-launcher/packs/slime.nix
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
