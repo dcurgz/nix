@@ -31,7 +31,7 @@ let
       done
     '';
   };
-  inherit (pkgs.local.lib) replaceOptionalVars;
+  inherit (pkgs.by.lib) replaceOptionalVars;
   mkTemplate = name: path: {
     inherit name;
     path = (replaceOptionalVars path {

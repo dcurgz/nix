@@ -10,7 +10,7 @@ let
 in
 {
   # Import our custom package set
-  local = import ./pkgs {
+  by = import ./pkgs {
     pkgs = final;
     inherit prev naersk';
   };

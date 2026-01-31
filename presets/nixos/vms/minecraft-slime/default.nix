@@ -62,9 +62,9 @@ in
 
         minecraft.neoforge = {
           enable = true;
-          package = pkgs.local.neoforge-1-21-1;
+          package = pkgs.by.neoforge-1-21-1;
           overlays = {
-            modpack = pkgs.local.modpack-slime-v3;
+            modpack = pkgs.by.modpack-slime-v3;
             config = pkgs.linkFarm "config-overlay" [
               {
                 name = "server.properties";

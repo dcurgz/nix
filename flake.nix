@@ -68,13 +68,13 @@
     naersk.url = "github:nix-community/naersk";
     naersk.inputs.nixpkgs.follows = "nixpkgs";
 
-    weirdfish-server.url = "path:./pkgs/dcurgz/weirdfish-server";
+    weirdfish-server.url = "path:./pkgs/weirdfish-server";
     weirdfish-server.inputs.nixpkgs.follows = "nixpkgs";
 
-    nix-time.url = "path:./pkgs/3rd-party/Flockenzeit";
+    nix-time.url = "path:./pkgs/flockenzeit";
 
-    neoforge-server.url = "path:./pkgs/dcurgz/minecraft/neoforge-server";
-    neoforge-server.inputs.nixpkgs.follows = "nixpkgs";
+    neoforge-1-21-1.url = "path:./pkgs/neoforge-1-21-1";
+    neoforge-1-21-1.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -102,7 +102,7 @@
       naersk,
       weirdfish-server,
       nix-time,
-      neoforge-server,
+      neoforge-1-21-1,
     }@inputs:
 
     let
@@ -442,9 +442,9 @@
           in
           {
             # Custom packages
-            #keylight = pkgs.local.keylight;
-            weirdfish-server = pkgs.local.weirdfish-server;
-            neoforge-1-21-1 = pkgs.local.neoforge-1-21-1;
+            #keylight = pkgs.by.keylight;
+            weirdfish-server = pkgs.by.weirdfish-server;
+            neoforge-1-21-1 = pkgs.by.neoforge-1-21-1;
           }
         );
 

@@ -483,7 +483,7 @@
         "type": "github"
       }
     },
-    "neoforge-server": {
+    "neoforge-1-21-1": {
       "inputs": {
         "flake-utils": "flake-utils",
         "nixpkgs": [
@@ -491,11 +491,11 @@
         ]
       },
       "locked": {
-        "path": "./pkgs/dcurgz/minecraft/neoforge-server",
+        "path": "./pkgs/neoforge-1-21-1",
         "type": "path"
       },
       "original": {
-        "path": "./pkgs/dcurgz/minecraft/neoforge-server",
+        "path": "./pkgs/neoforge-1-21-1",
         "type": "path"
       },
       "parent": []
@@ -662,11 +662,11 @@
     },
     "nix-time": {
       "locked": {
-        "path": "./pkgs/3rd-party/Flockenzeit",
+        "path": "./pkgs/flockenzeit",
         "type": "path"
       },
       "original": {
-        "path": "./pkgs/3rd-party/Flockenzeit",
+        "path": "./pkgs/flockenzeit",
         "type": "path"
       },
       "parent": []
@@ -927,7 +927,7 @@
         "maccel": "maccel",
         "microvm": "microvm",
         "naersk": "naersk",
-        "neoforge-server": "neoforge-server",
+        "neoforge-1-21-1": "neoforge-1-21-1",
         "nfsm": "nfsm",
         "niri": "niri",
         "nix-darwin": "nix-darwin",
@@ -1164,11 +1164,11 @@
         ]
       },
       "locked": {
-        "path": "./pkgs/dcurgz/weirdfish-server",
+        "path": "./pkgs/weirdfish-server",
         "type": "path"
       },
       "original": {
-        "path": "./pkgs/dcurgz/weirdfish-server",
+        "path": "./pkgs/weirdfish-server",
         "type": "path"
       },
       "parent": []

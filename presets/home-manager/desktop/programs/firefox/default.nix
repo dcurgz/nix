@@ -103,7 +103,7 @@ in
       '';
 
       #userChrome = ''
-      #  @import url('${pkgs.local.firefox-csshacks}/chrome/hide_tabs_toolbar.css');
+      #  @import url('${pkgs.by.firefox-csshacks}/chrome/hide_tabs_toolbar.css');
       #'';
 
       extensions = {
