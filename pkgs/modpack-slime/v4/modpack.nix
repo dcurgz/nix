@@ -150,4 +150,5 @@ pkgs.linkFarm "my-modpack" [
   { name = "immersive_portals-6.0.7-all.jar"; path = pkgs.fetchurl { url = "https://cdn.modrinth.com/data/zf4Szzx2/versions/HbBv6YVB/immersive_portals-6.0.7-all.jar"; hash = "sha256-p+xOD97QKfXtRFspeFfpBzRlkaWAXVlfFzSidzyLQD0="; }; }
   { name = "gravestonecurioscompat-1.21.1-NeoForge-3.0.1.jar"; path = pkgs.fetchurl { url = "https://cdn.modrinth.com/data/NaiL8bPN/versions/HwlTVmVu/gravestonecurioscompat-1.21.1-NeoForge-3.0.1.jar"; hash = "sha256-DwgKQiCwmTcZkpPTGLWBYbugQvN1j9cyh19qiKE7NmI="; }; }
   { name = "accessories_compat_layer-neoforge-0.1.10_2B1.21.1.jar"; path = pkgs.fetchurl { url = "https://cdn.modrinth.com/data/ySnjMzLg/versions/6ocwvkgG/accessories_compat_layer-neoforge-0.1.10%2B1.21.1.jar"; hash = "sha256-hV8dfrHI/Pzxi18vhE8pYOLbO5EvBeRP+mcfax9L+go="; }; }
+  { name = "baguettelib-1.21.1-NeoForge-1.1.5.jar"; path = pkgs.fetchurl { url = "https://cdn.modrinth.com/data/OfKzpbRU/versions/EhQs2skr/baguettelib-1.21.1-NeoForge-1.1.5.jar"; hash = "sha256-+IXozvXA6lez+7xNctdYvJy0a77An0TPlhq4YkYz6sI="; }; }
 ]
