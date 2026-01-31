@@ -10,9 +10,19 @@ let
 
   data = "/data/home-assistant";
   ha_port = 8123;
+
+  secrets = config.by.secrets;
 in
 {
   age.secrets.cloudflare-key.file = "${FLAKE_ROOT}/secrets/piberry/cloudflare-key.age";
+
+  systemd.tmpfiles.rules = [
+    "Z /data 770 piberry data"
+    "Z /data/home-assistant 770 piberry data"
+  ];
+
+  users.groups.data = {};
+  users.users.hass.extraGroups = [ "data" ];
 
   services.home-assistant = {
     enable = true;
@@ -27,6 +37,22 @@ in
       "shopping_list"
       # recommended for fast zlib compression
       "isal"
+      "matter"
+    ];
+    extraPackages =  python3Packages: with python3Packages; [
+      aiogithubapi
+      aiohue
+      elgato
+      ha-ffmpeg
+      hassil
+      home-assistant-intents
+      mutagen
+      openrgb-python
+      pymicro-vad
+      pynacl
+      pyspeex-noise
+      python-matter-server
+      pyturbojpeg
     ];
     configDir = data;
     # manage imperatively
@@ -52,7 +78,7 @@ in
             proxy_buffering off;
           '';
           locations."/" = {
-            proxyPass = "http://[::1]:${ha_port}";
+            proxyPass = "http://[::1]:${toString ha_port}";
             proxyWebsockets = true;
           };
         };
@@ -65,7 +91,7 @@ in
             proxy_buffering off;
           '';
           locations."/" = {
-            proxyPass = "http://[::1]:${ha_port}";
+            proxyPass = "http://[::1]:${toString ha_port}";
             proxyWebsockets = true;
           };
         };
