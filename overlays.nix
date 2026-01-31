@@ -13,6 +13,8 @@ in
   by = import ./pkgs {
     pkgs = final;
     inherit prev naersk';
+  } // {
+    lib = prev.callPackage ./lib { };
   };
   # Import other input package sets
   #quickshell = inputs.quickshell.packages.${prev.system}.default;

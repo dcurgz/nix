@@ -11,7 +11,7 @@ in
 {
   # This is copied and tweaked from:
   # https://github.com/NixOS/nixpkgs/blob/0726f235730331846135184e71d1d1bc3a4b49ad/pkgs/build-support/replace-vars/replace-vars-with.nix
-  lib.replaceOptionalVars = src: replacements:
+  replaceOptionalVars = src: replacements:
     let
       subst-var-by = name: value: [
         # We use --subst-var-by instead of --replace-fail to prevent errors.
