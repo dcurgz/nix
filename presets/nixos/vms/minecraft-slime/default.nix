@@ -47,8 +47,7 @@ in
       # VM-specific configuration
       config = {
         imports = [
-          #inputs.nix-minecraft.nixosModules.minecraft-servers
-          inputs.neoforge-server.nixosModules.x86_64-linux.default
+          inputs.neoforge-1-21-1.nixosModules.x86_64-linux.default
           "${NIXOS_PRESETS}/packages/core"
         ];
 
@@ -64,7 +63,7 @@ in
           enable = true;
           package = pkgs.by.neoforge-1-21-1;
           overlays = {
-            modpack = pkgs.by.modpack-slime-v3;
+            modpack = pkgs.by.modpack-slime.v4;
             config = pkgs.linkFarm "config-overlay" [
               {
                 name = "server.properties";

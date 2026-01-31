@@ -14,7 +14,7 @@ let
   hostname = "vm-mc-slime-sta";
   nix-minecraft = inputs.nix-minecraft;
 
-  dataDir = "/data/minecraft-slime-v3";
+  dataDir = "/data/minecraft-slime_staging";
 in
 {
   hyperberry.virtualization = {
@@ -47,7 +47,7 @@ in
       # VM-specific configuration
       config = {
         imports = [
-          inputs.neoforge-server.nixosModules.x86_64-linux.default
+          inputs.neoforge-1-21-1.nixosModules.x86_64-linux.default
           "${NIXOS_PRESETS}/packages/core"
         ];
 
@@ -63,7 +63,7 @@ in
           enable = true;
           package = pkgs.by.neoforge-1-21-1;
           overlays = {
-            modpack = pkgs.by.modpack-slime-v3;
+            modpack = pkgs.by.modpack-slime.v4;
             config = pkgs.linkFarm "config-overlay" [
               {
                 name = "server.properties";
