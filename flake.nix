@@ -267,7 +267,7 @@
             ./systems/piberry
             ./presets/nixos/misc/nix-daemon.nix
             ./presets/nixos/packages/core
-            ./presets/nixos/containers/home-assistant
+            ./presets/nixos/services/home-assistant
             # 3rd party modules
             microvm.nixosModules.host
             agenix.nixosModules.default

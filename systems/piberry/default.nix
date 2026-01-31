@@ -109,65 +109,7 @@ in
     vim
   ];
 
-  # Import modules.
-  imports = [
-  ];
-
   programs.gnupg.agent.enable = true;
-
-  age.secrets.cloudflare-key.file = ../../secrets/piberry/cloudflare-key.age;
-
-  # Configure reverse proxy.
-  services.nginx = {
-    enable = true;
-    recommendedProxySettings = true;
-    virtualHosts =
-      let
-        tailscale = secrets.hosts.piberry.ssh.hostname;
-      in
-      {
-        #"${secrets.home-assistant.subdomain}" = {
-        #  forceSSL = true;
-        #  #enableACME = true;
-        #  # Disable ACME challenge generation to force DNS-01.
-        #  acmeRoot = null;
-        #  extraConfig = ''
-        #    proxy_buffering off;
-        #  '';
-        #  locations."/" = {
-        #    proxyPass = "http://[::1]:8123";
-        #    proxyWebsockets = true;
-        #  };
-        #};
-        # tailscale address
-        "${tailscale}" = {
-          forceSSL = true;
-          sslCertificate = "/etc/ssl/certs/${tailscale}.crt";
-          sslCertificateKey = "/etc/ssl/certs/${tailscale}.key";
-          extraConfig = ''
-            proxy_buffering off;
-          '';
-          locations."/" = {
-            proxyPass = "http://[::1]:8123";
-            proxyWebsockets = true;
-          };
-        };
-      };
-  };
-
-  #security.acme = {
-  #  acceptTerms = true;
-  #  defaults.email = secrets.home-assistant.acme.email;
-  #  certs = {
-  #    "${secrets.home-assistant.subdomain}" = {
-  #      domain = "*.${secrets.home-assistant.domain}";
-  #      group = "nginx";
-  #      dnsProvider = "cloudflare";
-  #      # location of your CLOUDFLARE_DNS_API_TOKEN=[value]
-  #      environmentFile = config.age.secrets.cloudflare-key.path;
-  #    };
-  #  };
-  #};
 
   nix.settings.trusted-users = [ "piberry" ];
 
