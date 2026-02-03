@@ -71,7 +71,6 @@ in
       {
         "${secrets.home-assistant.subdomain}" = {
           forceSSL = true;
-          enableACME = true;
           # Specify which cert to use
           useACMEHost = "${secrets.home-assistant.domain}";
           # Disable ACME challenge generation to force DNS-01.
