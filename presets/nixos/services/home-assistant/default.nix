@@ -41,6 +41,7 @@ in
       "bluetooth"
       "thread"
       "homekit_controller"
+      "homekit"
       "apple_tv"
     ];
     extraPackages =  python3Packages: with python3Packages; [
