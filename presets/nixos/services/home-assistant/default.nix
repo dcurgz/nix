@@ -40,6 +40,8 @@ in
       "matter"
       "bluetooth"
       "thread"
+      "homekit_controller"
+      "apple_tv"
     ];
     extraPackages =  python3Packages: with python3Packages; [
       aiogithubapi
