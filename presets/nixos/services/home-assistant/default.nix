@@ -38,6 +38,8 @@ in
       # recommended for fast zlib compression
       "isal"
       "matter"
+      "bluetooth"
+      "thread"
     ];
     extraPackages =  python3Packages: with python3Packages; [
       aiogithubapi
