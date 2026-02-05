@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+cd ~/nixos
+git add -A
+HOST=.#weirdfish-cax11-4gb make deploy 

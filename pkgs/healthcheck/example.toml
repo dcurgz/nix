@@ -1,0 +1,4 @@
+[hyperberry-ssh]
+_type = ports_open
+host = 
+port = 22
