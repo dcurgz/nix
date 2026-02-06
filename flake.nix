@@ -159,6 +159,7 @@
                 ./presets/nixos/vms/minecraft-slime
                 #./presets/nixos/vms/minecraft-slime_staging
                 ./presets/nixos/vms/teamspeak
+                ./presets/nixos/vms/jellyfin
                 {
                   home-manager.useGlobalPkgs = true;
                   home-manager.useUserPackages = true;
