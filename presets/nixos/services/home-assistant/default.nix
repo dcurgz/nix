@@ -38,6 +38,11 @@ in
       # recommended for fast zlib compression
       "isal"
       "matter"
+      "bluetooth"
+      "thread"
+      "homekit_controller"
+      "homekit"
+      "apple_tv"
     ];
     extraPackages =  python3Packages: with python3Packages; [
       aiogithubapi
@@ -71,7 +76,8 @@ in
       {
         "${secrets.home-assistant.subdomain}" = {
           forceSSL = true;
-          enableACME = true;
+          # Specify which cert to use
+          useACMEHost = "${secrets.home-assistant.domain}";
           # Disable ACME challenge generation to force DNS-01.
           acmeRoot = null;
           extraConfig = ''
@@ -102,8 +108,9 @@ in
       acceptTerms = true;
       defaults.email = secrets.home-assistant.acme.email;
       certs = {
-        "${secrets.home-assistant.subdomain}" = {
-          domain = "*.${secrets.home-assistant.domain}";
+        "${secrets.home-assistant.domain}" = {
+          domain = "${secrets.home-assistant.domain}";
+          extraDomainNames = [ "*.${secrets.home-assistant.domain}" ];
           group = "nginx";
           dnsProvider = "cloudflare";
         # location of your CLOUDFLARE_DNS_API_TOKEN=[value]

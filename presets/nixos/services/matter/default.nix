@@ -3,5 +3,8 @@
 }:
 
 {
-  services.matter-server.enable = true;
+  services.matter-server = {
+    enable = true;
+    openFirewall = true;
+  };
 }
