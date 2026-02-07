@@ -48,6 +48,20 @@ with lib;
         type = types.str;
       };
     };
+    fooberry-proxy = {
+      domain = mkOption {
+        description = "The root domain that the fooberry proxy is accessible under.";
+        type = types.str;
+      };
+      subdomain = mkOption {
+        description = "The subdomain that the fooberry proxy is accessible under.";
+        type = types.str;
+      };
+      acme.email = mkOption {
+        description = "The email address with which to perform automatic DNS-0 SSL certificate generation.";
+        type = types.str;
+      };
+    };
     weirdfish-acme = {
       email = mkOption {
         description = "The email address with which to perform automatic certificate generation.";

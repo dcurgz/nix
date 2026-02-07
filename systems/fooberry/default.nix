@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  globals,
   ...
 }:
 
@@ -9,9 +10,13 @@ let
   keys = import ../../keys { };
 
   by = config.by.constants;
+  secrets = config.by.secrets;
   inherit (by) NIXOS_PRESETS;
+  inherit (globals) FLAKE_ROOT;
 in
 {
+  age.secrets.cloudflare-key.file = "${FLAKE_ROOT}/secrets/fooberry/cloudflare-key.age";
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot = {
     enable = true;
@@ -20,6 +25,12 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
+
+  # Ignore lid
+  services.upower.ignoreLid = true;
+  services.logind.settings.Login = {
+    HandleLidSwitch = "ignore";
+  };
 
   # Set your time zone.
   time.timeZone = "Europe/London";
@@ -52,14 +63,25 @@ in
   networking = {
     hostName = "fooberry";
     enableIPv6 = true;
-    nameservers = [
-      "1.1.1.1"
-      "8.8.8.8"
-      "8.8.4.4"
-    ];
     firewall = {
       enable = true;
     };
+    interfaces.${by.hardware.interfaces.ethernet} = {
+      ipv4.addresses = [
+        {
+          address = "192.168.1.168";
+          prefixLength = 24;
+        }
+      ];
+    };
+    defaultGateway = {
+      address = "192.168.1.1";
+      interface = "${by.hardware.interfaces.ethernet}";
+    };
+    nameservers = [
+      "1.1.1.1"
+      "1.0.0.1"
+    ];
   };
 
   # Define users.
@@ -88,6 +110,40 @@ in
       }
     ];
   };
+
+  networking.firewall.allowedTCPPorts = [ 80 443 ];
+
+  services.nginx =
+    let
+      destination = secrets.hosts.vm-jellyfin.ssh.hostname;
+    in
+    {
+      enable = true;
+      recommendedProxySettings = true;
+      virtualHosts."${secrets.fooberry-proxy.subdomain}" = {
+        forceSSL = true;
+        enableACME = true;
+        acmeRoot = null;
+        locations."/" = {
+          proxyPass = "http://${destination}";
+          proxyWebsockets = true;
+        };
+      };
+    };
+
+    security.acme = {
+      acceptTerms = true;
+      defaults.email = secrets.fooberry-proxy.acme.email;
+      certs = {
+        "${secrets.fooberry-proxy.subdomain}" = {
+          domain = "*.${secrets.fooberry-proxy.domain}";
+          group = "nginx";
+          dnsProvider = "cloudflare";
+# location of your CLOUDFLARE_DNS_API_TOKEN=[value]
+          environmentFile = config.age.secrets.cloudflare-key.path;
+        };
+      };
+    };
 
   ##########################################################################################
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .

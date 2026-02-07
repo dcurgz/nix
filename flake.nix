@@ -331,6 +331,7 @@
             ./presets/nixos/misc/nix-daemon.nix
             ./presets/nixos/security/sudo
             ./presets/nixos/packages/core
+            ./presets/nixos/services/avahi
             # 3rd party modules
             microvm.nixosModules.host
             agenix.nixosModules.default

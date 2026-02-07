@@ -60,6 +60,11 @@
         ./ssh/tauberry/tauberry_ed25519.pub
         ./ssh/tauberry/host_ed25519.pub
       ];
+
+      fooberry = [
+        ./ssh/fooberry/root_ed25519.pub
+        ./ssh/fooberry/host_ed25519.pub
+      ];
     };
 
     knownHosts = {
@@ -69,6 +74,7 @@
       "miniberry".publicKey = (builtins.readFile ./ssh/miniberry/host_ed25519.pub);
       "piberry".publicKey = (builtins.readFile ./ssh/piberry/host_ed25519.pub);
       "tauberry".publicKey = (builtins.readFile ./ssh/tauberry/host_ed25519.pub);
+      "fooberry".publicKey = (builtins.readFile ./ssh/fooberry/host_ed25519.pub);
     };
   };
 

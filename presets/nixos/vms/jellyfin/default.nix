@@ -81,7 +81,7 @@ in
           enable = true;
           virtualHosts."jellyfin" = {
             default = true;
-            forceSSL = true;
+            forceSSL = false;
             sslCertificate = "/etc/ssl/certs/selfsigned.crt";
             sslCertificateKey = "/etc/ssl/certs/selfsigned.key";
             locations."/" = {
