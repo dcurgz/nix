@@ -304,6 +304,40 @@
           ];
         };
 
+        fooberry = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = {
+            # Pass arguments to all modules.
+            inherit inputs globals;
+          };
+          modules = [
+            # Apply overlays to nixpkgs
+            {
+              nixpkgs.overlays = [
+                (final: prev: import ./overlays.nix { inherit inputs final prev; })
+                nurpkgs.overlays.default
+              ];
+	      nixpkgs.config.allowUnfree = true;
+            }
+            ./modules/common
+            ./modules/nixos
+            # git-crypt protected variables
+            ./secrets/berry.enc.nix
+            # Main configuration files
+            ./systems/fooberry/hardware.nix
+            ./systems/fooberry/disk-config.nix
+            ./systems/fooberry
+            ./presets/common/ssh.nix
+            ./presets/nixos/misc/nix-daemon.nix
+            ./presets/nixos/security/sudo
+            ./presets/nixos/packages/core
+            # 3rd party modules
+            microvm.nixosModules.host
+            agenix.nixosModules.default
+            disko.nixosModules.disko
+          ];
+        };
+
         weirdfish-cax11-4gb = nixpkgs.lib.nixosSystem rec {
           system = "aarch64-linux";
           specialArgs = {
@@ -509,6 +543,16 @@
           profiles.system = {
             user = "root";
             path = deploy-rs.lib.aarch64-darwin.activate.darwin self.darwinConfigurations.miniberry;
+          };
+        };
+
+        fooberry = {
+          hostname = "fooberry";
+          sshUser = "dcurgz";
+          remoteBuild = false;
+          profiles.system = {
+            user = "root";
+            path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.fooberry;
           };
         };
 
