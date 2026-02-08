@@ -105,6 +105,11 @@ in
     };
   };
 
+  systemd.tmpfiles.rules = [
+    "Z /data 770 piberry data"
+    "Z /data 770 piberry data"
+  ];
+
   environment.systemPackages = with pkgs; [
     vim
   ];

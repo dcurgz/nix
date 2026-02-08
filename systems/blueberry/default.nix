@@ -98,11 +98,6 @@ in
     ];
   };
 
-  systemd.tmpfiles.rules = [
-    "d /media 770 root media" 
-    "d /data 770 root data" 
-  ];
-
   ##########################################################################################
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   # In the vast majority of cases, do not change this version.

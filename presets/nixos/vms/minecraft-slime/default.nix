@@ -29,11 +29,6 @@ in
         ipAddress = "10.0.0.16";
       };
 
-      # Additional tmpfiles for minecraft data directory
-      tmpfiles = [
-        "d ${dataDir} 0755 root root"
-      ];
-
       # Additional shares beyond the common ones
       mounts = [
         {
@@ -73,6 +68,8 @@ in
           };
           dataDir = dataDir;
         };
+
+        users.users.minecraft.extraGroups = [ "data" ];
       };
     };
   };

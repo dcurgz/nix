@@ -32,9 +32,6 @@ in
         config.allowUnfree = true;
       };
 
-      # Additional tmpfiles for immich data directories
-      tmpfiles = [ "d ${data} - 9987 9987 - -" ];
-
       # Additional shares beyond the common ones
       mounts = [
         {
@@ -50,8 +47,11 @@ in
       config = {
         imports = [
           "${NIXOS_PRESETS}/packages/core"
+          "${NIXOS_PRESETS}/security/groups"
           "${NIXOS_PRESETS}/containers/teamspeak6-server"
         ];
+
+        users.users.teamspeak.extraGroups = [ "data" ];
 
         nix.channel.enable = false;
 

@@ -8,10 +8,18 @@
 let
   teamspeakVersion = "v6.0.0-beta7";
 in {
+  users.users.teamspeak = {
+    isSystemUser = true;
+    group = "teamspeak";
+  };
+  users.groups.teamspeak = {};
+
   virtualisation.oci-containers.containers = {
     teamspeak = {
       image = "teamspeaksystems/teamspeak6-server:${teamspeakVersion}";
       autoStart = true;
+
+      user = "teamspeak:nogroup";
 
       dependsOn = [];
 
@@ -27,10 +35,7 @@ in {
       ];
 
       environment = {
-        PUID = "1000";
-        PGID = "1000";
         TZ = "Europe/London";
-
         TSSERVER_LICENSE_ACCEPTED = "accept";
       };
 

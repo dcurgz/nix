@@ -29,12 +29,6 @@ in
         ipAddress = "10.0.0.18";
       };
 
-      # Additional tmpfiles for jellyfin data directories
-      tmpfiles = [
-        "d ${jellyfin_library} 750 root root"
-        "d ${jellyfin_data} 750 root root"
-      ];
-
       # Additional shares beyond the common ones
       mounts = [
         # jellyfin media library 
@@ -67,6 +61,7 @@ in
       config = {
         imports = [
           "${NIXOS_PRESETS}/packages/core"
+          "${NIXOS_PRESETS}/security/groups"
         ];
 
         nix.channel.enable = false;
@@ -75,6 +70,8 @@ in
           enable = true;
           dataDir = jellyfin_data;
         };
+
+        users.users.jellyfin.extraGroups = [ "media" "data" ];
 
         # Nginx reverse proxy with SSL
         services.nginx = {

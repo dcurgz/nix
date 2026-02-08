@@ -270,6 +270,7 @@
             ./systems/piberry
             ./presets/nixos/misc/nix-daemon.nix
             ./presets/nixos/packages/core
+            ./presets/nixos/security/groups
             ./presets/nixos/services/home-assistant
             ./presets/nixos/services/matter
             # 3rd party modules

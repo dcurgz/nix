@@ -29,11 +29,6 @@ in
         ipAddress = "10.0.0.17";
       };
 
-      # Additional tmpfiles for minecraft data directory
-      tmpfiles = [
-        "d ${dataDir} 0755 root root"
-      ];
-
       # Additional shares beyond the common ones
       mounts = [
         {
@@ -49,6 +44,7 @@ in
         imports = [
           inputs.neoforge-1-21-1.nixosModules.x86_64-linux.default
           "${NIXOS_PRESETS}/packages/core"
+          "${NIXOS_PRESETS}/security/groups"
         ];
 
         networking.firewall.allowedTCPPorts = [ 25565 ];
@@ -73,6 +69,8 @@ in
           };
           dataDir = dataDir;
         };
+
+        users.users.minecraft.extraGroups = [ "data" ];
       };
     };
   };

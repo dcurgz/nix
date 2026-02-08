@@ -16,12 +16,6 @@ in
 {
   age.secrets.cloudflare-key.file = "${FLAKE_ROOT}/secrets/piberry/cloudflare-key.age";
 
-  systemd.tmpfiles.rules = [
-    "Z /data 770 piberry data"
-    "Z /data/home-assistant 770 piberry data"
-  ];
-
-  users.groups.data = {};
   users.users.hass.extraGroups = [ "data" ];
 
   services.home-assistant = {

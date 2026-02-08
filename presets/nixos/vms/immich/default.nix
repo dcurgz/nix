@@ -34,12 +34,6 @@ in
         config.allowUnfree = true;
       };
 
-      # Additional tmpfiles for immich data directories
-      tmpfiles = [
-        "d ${immich_media} 755 root root"
-        "d ${immich_db} 750 postgres postgres"
-      ];
-
       # Additional shares beyond the common ones
       mounts = [
         # Immich media storage
@@ -80,6 +74,8 @@ in
       config = {
         imports = [
           "${NIXOS_PRESETS}/packages/core"
+          # define media, data groups
+          "${NIXOS_PRESETS}/security/groups"
         ];
 
         nix.channel.enable = false;
@@ -102,6 +98,8 @@ in
             enableVectors = false;
           };
         };
+
+        users.users.immich.extraGroups = [ "media" "data" ];
 
         # Pin PostgreSQL to version 17
         services.postgresql = {

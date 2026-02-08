@@ -30,12 +30,6 @@ in
         ipAddress = "10.0.0.14";
       };
 
-      # Additional tmpfiles for minecraft data directory
-      tmpfiles = [
-        "d ${dataDir} 0755 root root"
-        "d ${serverDir} 0755 root root"
-      ];
-
       # Additional shares beyond the common ones
       mounts = [
         {
@@ -59,6 +53,7 @@ in
         imports = [
           inputs.nix-minecraft.nixosModules.minecraft-servers
           "${NIXOS_PRESETS}/packages/core"
+          "${NIXOS_PRESETS}/security/groups"
         ];
 
         networking.firewall.allowedTCPPorts = [ 25565 ];
@@ -71,6 +66,13 @@ in
           rcon-cli
         ];
 
+        users.users.minecraft = {
+          isSystemUser = true;
+          group = "minecraft";
+          extraGroups = [ "data" ];
+        };
+        users.groups.minecraft = {};
+
         systemd.services.minecraft = {
           enable = true;
           after = [ "network-online.target" ];
@@ -80,6 +82,7 @@ in
             Restart = "always";
             RestartSec = "5s";
             WorkingDirectory = serverDir;
+            User = "minecraft";
           };
           path = [ pkgs.bash pkgs.javaPackages.compiler.temurin-bin.jre-17 ];
           script = ''

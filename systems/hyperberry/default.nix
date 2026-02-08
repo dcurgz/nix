@@ -215,26 +215,6 @@ in
     ];
   };
 
-  # Define users.
-  users.users.dcurgz = {
-    isNormalUser = true;
-    shell = pkgs.fish;
-    group = "dcurgz";
-    extraGroups = [
-      "wheel"
-      "docker"
-    ];
-    home = "/home/dcurgz";
-  };
-  users.groups.dcurgz = { };
-  users.users.builder = {
-    isNormalUser = true;
-    shell = pkgs.bashInteractive;
-    group = "builder";
-  };
-  users.groups.builder = { };
-  nix.settings.trusted-users = [ "dcurgz" "builder" ];
-
   services.tailscale.enable = true;
   services.tailscale.useRoutingFeatures = lib.mkDefault "both";
 
@@ -314,6 +294,34 @@ in
       timerConfig.OnCalendar = "*-*-* 07:00:00";
     };
   };
+
+  # Define users.
+  users.users.dcurgz = {
+    isNormalUser = true;
+    shell = pkgs.fish;
+    group = "dcurgz";
+    extraGroups = [
+      "wheel"
+      "docker"
+      "media"
+      "data"
+    ];
+    home = "/home/dcurgz";
+  };
+  users.groups.dcurgz = { };
+  users.users.builder = {
+    isNormalUser = true;
+    shell = pkgs.bashInteractive;
+    group = "builder";
+  };
+  users.groups.builder = { };
+  nix.settings.trusted-users = [ "dcurgz" "builder" ];
+
+  systemd.tmpfiles.rules = [
+    "Z /etc/nixos 770 root wheel"
+    "Z /media 770 root media" 
+    "Z /data 770 root data" 
+  ];
 
   ##########################################################################################
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
