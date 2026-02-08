@@ -61,8 +61,9 @@ in
 
   # Setup networking.
   networking = {
+    networkmanager.enable = true;
     hostName = "fooberry";
-    enableIPv6 = true;
+    enableIPv6 = false;
     firewall = {
       enable = true;
     };
@@ -73,10 +74,6 @@ in
           prefixLength = 24;
         }
       ];
-    };
-    defaultGateway = {
-      address = "192.168.1.1";
-      interface = "${by.hardware.interfaces.ethernet}";
     };
     nameservers = [
       "1.1.1.1"
@@ -121,7 +118,7 @@ in
       enable = true;
       recommendedProxySettings = true;
       virtualHosts."${secrets.fooberry-proxy.subdomain}" = {
-        forceSSL = true;
+        forceSSL = false;
         enableACME = true;
         acmeRoot = null;
         locations."/" = {
@@ -131,19 +128,19 @@ in
       };
     };
 
-    security.acme = {
-      acceptTerms = true;
-      defaults.email = secrets.fooberry-proxy.acme.email;
-      certs = {
-        "${secrets.fooberry-proxy.subdomain}" = {
-          domain = "*.${secrets.fooberry-proxy.domain}";
-          group = "nginx";
-          dnsProvider = "cloudflare";
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = secrets.fooberry-proxy.acme.email;
+    certs = {
+      "${secrets.fooberry-proxy.subdomain}" = {
+        domain = "*.${secrets.fooberry-proxy.domain}";
+        group = "nginx";
+        dnsProvider = "cloudflare";
 # location of your CLOUDFLARE_DNS_API_TOKEN=[value]
-          environmentFile = config.age.secrets.cloudflare-key.path;
-        };
+        environmentFile = config.age.secrets.cloudflare-key.path;
       };
     };
+  };
 
   ##########################################################################################
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
