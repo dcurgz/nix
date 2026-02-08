@@ -151,6 +151,7 @@
                 ./presets/common/git.nix
                 ./presets/nixos/misc/nix-daemon.nix
                 ./presets/nixos/security/sudo
+                ./presets/nixos/security/groups
                 ./presets/nixos/packages/core
                 ./presets/nixos/packages/encryption
                 ./presets/nixos/packages/python
@@ -211,6 +212,7 @@
             ./presets/common/git.nix
             ./presets/nixos/misc/nix-daemon.nix
             ./presets/nixos/security/sudo
+            ./presets/nixos/security/groups
             ./presets/nixos/packages/core
             ./presets/nixos/packages/encryption
             ./presets/nixos/packages/python
@@ -330,6 +332,7 @@
             ./presets/common/ssh.nix
             ./presets/nixos/misc/nix-daemon.nix
             ./presets/nixos/security/sudo
+            ./presets/nixos/security/groups
             ./presets/nixos/packages/core
             ./presets/nixos/services/avahi
             # 3rd party modules
@@ -366,6 +369,7 @@
             ./presets/common/ports.nix
             ./presets/nixos/misc/nix-daemon.nix
             ./presets/nixos/security/sudo
+            ./presets/nixos/security/groups
             ./presets/nixos/packages/core
             ./presets/nixos/packages/encryption
             ./presets/nixos/packages/python
