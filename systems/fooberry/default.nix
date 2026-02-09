@@ -62,9 +62,8 @@ in
 
   # Setup networking.
   networking = {
-    networkmanager.enable = true;
     hostName = "fooberry";
-    enableIPv6 = false;
+    enableIPv6 = true;
     firewall = {
       enable = true;
     };

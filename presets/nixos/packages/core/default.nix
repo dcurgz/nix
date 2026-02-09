@@ -8,16 +8,10 @@
   environment.systemPackages = with pkgs; [
     bridge-utils
     dig
-    docker
-    docker-compose
-    #dropbox-cli
     git
     gnumake
     go
-    #intentrace
     iproute2
-    #jdk21_headless
-    #jdk23_headless
     nginx
     powertop
     ripgrep
