@@ -16,7 +16,12 @@ let
 in
 {
   age.secrets.cloudflare-key.file = "${FLAKE_ROOT}/secrets/fooberry/cloudflare-key.age";
-  age.secrets.wifi.file = "${FLAKE_ROOT}/secrets/fooberry/Wi-Fi.age";
+  age.secrets.wifi = {
+    file = "${FLAKE_ROOT}/secrets/fooberry/Wi-Fi.age";
+    mode = "770";
+    owner = "root";
+    group = "wpa_supplicant";
+  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot = {
@@ -78,6 +83,12 @@ in
     enable = true;
     secretsFile = config.age.secrets.wifi.path;
     networks."Foobar".pskRaw = "ext:psk";
+  };
+
+  #https://github.com/Gerschtli/nix-config/blob/89e15e733b97827c1a25aabf96142990d0a453bc/hosts/xenon/configuration.nix#L38
+  systemd.services.wpa_supplicant.serviceConfig = {
+    Restart = "always";
+    RestartSec = 5;
   };
 
   # Define users.
