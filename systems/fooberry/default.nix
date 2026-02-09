@@ -16,6 +16,7 @@ let
 in
 {
   age.secrets.cloudflare-key.file = "${FLAKE_ROOT}/secrets/fooberry/cloudflare-key.age";
+  age.secrets.wifi.file = "${FLAKE_ROOT}/secrets/fooberry/Wi-Fi.age";
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot = {
@@ -67,18 +68,17 @@ in
     firewall = {
       enable = true;
     };
-    interfaces.${by.hardware.interfaces.ethernet} = {
-      ipv4.addresses = [
-        {
-          address = "192.168.1.168";
-          prefixLength = 24;
-        }
-      ];
-    };
     nameservers = [
       "1.1.1.1"
       "1.0.0.1"
     ];
+  };
+
+  # Setup Wi-Fi.
+  networking.wireless = {
+    enable = true;
+    secretsFile = config.age.secrets.wifi.path;
+    networks."Foobar".pskRaw = "ext:psk";
   };
 
   # Define users.
