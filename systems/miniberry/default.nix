@@ -1,13 +1,14 @@
 {
   self,
   pkgs,
+  lib,
   globals,
   ...
 }:
 
 let
   inherit (globals) FLAKE_ROOT;
-  keys = import "${FLAKE_ROOT}/keys" { };
+  keys = import "${FLAKE_ROOT}/keys" { inherit lib; };
 in
 {
   # The platform the configuration will be used on.
@@ -48,11 +49,11 @@ in
     groups = [
       {
         users = [ "root" "dcurgz" ];
-        keys = keys.ssh.groups.privileged;
+        keys = keys.ssh.groups.privileged.paths;
       }
       {
         users = [ "builder" ];
-        keys = keys.ssh.groups.privileged ++ keys.ssh.groups.wg;
+        keys = keys.ssh.groups.privileged.paths ++ keys.ssh.groups.wg.paths;
       }
     ];
   };

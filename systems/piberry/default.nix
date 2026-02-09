@@ -7,7 +7,8 @@
 }:
 
 let
-  keys = import ../../keys { };
+  inherit (globals) FLAKE_ROOT;
+  keys = import "${FLAKE_ROOT}/keys" { inherit lib; };
   secrets = config.by.secrets;
 
   by = config.by.constants;
@@ -92,7 +93,7 @@ in
     groups = [
       {
         users = [ "piberry" "root" ];
-        keys = keys.ssh.groups.privileged;
+        keys = keys.ssh.groups.privileged.paths;
       }
     ];
   };

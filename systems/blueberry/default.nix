@@ -2,12 +2,13 @@
   config,
   lib,
   pkgs,
+  globals,
   ...
 }:
 
 let
-  keys = import ../../keys { };
-
+  inherit (globals) FLAKE_ROOT;
+  keys = import "${FLAKE_ROOT}/keys" { inherit lib; };
   by = config.by.constants;
   inherit (by) NIXOS_PRESETS;
 in
@@ -93,7 +94,7 @@ in
     groups = [
       {
         users = [ "root" "dcurgz" ];
-        keys = keys.ssh.groups.privileged;
+        keys = keys.ssh.groups.privileged.paths;
       }
     ];
   };

@@ -47,13 +47,13 @@ bootstrap-weirdfi.sh:
 	$(NIX) run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./systems/weirdfi.sh-cax11-4gb/hardware-configuration.$(NIX) --flake .#weirdfish-cax11-4gb --target-host "root@weirdfi.sh"
 
 deploy:
-#ifeq ($(HOSTNAME),hyperberry)
+ifeq ($(HOSTNAME),hyperberry)
 	# build locally
-	deploy $(HOST) --skip-checks --skip-offline --fast-connection true --confirm-timeout 333 --activation-timeout 999 -- --builders 'ssh://builder@miniberry aarch64-darwin - 16 1' --builders-use-substitutes --max-jobs 16 
-#else
+	deploy $(HOST) --skip-checks --skip-offline --fast-connection true -- --builders 'ssh://builder@miniberry aarch64-darwin - 16 1' --builders-use-substitutes --max-jobs 16 
+else
 	# build remotely
-	#deploy $(HOST) --skip-checks --skip-offline --fast-connection false -- $(REMOTE_BUILDER) --builders-use-substitutes --max-jobs 0
-#endif
+	deploy $(HOST) --skip-checks --skip-offline --fast-connection false -- $(REMOTE_BUILDER) --builders-use-substitutes --max-jobs 0
+endif
 
 weirdfi.sh:
 	HOST=.#weirdfish-cax11-4gb make deploy 

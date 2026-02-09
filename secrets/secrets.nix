@@ -1,18 +1,27 @@
 let
-  keys = (import ../keys { });
+  inputs = (import ../. { }).inputs;
+  inherit (inputs.nixpkgs) lib;
+  keys = (import ../keys { inherit lib; });
 
-  # User keys
-  privileged_keys = (builtins.map builtins.readFile keys.ssh.groups.privileged);
-
-  # Shared keys
-  wg_keys = (builtins.map builtins.readFile keys.ssh.groups.wg);
-
-  fooberry = (builtins.map builtins.readFile keys.ssh.hosts.fooberry);
+  withDefault = k: (k ++ [ keys.groups.privileged.keys ]);
 in
+with keys.groups;
+with keys.hosts;
+
 {
-  "fooberry/cloudflare-key.age".publicKeys = privileged_keys ++ fooberry;
-  "fooberry/Wi-Fi.age".publicKeys = privileged_keys ++ fooberry;
-  "piberry/cloudflare-key.age".publicKeys = privileged_keys ++ wg_keys;
-  "backup/restic-password.age".publicKeys = privileged_keys;
-  "backup/restic-envvars.age".publicKeys = privileged_keys;
+  # Tailscale
+  "tailscale/hyperberry.age".publicKeys    = privileged.keys;
+  "tailscale/blueberry.age".publicKeys     = privileged.keys;
+  "tailscale/hyperberry.age".publicKeys    = privileged.keys;
+  "tailscale/hyperberry.age".publicKeys    = privileged.keys;
+  "tailscale/hyperberry.age".publicKeys    = privileged.keys;
+  "tailscale/hyperberry.age".publicKeys    = privileged.keys;
+  # hyperberry
+  "backup/restic-password.age".publicKeys  = (withDefault hyperberry.keys);
+  "backup/restic-envvars.age".publicKeys   = (withDefault hyperberry.keys);
+  # fooberry
+  "fooberry/cloudflare-key.age".publicKeys = (withDefault fooberry.keys);
+  "fooberry/Wi-Fi.age".publicKeys          = (withDefault fooberry.keys);
+  # piberry
+  "piberry/cloudflare-key.age".publicKeys  = (withDefault wg.keys);
 }

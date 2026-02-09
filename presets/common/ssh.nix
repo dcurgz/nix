@@ -8,7 +8,7 @@ with lib;
 
 let
   inherit (globals) FLAKE_ROOT;
-  keys = import "${FLAKE_ROOT}/keys" { };
+  keys = import "${FLAKE_ROOT}/keys" { inherit lib; };
 in
 {
   programs.ssh =

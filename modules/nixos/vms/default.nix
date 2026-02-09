@@ -11,7 +11,7 @@ with lib;
 
 let
   inherit (globals) FLAKE_ROOT;
-  keys = (import "${FLAKE_ROOT}/keys" { });
+  keys = (import "${FLAKE_ROOT}/keys" { inherit lib; });
 
   portsType = types.submodule (_: {
     options = {
@@ -291,7 +291,7 @@ in
             };
 
             # Configure root user SSH keys
-            users.users.root.openssh.authorizedKeys.keyFiles = keys.ssh.hosts.hyperberry;
+            users.users.root.openssh.authorizedKeys.keyFiles = keys.ssh.hosts.hyperberry.paths;
 
             # Network diagnostics and utilities
             environment.systemPackages = mkDefault (

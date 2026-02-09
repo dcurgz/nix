@@ -4,8 +4,10 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
-    # Static packages with better cache support
-    nixpkgs-static.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    flake-compat = {
+      url = "github:NixOS/flake-compat";
+      flake = false;
+    };
 
     # Nix user repository
     nurpkgs.url = "github:nix-community/NUR";
@@ -80,6 +82,8 @@
   outputs =
     {
       self,
+      nixpkgs,
+      flake-compat,
       nixgl,
       nix-darwin,
       nix-homebrew,
@@ -90,8 +94,6 @@
       nfsm,
       dgop,
       dankMaterialShell,
-      nixpkgs,
-      nixpkgs-static,
       nurpkgs,
       microvm,
       isd,
@@ -252,10 +254,7 @@
         piberry = nixpkgs.lib.nixosSystem {
           system = "aarch64-linux";
           specialArgs = {
-            inherit self nixpkgs globals;
-            inputs = {
-              inherit self nixpkgs;
-            };
+            inherit self nixpkgs inputs globals;
           };
           modules = [
             {
@@ -282,10 +281,7 @@
         tauberry = nixpkgs.lib.nixosSystem {
           system = "aarch64-linux";
           specialArgs = {
-            inherit self nixpkgs;
-            inputs = {
-              inherit self nixpkgs;
-            };
+            inherit self nixpkgs inputs globals;
           };
           modules = [
             {
