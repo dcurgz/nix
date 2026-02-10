@@ -23,7 +23,7 @@ let
     isHost = true;
     hasGpg = true;
   };
-  mkGroupKey = hostname: names: groups: {
+  mkGroupHost = hostname: names: groups: {
     inherit hostname names groups;
     isHost = true;
     hasGpg = false;
@@ -42,12 +42,10 @@ let
     (mkPrivilegedHost "hyperberry"  ["host" "root" "dcurgz"])
     (mkSpecialKey "swiss")
 
-    (mkGroupKey "miniberry"  ["host" "dcurgz"]    [g_WG])
-    (mkGroupKey "piberry"    ["host" "piberry"]   [g_WG])
-    (mkGroupKey "tauberry"   ["host" "tauberry"]  [g_WG])
-    (mkGroupKey "fooberry"   ["host" "root"]      [g_CRZ])
-
-    (mkDefaultHost "miniberry" ["host" "dcurgz"])
+    (mkGroupHost "miniberry"  ["host" "dcurgz"]    [g_WG])
+    (mkGroupHost "piberry"    ["host" "piberry"]   [g_WG])
+    (mkGroupHost "tauberry"   ["host" "tauberry"]  [g_WG])
+    (mkGroupHost "fooberry"   ["host" "root"]      [g_CRZ])
   ];
 in
 {

@@ -11,11 +11,6 @@ with keys.hosts;
 {
   # Tailscale
   "tailscale/hyperberry.age".publicKeys    = privileged.keys;
-  "tailscale/blueberry.age".publicKeys     = privileged.keys;
-  "tailscale/hyperberry.age".publicKeys    = privileged.keys;
-  "tailscale/hyperberry.age".publicKeys    = privileged.keys;
-  "tailscale/hyperberry.age".publicKeys    = privileged.keys;
-  "tailscale/hyperberry.age".publicKeys    = privileged.keys;
   # hyperberry
   "backup/restic-password.age".publicKeys  = (withDefault hyperberry.keys);
   "backup/restic-envvars.age".publicKeys   = (withDefault hyperberry.keys);
