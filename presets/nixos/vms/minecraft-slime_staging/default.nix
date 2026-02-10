@@ -15,6 +15,9 @@ let
   nix-minecraft = inputs.nix-minecraft;
 
   dataDir = "/data/minecraft-slime_staging";
+  version = "v5";
+
+  inherit (pkgs.by.lib) replaceOptionalVars;
 in
 {
   hyperberry.virtualization = {
@@ -59,11 +62,13 @@ in
           enable = true;
           package = pkgs.by.neoforge-1-21-1;
           overlays = {
-            modpack = pkgs.by.modpack-slime.v4;
+            modpack = pkgs.by.modpack-slime."${version}";
             config = pkgs.linkFarm "config-overlay" [
               {
                 name = "server.properties";
-                path = ./server.properties;
+                path = replaceOptionalVars ./server.properties {
+                  inherit version;
+                };
               }
             ];
           };
