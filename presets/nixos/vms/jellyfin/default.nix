@@ -76,18 +76,19 @@ in
         # Nginx reverse proxy with SSL
         services.nginx = {
           enable = true;
+          recommendedProxySettings = true;
+          recommendedGzipSettings = true;
+          recommendedOptimisation = true;
+          recommendedTlsSettings = true;
           virtualHosts."jellyfin" = {
             default = true;
             forceSSL = false;
+            addSSL = true;
             sslCertificate = "/etc/ssl/certs/selfsigned.crt";
             sslCertificateKey = "/etc/ssl/certs/selfsigned.key";
             locations."/" = {
               proxyPass = "http://localhost:${toString jellyfin_http}";
               proxyWebsockets = true;
-
-              extraConfig = ''
-                client_max_body_size 16G;
-              '';
             };
           };
         };
