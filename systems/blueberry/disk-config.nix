@@ -34,30 +34,31 @@ in
 	      size = "128M";
 	      content = {
 	        type = "luks";
-	        type = "filesystem";
-		format = "vfat";
-		mountpoint = "${keys_mountpoint}";
-		mountOptions = [ "umask=0077" ];
+                name = "keys";
+                content = {
+                  type = "filesystem";
+		  format = "vfat";
+		  mountpoint = "${keys_mountpoint}";
+		  mountOptions = [ "umask=0077" ];
+		};
 	      };
 	    };
             esp-stage1 = {
               size = "5G";
 	      content = {
 	        type = "luks";
+                name = "esp-stage1";
                 extraOpenArgs = [ ];
                 settings = {
                   allowDiscards = true;
 		  keyFile = "/keys/esp-stage1.key";
 	        };
-                content = {
-	          type = "EF00";
-	          content = {
-	            type = "filesystem";
-	            format = "vfat";
-	            mountpoint = "/boot";
-	            mountOptions = [ "umask=0077" ];
-	          };
-                };
+	        content = {
+	          type = "filesystem";
+	          format = "vfat";
+	          mountpoint = "/boot";
+	          mountOptions = [ "umask=0077" ];
+	        };
 	      };
             };
 	    swap = {
@@ -72,7 +73,7 @@ in
               size = "100%";
               content = {
                 type = "zfs";
-		pool = "zpool";
+		pool = "zroot";
               };
             };
           };
