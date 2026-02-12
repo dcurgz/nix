@@ -3,7 +3,7 @@ let
   inherit (inputs.nixpkgs) lib;
   keys = (import ../keys { inherit lib; });
 
-  withDefault = k: (k ++ [ keys.ssh.groups.privileged.keys ]);
+  withDefault = k: (k ++ keys.ssh.groups.privileged.keys);
 in
 with keys.ssh.groups;
 with keys.ssh.hosts;
