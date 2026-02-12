@@ -77,8 +77,13 @@ in
   users.groups.dcurgz = { };
   nix.settings.trusted-users = [ "dcurgz" ];
 
-  services.tailscale.enable = true;
-  services.tailscale.useRoutingFeatures = lib.mkDefault "both";
+  age.secrets.tailscale-auth-key.file = "${FLAKE_ROOT}/secrets/tailscale/blueberry.age";
+
+  services.tailscale = {
+    enable = true; 
+    authKeyFile = config.age.secrets.tailscale-auth-key.path;
+    useRoutingFeatures = lib.mkDefault "both";
+  };
 
   programs.steam.enable = true;
   services.dbus.enable = true;

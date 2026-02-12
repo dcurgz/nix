@@ -10,7 +10,8 @@ with keys.ssh.hosts;
 
 {
   # Tailscale
-  "tailscale/hyperberry.age".publicKeys    = privileged.keys;
+  "tailscale/hyperberry.age".publicKeys    = (withDefault hyperberry.keys);
+  "tailscale/blueberry.age".publicKeys    = (withDefault blueberry.keys);
   # hyperberry
   "backup/restic-password.age".publicKeys  = (withDefault hyperberry.keys);
   "backup/restic-envvars.age".publicKeys   = (withDefault hyperberry.keys);
