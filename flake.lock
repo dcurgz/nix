@@ -42,17 +42,20 @@
     },
     "dankMaterialShell": {
       "inputs": {
+        "dgop": [
+          "dgop"
+        ],
         "nixpkgs": [
           "nixpkgs"
         ],
         "quickshell": "quickshell"
       },
       "locked": {
-        "lastModified": 1770144297,
-        "narHash": "sha256-t1yP9G5wh//Zil6yOIMlsGYTnHI5bcHv1NmkoBq4pdE=",
+        "lastModified": 1766356940,
+        "narHash": "sha256-WfjWtfKTmhI3MUeCnge1pXpa1Jxg//sZs6G/o4Y6ZJg=",
         "owner": "AvengeMedia",
         "repo": "DankMaterialShell",
-        "rev": "f59aeb27826082cb0331e6f3f29fa5308f12fc4b",
+        "rev": "524d9677454db86416fdfdc257086a597c6b2673",
         "type": "github"
       },
       "original": {

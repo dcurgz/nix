@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 
 let
   browser = "firefox";
@@ -26,6 +31,7 @@ in
   ];
 
   programs.niri.enable = true;
+  programs.niri.package = pkgs.niri;
 
   programs.niri.settings.binds = {
     # application shortcuts

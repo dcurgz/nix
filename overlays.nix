@@ -22,6 +22,7 @@ in
   deploy-rs = inputs.deploy-rs.packages.${prev.system}.default or null;
   agenix = inputs.agenix.packages.${prev.system}.default;
   dankMaterialShell = inputs.dankMaterialShell.packages.${prev.system}.default;
+  niri = inputs.niri.packages.${prev.system}.niri-unstable;
 
   inherit (inputs.nfsm.packages.${prev.system}) nfsm nfsm-cli;
 
