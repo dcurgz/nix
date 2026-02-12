@@ -18,8 +18,6 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
     isd.url = "github:kainctl/isd"; # systemd tui
-    lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
-    lanzaboote.url = "github:nix-community/lanzaboote/v1.0.0"; # secure boot
     maccel.url = "github:Gnarus-G/maccel"; # mouse acceleration kernel driver
     microvm.inputs.nixpkgs.follows = "nixpkgs";
     microvm.url = "github:astro/microvm.nix";
@@ -57,7 +55,6 @@
       flake-compat,
       home-manager,
       isd,
-      lanzaboote,
       maccel,
       microvm,
       naersk,
@@ -189,7 +186,6 @@
             ./presets/nixos/packages/python
             ./presets/nixos/drivers/nvidia
             ./presets/nixos/services/avahi
-            ./presets/nixos/security/lanzaboote # secure boot
             # Desktop environment
             ./presets/nixos/drivers/maccel
             ./presets/nixos/desktop/xdg
@@ -219,7 +215,6 @@
             agenix.nixosModules.default
             maccel.nixosModules.default
             disko.nixosModules.disko
-            lanzaboote.nixosModules.lanzaboote
           ];
         };
 
