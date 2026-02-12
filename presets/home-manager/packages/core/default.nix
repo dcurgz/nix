@@ -83,6 +83,7 @@
       nix-index
       agenix
       deploy-rs
+      sbctl
     ]
     ++ lib.optionals stdenv.isLinux (
       with pkgs;

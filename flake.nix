@@ -2,109 +2,77 @@
   description = "NixOS configuration as a flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-
-    flake-compat = {
-      url = "github:NixOS/flake-compat";
-      flake = false;
-    };
-
-    # Nix user repository
-    nurpkgs.url = "github:nix-community/NUR";
-    nurpkgs.inputs.nixpkgs.follows = "nixpkgs";
-
-    nixgl.url = "github:nix-community/nixGL";
-
-    nix-darwin.url = "github:nix-darwin/nix-darwin/master";
-    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-
-    agenix.url = "github:ryantm/agenix";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
-
-    # build aarch64-linux and x86_64-linux on Darwin
-    nix-rosetta-builder = {
-      url = "github:cpick/nix-rosetta-builder";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
-
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
-
-    niri.url = "github:sodiboo/niri-flake";
-    niri.inputs.nixpkgs.follows = "nixpkgs";
-
-    nfsm = {
-      url = "github:gvolpe/nfsm";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    dgop = { # CPU and memory monitoring
-      url = "github:AvengeMedia/dgop";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    dankMaterialShell = { # Dank Material Shell for DE
-      url = "github:AvengeMedia/DankMaterialShell";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.dgop.follows = "dgop";
-    };
-
-    # Mouse acceleration
-    maccel.url = "github:Gnarus-G/maccel";
-
-    # isd: systemd tui
-    isd.url = "github:kainctl/isd";
-
-    microvm.url = "github:astro/microvm.nix";
-    microvm.inputs.nixpkgs.follows = "nixpkgs";
-    nix-minecraft.url = "github:Infinidoge/nix-minecraft";
-
-    deploy-rs.url = "github:dcurgz/deploy-rs/dcurgz/add-skip-offline";
+    agenix.url = "github:ryantm/agenix";
+    dankMaterialShell.inputs.dgop.follows = "dgop";
+    dankMaterialShell.inputs.nixpkgs.follows = "nixpkgs";
+    dankMaterialShell.url = "github:AvengeMedia/DankMaterialShell";
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
-
-    disko.url = "github:nix-community/disko/latest";
+    deploy-rs.url = "github:dcurgz/deploy-rs/dcurgz/add-skip-offline";
+    dgop.inputs.nixpkgs.follows = "nixpkgs";
+    dgop.url = "github:AvengeMedia/dgop";
     disko.inputs.nixpkgs.follows = "nixpkgs";
-
-    naersk.url = "github:nix-community/naersk";
+    disko.url = "github:nix-community/disko/latest";
+    flake-compat.flake = false;
+    flake-compat.url = "github:NixOS/flake-compat";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager.url = "github:nix-community/home-manager";
+    isd.url = "github:kainctl/isd"; # systemd tui
+    lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
+    lanzaboote.url = "github:nix-community/lanzaboote/v1.0.0"; # secure boot
+    maccel.url = "github:Gnarus-G/maccel"; # mouse acceleration kernel driver
+    microvm.inputs.nixpkgs.follows = "nixpkgs";
+    microvm.url = "github:astro/microvm.nix";
     naersk.inputs.nixpkgs.follows = "nixpkgs";
-
-    weirdfish-server.url = "path:./pkgs/weirdfish-server";
-    weirdfish-server.inputs.nixpkgs.follows = "nixpkgs";
-
-    nix-time.url = "path:./pkgs/flockenzeit";
-
-    neoforge-1-21-1.url = "path:./pkgs/neoforge-1-21-1";
+    naersk.url = "github:nix-community/naersk";
     neoforge-1-21-1.inputs.nixpkgs.follows = "nixpkgs";
+    neoforge-1-21-1.url = "path:./pkgs/neoforge-1-21-1";
+    nfsm.inputs.nixpkgs.follows = "nixpkgs";
+    nfsm.url = "github:gvolpe/nfsm";
+    niri.inputs.nixpkgs.follows = "nixpkgs";
+    niri.url = "github:sodiboo/niri-flake";
+    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    nix-darwin.url = "github:nix-darwin/nix-darwin/master";
+    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+    nix-minecraft.url = "github:Infinidoge/nix-minecraft";
+    nix-rosetta-builder.url = "github:cpick/nix-rosetta-builder";
+    nix-rosetta-builder.inputs.nixpkgs.follows = "nixpkgs";
+    nix-time.url = "path:./pkgs/flockenzeit";
+    nixgl.url = "github:nix-community/nixGL";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nurpkgs.inputs.nixpkgs.follows = "nixpkgs";
+    nurpkgs.url = "github:nix-community/NUR"; # Nix user repository
+    weirdfish-server.inputs.nixpkgs.follows = "nixpkgs";
+    weirdfish-server.url = "path:./pkgs/weirdfish-server";
   };
 
   outputs =
     {
       self,
-      nixpkgs,
+      agenix,
+      dankMaterialShell,
+      deploy-rs,
+      dgop,
+      disko,
       flake-compat,
-      nixgl,
+      home-manager,
+      isd,
+      lanzaboote,
+      maccel,
+      microvm,
+      naersk,
+      neoforge-1-21-1,
+      nfsm,
+      niri,
       nix-darwin,
       nix-homebrew,
-      nix-rosetta-builder,
-      home-manager,
-      maccel,
-      niri,
-      nfsm,
-      dgop,
-      dankMaterialShell,
-      nurpkgs,
-      microvm,
-      isd,
       nix-minecraft,
-      deploy-rs,
-      agenix,
-      disko,
-      naersk,
-      weirdfish-server,
+      nix-rosetta-builder,
       nix-time,
-      neoforge-1-21-1,
+      nixgl,
+      nixpkgs,
+      nurpkgs,
+      weirdfish-server,
     }@inputs:
 
     let
@@ -221,6 +189,7 @@
             ./presets/nixos/packages/python
             ./presets/nixos/drivers/nvidia
             ./presets/nixos/services/avahi
+            ./presets/nixos/security/lanzaboote # secure boot
             # Desktop environment
             ./presets/nixos/drivers/maccel
             ./presets/nixos/desktop/xdg
@@ -250,6 +219,7 @@
             agenix.nixosModules.default
             maccel.nixosModules.default
             disko.nixosModules.disko
+            lanzaboote.nixosModules.lanzaboote
           ];
         };
 
