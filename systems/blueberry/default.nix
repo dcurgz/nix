@@ -20,9 +20,6 @@ in
   };
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # (Configure in ./hardware.nix)
-  # boot.kernelPackages = pkgs.linuxPackages_latest;
-
   # Set your time zone.
   time.timeZone = "Europe/London";
 

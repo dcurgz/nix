@@ -3,9 +3,6 @@
   ...
 }:
 
-let
-  keys_mountpoint = "/keys";
-in
 {
   # hostid needs to be fetched before installing
   # ssh into machine and run hostid
@@ -25,41 +22,9 @@ in
               content = {
                 type = "filesystem";
                 format = "vfat";
-                mountpoint = "/boot.unenc";
+                mountpoint = "/boot";
                 mountOptions = [ "umask=0077" ];
               };
-            };
-	    # keys to unlock the stage1 esp partition, and some partitions in the zfs pool
-	    keys = {
-	      size = "128M";
-	      content = {
-	        type = "luks";
-                name = "keys";
-                content = {
-                  type = "filesystem";
-		  format = "vfat";
-		  mountpoint = "${keys_mountpoint}";
-		  mountOptions = [ "umask=0077" ];
-		};
-	      };
-	    };
-            esp-stage1 = {
-              size = "5G";
-	      content = {
-	        type = "luks";
-                name = "esp-stage1";
-                extraOpenArgs = [ ];
-                settings = {
-                  allowDiscards = true;
-		  keyFile = "/keys/esp-stage1.key";
-	        };
-	        content = {
-	          type = "filesystem";
-	          format = "vfat";
-	          mountpoint = "/boot";
-	          mountOptions = [ "umask=0077" ];
-	        };
-	      };
             };
 	    swap = {
 	      size = "32G";
@@ -98,7 +63,6 @@ in
 	      encryption = "aes-256-gcm";
 	      compression = "lz4";
 	      keyformat = "passphrase";
-	      keylocation = "file:///${keys_mountpoint}/zpool-enc.key";
 	    };
 	  };
 	  "zpool-enc/nix" = {
@@ -133,24 +97,6 @@ in
 	  };
 	};
       };
-    };
-  };
-
-  boot.initrd = {
-    supportedFileSystems.ext4 = true;
-    luks.devices.keys = {
-      yubikey = {
-      	slot = 2;
-	twoFactor = false;
-	storage.device = "/dev/disk/by-partlabel/disk-main-esp-stage0";
-      };
-      postOpenCommands = ''
-        mkdir -p ${keys_mountpoint}
-	mount -t ext4 -o /dev/mapper/keys ${keys_mountpoint} || (dmesg && exit 1)
-	zpool import -f -a
-	zfs load-key -a
-	unmount ${keys_mountpoint}
-      '';
     };
   };
 
