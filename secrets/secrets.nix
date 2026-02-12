@@ -1,12 +1,12 @@
 let
-  inputs = (import ../. { }).inputs;
+  inherit (import ../.) inputs;
   inherit (inputs.nixpkgs) lib;
   keys = (import ../keys { inherit lib; });
 
-  withDefault = k: (k ++ [ keys.groups.privileged.keys ]);
+  withDefault = k: (k ++ [ keys.ssh.groups.privileged.keys ]);
 in
-with keys.groups;
-with keys.hosts;
+with keys.ssh.groups;
+with keys.ssh.hosts;
 
 {
   # Tailscale
