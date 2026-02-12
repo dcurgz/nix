@@ -209,6 +209,7 @@
             ./secrets/berry.enc.nix
             # Main configuration files
             ./systems/blueberry/hardware.nix
+            ./systems/blueberry/disk-config.nix
             ./systems/blueberry
             ./presets/common/ssh.nix
             ./presets/common/git.nix
@@ -248,6 +249,7 @@
             microvm.nixosModules.host
             agenix.nixosModules.default
             maccel.nixosModules.default
+            disko.nixosModules.disko
           ];
         };
 

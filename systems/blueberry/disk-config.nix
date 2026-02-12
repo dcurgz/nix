@@ -65,6 +65,13 @@
 	      keyformat = "passphrase";
 	    };
 	  };
+	  "zpool-enc/root" = {
+	    type = "zfs_fs";
+	    options = {
+	      mountpoint = "/";
+	    };
+	    mountpoint = "/";
+	  };
 	  "zpool-enc/nix" = {
 	    type = "zfs_fs";
 	    options = {
