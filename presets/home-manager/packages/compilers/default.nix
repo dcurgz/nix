@@ -5,7 +5,7 @@
   home.packages =
     with pkgs;
     [
-      cargo
+      rustup
       cmake
       gcc
       gnumake

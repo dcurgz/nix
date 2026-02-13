@@ -24,7 +24,8 @@ in
 
   programs.home-manager.enable = true;
 
-
   by.programs.alacritty.enable = true;
   by.programs.alacritty.package = null;
+
+  home.packages = with pkgs; [ libiconv ];
 }
