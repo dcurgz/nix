@@ -252,10 +252,26 @@ in
       repository = "s3:s3.eu-central-1.s4.mega.io/restic-hyperberry-media";
       timerConfig.OnCalendar = "*-*-* 06:00:00";
     };
+    hyperberry-media-content = {
+      paths = [ "/media/content" ];
+      pruneOpts = [
+        "--keep-daily=7"
+        "--keep-weekly=1"
+        "--keep-monthly=1"
+      ];
+      repository = "s3:s3.eu-central-1.s4.mega.io/restic-hyperberry-media";
+      timerConfig.OnCalendar = "*-*-* 06:05:00";
+    };
     hyperberry-data-immich = {
       paths = [
         "/data/immich"
         "/data/immich-db"
+      ];
+      timerConfig.OnCalendar = "*-*-* 06:15:00";
+    };
+    hyperberry-data-jellyfin = {
+      paths = [
+        "/data/jellyfin-data"
       ];
       timerConfig.OnCalendar = "*-*-* 06:15:00";
     };
