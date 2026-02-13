@@ -262,9 +262,12 @@
             # git-crypt protected variables
             ./secrets/berry.enc.nix
             ./systems/tauberry
+            ./systems/tauberry/hardware.nix
             ./presets/nixos/misc/rpi-disable-kernel-modules.nix
             ./presets/nixos/misc/nix-daemon.nix
             ./presets/nixos/packages/core
+            ./presets/nixos/security/groups
+            ./presets/nixos/services/mopidy
             # 3rd party modules
             microvm.nixosModules.host
             agenix.nixosModules.default
@@ -491,7 +494,7 @@
 
         tauberry = {
           hostname = "tauberry";
-          sshUser = "tauberry";
+          sshUser = "root";
           remoteBuild = false;
           profiles.system = {
             user = "root";

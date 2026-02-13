@@ -9,6 +9,12 @@ with lib;
       description = "The name of the ethernet interface on this device.";
     };
 
+    interfaces.wifi = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+      description = "The name of the Wi-Fi interface on this device.";
+    };
+
     pcie.nvidia_gpu = mkOption {
       type = types.nullOr types.str;
       default = null;

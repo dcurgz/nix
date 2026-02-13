@@ -15,20 +15,12 @@ let
   inherit (by) NIXOS_PRESETS;
 in
 {
-  boot = {
-    kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;
-    initrd.availableKernelModules = [
-      "xhci_pci"
-      "usbhid"
-      "usb_storage"
-    ];
-    loader = {
-      grub.enable = false;
-      generic-extlinux-compatible.enable = true;
-    };
+  age.secrets.wifi = {
+    file = "${FLAKE_ROOT}/secrets/wg/Wi-Fi.age";
+    mode = "770";
+    owner = "root";
+    group = "wpa_supplicant";
   };
-
-  hardware.enableRedistributableFirmware = true;
 
   fileSystems = {
     "/" = {
@@ -43,31 +35,42 @@ in
     wheelNeedsPassword = false;
   };
 
-  networking = {
-    hostName = "tauberry";
-    firewall = {
-      enable = true;
-      allowedTCPPorts = [
-        22
+  networking =
+    let
+      wifi = by.hardware.interfaces.wifi;
+    in
+    {
+      hostName = "tauberry";
+      firewall = {
+        enable = true;
+        allowedTCPPorts = [
+          22
+        ];
+      };
+      interfaces."${wifi}" = {
+        ipv4.addresses = [
+          {
+            address = "192.168.0.13";
+            prefixLength = 24;
+          }
+        ];
+      };
+      defaultGateway = {
+        address = "192.168.0.1";
+        interface = "${wifi}";
+      };
+      nameservers = [
+        "1.1.1.1"
+        "1.0.0.1"
       ];
+
+      # Setup Wi-Fi.
+      wireless = {
+        enable = true;
+        secretsFile = config.age.secrets.wifi.path;
+        networks."Stan Chappell Roan".pskRaw = "ext:psk";
+      };
     };
-    interfaces.end0 = {
-      ipv4.addresses = [
-        {
-          address = "192.168.0.13";
-          prefixLength = 24;
-        }
-      ];
-    };
-    defaultGateway = {
-      address = "192.168.0.1";
-      interface = "end0";
-    };
-    nameservers = [
-      "1.1.1.1"
-      "1.0.0.1"
-    ];
-  };
 
   services.tailscale.enable = true;
 
@@ -100,17 +103,44 @@ in
     mutableUsers = false;
     users.tauberry = {
       isNormalUser = true;
-      extraGroups = [ "wheel" ];
+      extraGroups = [ "wheel" "data" "media" ];
     };
   };
 
   environment.systemPackages = with pkgs; [
     vim
+    alsa-lib
+    alsa-utils
+    alsa-tools
   ];
 
   programs.gnupg.agent.enable = true;
 
   nix.settings.trusted-users = [ "tauberry" ];
+
+  # Unsure if this actually does anything to improve the quality of mopidy streaming.
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    extraConfig.pipewire = {
+      "10-clock-rate" = {
+        "default.clock.rate" = 192000;
+        "default.clock.allowed-rates" = [ 192000 ];
+        "default.clock.quantum" = 800;
+        "default.clock.min-quantum" = 512;
+        "default.clock.max-quantum" = 1024;
+      };
+      "11-buffers" = {
+        "link.max-buffers" = 64;
+      };
+      "12-no-suspend" = {
+        "session.suspend-timeout-seconds" = 0;
+      };
+    };
+    wireplumber.enable = true;
+  };
 
   ##########################################################################################
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .

@@ -120,7 +120,8 @@ in
           };
           users.groups.open-webui = {};
 
-          services.nginx = 
+ 
+         services.nginx = 
             let
               address = "vm-openwebui.${secrets.tailscale.magic_dns}";
             in

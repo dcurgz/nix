@@ -23,4 +23,8 @@ with keys.ssh.hosts;
   "fooberry/Wi-Fi.age".publicKeys             = (withDefault fooberry.keys);
   # piberry
   "piberry/cloudflare-key.age".publicKeys     = (withDefault wg.keys);
+  # tauberry
+  "tauberry/mopidy-conf.age".publicKeys       = (withDefault tauberry.keys);
+  # wg
+  "wg/Wi-Fi.age".publicKeys = (withDefault wg.keys);
 }
