@@ -193,26 +193,30 @@ in
               enable = true;
               user = "ollama";
               group = "ollama";
-              #openFirewall = true;
 
               package = pkgs.ollama-cuda;
 
               host = "0.0.0.0";
               port = 11434;
 
-              #home = "/var/lib/ollama";
+              loadModels = [
+                "dolphin3"
+                "gemma3:27b-it-qat"
+                "glm-4.7-flash:latest"
+                "deepseek-r1:32b"
+              ];
 
-              #environmentVariables = {
-              #  OLLAMA_FLASH_ATTENTION = "true";
-              #  OLLAMA_CONTEXT_LENGTH = "32768";
-  # OLLAMA_CON#TEXT_LENGTH = "16384";
-              #  OLLAMA_KV_CACHE_TYPE = "q8_0";
-              #  OLLAMA_KEEP_ALIVE = "10m";
-              #  OLLAMA_MAX_LOADED_MODELS = "4";
-              #  OLLAMA_MAX_QUEUE = "64";
-              #  OLLAMA_NUM_PARALLEL = "1";
-              #  OLLAMA_ORIGINS = "*";
-              #};
+              environmentVariables = {
+                OLLAMA_FLASH_ATTENTION = "true";
+                OLLAMA_CONTEXT_LENGTH = "32768";
+  # OLLAMA_CONTEXT_LENGTH = "16384";
+                OLLAMA_KV_CACHE_TYPE = "q8_0";
+                OLLAMA_KEEP_ALIVE = "10m";
+                OLLAMA_MAX_LOADED_MODELS = "4";
+                OLLAMA_MAX_QUEUE = "64";
+                OLLAMA_NUM_PARALLEL = "1";
+                OLLAMA_ORIGINS = "*";
+              };
             };
           };
 
