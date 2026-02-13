@@ -9,15 +9,18 @@ with keys.ssh.groups;
 with keys.ssh.hosts;
 
 {
-  # Tailscale
-  "tailscale/hyperberry.age".publicKeys    = (withDefault hyperberry.keys);
-  "tailscale/blueberry.age".publicKeys    = (withDefault blueberry.keys);
+  ### Tailscale
+  # hosts
+  "tailscale/hosts/hyperberry.age".publicKeys = (withDefault hyperberry.keys);
+  "tailscale/hosts/blueberry.age".publicKeys  = (withDefault blueberry.keys);
+  # guests
+  "tailscale/guests/vm-openwebui.age".publicKeys  = (withDefault hyperberry.keys);
   # hyperberry
-  "backup/restic-password.age".publicKeys  = (withDefault hyperberry.keys);
-  "backup/restic-envvars.age".publicKeys   = (withDefault hyperberry.keys);
+  "backup/restic-password.age".publicKeys     = (withDefault hyperberry.keys);
+  "backup/restic-envvars.age".publicKeys      = (withDefault hyperberry.keys);
   # fooberry
-  "fooberry/cloudflare-key.age".publicKeys = (withDefault fooberry.keys);
-  "fooberry/Wi-Fi.age".publicKeys          = (withDefault fooberry.keys);
+  "fooberry/cloudflare-key.age".publicKeys    = (withDefault fooberry.keys);
+  "fooberry/Wi-Fi.age".publicKeys             = (withDefault fooberry.keys);
   # piberry
-  "piberry/cloudflare-key.age".publicKeys  = (withDefault wg.keys);
+  "piberry/cloudflare-key.age".publicKeys     = (withDefault wg.keys);
 }

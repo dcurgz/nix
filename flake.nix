@@ -125,9 +125,10 @@
                 ./presets/nixos/vms/immich
                 ./presets/nixos/vms/minecraft-wg-0
                 ./presets/nixos/vms/minecraft-slime
-                ./presets/nixos/vms/minecraft-slime_staging
+                #./presets/nixos/vms/minecraft-slime_staging
                 ./presets/nixos/vms/teamspeak
                 ./presets/nixos/vms/jellyfin
+                ./presets/nixos/vms/open-webui
                 {
                   home-manager.useGlobalPkgs = true;
                   home-manager.useUserPackages = true;

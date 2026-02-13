@@ -94,12 +94,6 @@ in
     };
   };
 
-  # Enable Ollama service with CUDA acceleration.
-  services.ollama = {
-    enable = true;
-    host = "0.0.0.0";
-  };
-
   # Enable vsftpd for FTP service.
   services.vsftpd = {
     enable = true;

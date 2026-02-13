@@ -47,6 +47,9 @@
   by.constants.hardware = {
     # Define ethernet interface.
     interfaces.ethernet = "eno1";
+
+    pcie.nvidia_gpu = "0000:01:00.0";
+    pcie.nvidia_audio = "0000:01:00.1";
   };
   
   hardware.nvidia = {

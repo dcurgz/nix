@@ -85,6 +85,18 @@ let
           };
         };
 
+        devices = mkOption {
+          type = types.listOf types.attrs;
+          default = [ ];
+          description = "A list of devices to passthrough to the VM.";
+        };
+
+        credentialFiles = mkOption {
+          type = types.attrs;
+          default = { };
+          description = "systemd credentials to pass to the guest.";
+        };
+
         config = mkOption {
           type = types.attrs;
           default = { };
@@ -95,12 +107,6 @@ let
               networking.firewall.allowedTCPPorts = [ 80 443 ];
             }
           '';
-        };
-
-        tmpfiles = mkOption {
-          type = types.listOf types.str;
-          default = [ ];
-          description = "Additional systemd tmpfiles rules for the host";
         };
 
         nixpkgsConfig = mkOption {
@@ -151,7 +157,6 @@ in
             "d /var/lib/microvms/${hostname}/tailscale 0750 microvm kvm"
             "d /var/lib/microvms/${hostname}/ssh-host-keys 0755 root root"
           ]
-          ++ vmConfig.tmpfiles
         )
       ) config.hyperberry.virtualization.vms
     );
@@ -235,9 +240,10 @@ in
               };
             };
 
-            # MicroVM resource constraints
             microvm.mem = vmConfig.memory;
             microvm.vcpu = vmConfig.vcpus;
+            microvm.devices = vmConfig.devices;
+            microvm.credentialFiles = vmConfig.credentialFiles;
 
             # Filesystem shares
             microvm.shares = [

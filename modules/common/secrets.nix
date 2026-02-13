@@ -6,6 +6,10 @@ with lib;
 
 {
   options.by.secrets = {
+    tailscale.magic_dns = mkOption {
+      type = types.str;
+      description = "The Magic DNS root subdomain for berry hosts.";
+    };
     hosts = mkOption {
       type = types.attrsOf (types.submodule ({ config, name, ... }: {
         options = {
