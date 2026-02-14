@@ -137,8 +137,27 @@ in
       "12-no-suspend" = {
         "session.suspend-timeout-seconds" = 0;
       };
+      "13-apply-EQ" = {
+        "context.modules" = [
+          {
+            name = "libpipewire-module-parametric-equalizer";
+            args = {
+              "node.description" = "Marshall Woburn III correction curve, measured in wg-lounge on 20260214.";
+              "media.name" = "Marshall Woburn III EQ";
+              "equalizer.filepath" = ./woburn_III_EQ.txt;
+              "capture.props" = {
+                "node.name" = "alsa_output.platform-soc_sound.stereo-fallback";
+              };
+              "playback.props" = {
+                "node.name" = "alsa_output.platform-soc_sound.stereo-fallback";
+              };
+            };
+          }
+        ];
+      };
     };
     wireplumber.enable = true;
+    
   };
 
   services.pipewire.systemWide = true;
