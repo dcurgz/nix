@@ -9,6 +9,7 @@
 
 let
   by = config.by.constants;
+  secrets = config.by.secrets;
   inherit (globals) NIXOS_PRESETS;
 
   hostname = "vm-jellyfin";
@@ -74,24 +75,28 @@ in
         users.users.jellyfin.extraGroups = [ "media" "data" ];
 
         # Nginx reverse proxy with SSL
-        services.nginx = {
-          enable = true;
-          recommendedProxySettings = true;
-          recommendedGzipSettings = true;
-          recommendedOptimisation = true;
-          recommendedTlsSettings = true;
-          virtualHosts."jellyfin" = {
-            default = true;
-            forceSSL = false;
-            addSSL = true;
-            sslCertificate = "/etc/ssl/certs/selfsigned.crt";
-            sslCertificateKey = "/etc/ssl/certs/selfsigned.key";
-            locations."/" = {
-              proxyPass = "http://localhost:${toString jellyfin_http}";
-              proxyWebsockets = true;
+        services.nginx =
+          let
+            address = secrets.vm-jellyfin.ssh.hostname;
+          in
+          {
+            enable = true;
+            recommendedProxySettings = true;
+            recommendedGzipSettings = true;
+            recommendedOptimisation = true;
+            recommendedTlsSettings = true;
+            virtualHosts."${address}" = {
+              default = true;
+              forceSSL = false;
+              addSSL = true;
+              sslCertificate = "/etc/ssl/certs/${address}.crt";
+              sslCertificateKey = "/etc/ssl/certs/${address}.key";
+              locations."/" = {
+                proxyPass = "http://localhost:${toString jellyfin_http}";
+                proxyWebsockets = true;
+              };
             };
           };
-        };
 
         networking.firewall.allowedTCPPorts = [
           22

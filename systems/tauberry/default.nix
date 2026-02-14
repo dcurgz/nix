@@ -103,7 +103,7 @@ in
     mutableUsers = false;
     users.tauberry = {
       isNormalUser = true;
-      extraGroups = [ "wheel" "data" "media" ];
+      extraGroups = [ "wheel" "data" "media" "pipewire" ];
     };
   };
 
@@ -123,7 +123,6 @@ in
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
-    pulse.enable = true;
     extraConfig.pipewire = {
       "10-clock-rate" = {
         "default.clock.rate" = 192000;
@@ -141,6 +140,13 @@ in
     };
     wireplumber.enable = true;
   };
+
+  services.pipewire.systemWide = true;
+  services.pipewire.pulse.enable = true; # pipewire-pulse also supports running system-wide
+
+  # PipeWire users must be in the `pipewire` group
+  users.users.mopidy.extraGroups = [ "pipewire" ];
+  systemd.services.mopidy.serviceConfig.SupplementaryGroups = [ "pipewire" ];
 
   ##########################################################################################
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
