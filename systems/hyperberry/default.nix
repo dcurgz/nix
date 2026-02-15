@@ -273,7 +273,13 @@ in
       paths = [
         "/data/jellyfin-data"
       ];
-      timerConfig.OnCalendar = "*-*-* 06:15:00";
+      timerConfig.OnCalendar = "*-*-* 06:35:00";
+    };
+    hyperberry-data-openwebui = {
+      paths = [
+        "/data/openwebui"
+      ];
+      timerConfig.OnCalendar = "*-*-* 06:45:00";
     };
     hyperberry-data-mc-slime = {
       paths = [
@@ -284,7 +290,7 @@ in
         "--keep-weekly=1"
         "--keep-monthly=1"
       ];
-      timerConfig.OnCalendar = "*-*-* 06:30:00";
+      timerConfig.OnCalendar = "*-*-* 07:00:00";
     };
     hyperberry-data-mc-wg-0 = {
       paths = [
@@ -295,13 +301,13 @@ in
         "--keep-weekly=1"
         "--keep-monthly=1"
       ];
-      timerConfig.OnCalendar = "*-*-* 06:45:00";
+      timerConfig.OnCalendar = "*-*-* 07:14:00";
     };
     hyperberry-data-teamspeak = {
       paths = [
         "/data/teamspeak"
       ];
-      timerConfig.OnCalendar = "*-*-* 07:00:00";
+      timerConfig.OnCalendar = "*-*-* 07:30:00";
     };
   };
 

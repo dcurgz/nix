@@ -77,7 +77,7 @@ in
         # Nginx reverse proxy with SSL
         services.nginx =
           let
-            address = secrets.vm-jellyfin.ssh.hostname;
+            address = secrets.hosts.vm-jellyfin.ssh.hostname;
           in
           {
             enable = true;
