@@ -67,6 +67,10 @@ in
 
         nix.channel.enable = false;
 
+        systemd.tmpfiles.rules = [
+          "Z /etc/ssl/certs 550 root nginx"
+        ];
+
         services.jellyfin = {
           enable = true;
           dataDir = jellyfin_data;
