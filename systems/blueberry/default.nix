@@ -77,7 +77,7 @@ in
   users.groups.dcurgz = { };
   nix.settings.trusted-users = [ "dcurgz" ];
 
-  age.secrets.tailscale-auth-key.file = "${FLAKE_ROOT}/secrets/tailscale/blueberry.age";
+  age.secrets.tailscale-auth-key.file = "${FLAKE_ROOT}/secrets/tailscale/hosts/blueberry.age";
 
   services.tailscale = {
     enable = true; 
