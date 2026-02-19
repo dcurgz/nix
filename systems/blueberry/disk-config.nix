@@ -4,8 +4,8 @@
 }:
 
 {
-  # hostid needs to be fetched before installing
-  # ssh into machine and run hostid
+# hostid needs to be fetched before installing
+# ssh into machine and run hostid
   networking.hostId = "8425e349";
 
   disko.devices = {
@@ -26,19 +26,19 @@
                 mountOptions = [ "umask=0077" ];
               };
             };
-	    swap = {
-	      size = "32G";
-	      content = {
-	        type = "swap";
-		discardPolicy = "both";
-		randomEncryption = true;
-	      };
-	    };
+            swap = {
+              size = "32G";
+              content = {
+                type = "swap";
+                discardPolicy = "both";
+                randomEncryption = true;
+              };
+            };
             root = {
               size = "100%";
               content = {
                 type = "zfs";
-		pool = "zroot";
+                pool = "zroot";
               };
             };
           };
@@ -48,61 +48,41 @@
     zpool = {
       zroot = {
         type = "zpool";
-	rootFsOptions = {
-	  mountpoint = "none";
-	  compression = "zstd";
-	  acltype = "posixacl";
-	  xattr = "sa";
-	  "com.sun:auto-snapshot" = "true";
-	};
-	options.ashift = "12";
-	datasets = {
-	  "zroot-enc" = {
-	    type = "zfs_fs";
-	    options = {
-	      encryption = "aes-256-gcm";
-	      compression = "lz4";
-	      keyformat = "passphrase";
-	    };
-	  };
-	  "zpool-enc/root" = {
-	    type = "zfs_fs";
-	    options = {
-	      mountpoint = "/";
-	    };
-	    mountpoint = "/";
-	  };
-	  "zpool-enc/nix" = {
-	    type = "zfs_fs";
-	    options = {
-	      mountpoint = "/nix";
-	    };
-	    mountpoint = "/nix";
-	  };
-	  "zpool-enc/home" = {
-	    type = "zfs_fs";
-	    options = {
-	      mountpoint = "/home";
-	    };
-	    mountpoint = "/home";
-	  };
-	  "zpool-enc/media" = {
-	    type = "zfs_fs";
-	    options = {
-	      mountpoint = "/media";
-	    };
-	    mountpoint = "/media";
-	  };
-	  # leave an unencrypted partition for performance reasons.
-	  "zroot-unenc" = {
-	    type = "zfs_fs";
-	  };
-	  "zpool-unenc/media.unenc" = {
-	    type = "zfs_fs";
-	    options.mountpoint = "/media.unenc";
-	    mountpoint = "/media.unenc";
-	  };
-	};
+        rootFsOptions = {
+          mountpoint = "none";
+          compression = "zstd";
+          acltype = "posixacl";
+          xattr = "sa";
+          "com.sun:auto-snapshot" = "true";
+        };
+        options.ashift = "12";
+        datasets =
+          let
+            mkEncrypted = mountpoint: {
+              type = "zfs_fs";
+              options = {
+                encryption = "aes-256-gcm";
+                compression = "lz4";
+                keyformat = "passphrase";
+                mountpoint = "${mountpoint}";
+              };
+              mountpoint = "${mountpoint}";
+            };
+            mkVolume = mountpoint: {
+              type = "zfs_fs";
+              options.mountpoint = "${mountpoint}";
+              mountpoint = "${mountpoint}";
+            };
+          in	
+          {
+            "encrypted" = mkEncrypted "/";
+            "encrypted/home"  = mkVolume "/home";
+            "encrypted/media" = mkVolume "/media";
+            "encrypted/nix"   = mkVolume "/nix";
+            "encrypted/opt"   = mkVolume "/opt";
+            "encrypted/var"   = mkVolume "/var";
+            "plain/media" = mkVolume "/media.unenc";
+          };
       };
     };
   };
