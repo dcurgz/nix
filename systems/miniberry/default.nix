@@ -27,8 +27,12 @@ in
   homebrew.enable = true;
   homebrew.onActivation.cleanup = "uninstall";
 
-  homebrew.taps = ["deskflow/homebrew-tap"];
-  homebrew.brews = [ ];
+  homebrew.taps = [
+    "deskflow/homebrew-tap"
+  ];
+  homebrew.brews = [
+    "watch"
+  ];
   homebrew.casks = [ 
     "deskflow"
   ];
