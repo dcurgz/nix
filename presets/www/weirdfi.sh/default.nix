@@ -50,7 +50,6 @@ let
   };
   webroot = (pkgs.linkFarm "webroot" [
     (mkTemplate "index.html" "${html}/index.html")
-    (mkTemplate "posts/why.html" "${html}/posts/why.html")
     {
       name = "style.css";
       path = ./style.css;

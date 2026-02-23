@@ -6,8 +6,6 @@
     [
       # Local bin scripts ($NIX_HOME/bin)
       local-scripts
-      # My programs
-      #local.keylight
 
       # Core utilities
       bc
@@ -30,6 +28,7 @@
       which
       xxd
       gron
+      pv
 
       # Modern terminal tools
       bat
