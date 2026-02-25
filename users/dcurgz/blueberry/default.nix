@@ -40,4 +40,6 @@ in
     alacritty.enable = true;
     dms.enable = true;
   };
+
+  home.packages = with pkgs; [ vlc sshfs ];
 }
