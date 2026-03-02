@@ -28,9 +28,6 @@ in
       ".config/alacritty/alacritty.toml".source = replaceVars ./alacritty.toml {
         fish = lib.getExe pkgs.fish;
       };
-      ".config/alacritty/alacritty-light.toml".source = replaceVars ./alacritty-light.toml {
-        fish = lib.getExe pkgs.fish;
-      };
     };
   };
 }
