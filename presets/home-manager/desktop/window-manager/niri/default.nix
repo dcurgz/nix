@@ -10,7 +10,7 @@ let
   file-explorer = "nemo";
   bluetooth-manager = "blueman-manager";
   sound-manager = "pavucontrol";
-  terminal = "alacritty";
+  terminal = "ghostty";
   app-launcher = "fuzzel";
 in
 {

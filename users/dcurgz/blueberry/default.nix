@@ -37,9 +37,14 @@ in
   ];
 
   by.programs = {
-    alacritty.enable = true;
+    ghostty.enable = true;
     dms.enable = true;
   };
 
-  home.packages = with pkgs; [ vlc sshfs ];
+  home.packages = with pkgs; [
+    vlc
+    sshfs
+    qemu
+    qemu_kvm
+  ];
 }
