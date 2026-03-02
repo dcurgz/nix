@@ -207,6 +207,7 @@ in
           {
             # Basic VM configuration
             networking.hostName = hostname;
+            microvm.hypervisor = mkDefault "cloud-hypervisor";
             system.stateVersion = mkDefault "24.11";
 
             # Configure networking

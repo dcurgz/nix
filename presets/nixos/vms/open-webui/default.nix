@@ -39,9 +39,9 @@ in
       vcpus = 2;
       memory = 1024 * 8 + 1;
 
-      credentialFiles = {
-        tailscale-auth-key = config.age.secrets.tailscale-auth-key.path;
-      };
+      #credentialFiles = {
+      #  tailscale-auth-key = config.age.secrets.tailscale-auth-key.path;
+      #};
   
       networking = {
         macAddress = "02:00:00:00:00:09";
