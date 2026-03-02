@@ -68,7 +68,7 @@ in
         nix.channel.enable = false;
 
         systemd.tmpfiles.rules = [
-          "Z /etc/ssl/certs 550 root nginx"
+          "Z /etc/ssl/certs 550 root data"
         ];
 
         services.jellyfin = {
@@ -101,6 +101,8 @@ in
               };
             };
           };
+
+        users.users.nginx.extraGroups = [ "data" ]; # for certs
 
         networking.firewall.allowedTCPPorts = [
           22
