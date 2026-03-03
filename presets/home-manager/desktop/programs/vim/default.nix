@@ -23,7 +23,7 @@
       let g:rainbow_active = 1
       " Ctrl+S saves to file.
       nmap <C-s> :w<CR>
-      imap <C-S> <Esc>:w<CR>a
+      imap <C-S> <Esc>:w<CR>
     '';
   };
 }

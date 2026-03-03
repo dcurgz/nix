@@ -29,6 +29,7 @@ in
       font-family = "Maple Mono NF";
       font-style = "Regular";
       command = lib.getExe pkgs.fish;
+      shell-integration-features = "ssh-env";
     };
   };
 }
