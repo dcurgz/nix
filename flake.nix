@@ -129,6 +129,7 @@
                 ./presets/nixos/vms/teamspeak
                 ./presets/nixos/vms/jellyfin
                 ./presets/nixos/vms/open-webui
+                ./presets/nixos/vms/vikunja
                 {
                   home-manager.useGlobalPkgs = true;
                   home-manager.useUserPackages = true;

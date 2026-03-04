@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+GUESTS=(
+  'vm-jellyfin'
+  'vm-vikunja'
+  'vm-immich'
+  'vm-teamspeak'
+  'vm-openwebui'
+  'vm-mc-slime'
+  'vm-mc-slime-sta'
+  'vm-mc-wg-0'
+  'vm-mc-wg-1'
+)
+OUT_DIR="./keys/ssh"
+
+if [ ! -d "$OUT_DIR" ]; then
+  echo "$OUT_DIR is not a directory. Are you in the right place?"
+  exit 1
+fi
+
+for g in "${GUESTS[@]}"; do
+  MICROVM_KEYS="/var/lib/microvms/$g/ssh-host-keys"
+  mkdir -p "$OUT_DIR/$g"
+  cp -v "$MICROVM_KEYS/ssh_host_ed25519_key.pub" "$OUT_DIR/$g/host_ed25519.pub"
+done

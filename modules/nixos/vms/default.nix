@@ -30,117 +30,149 @@ let
     };
   });
 
-  vmType = types.submodule (
-    { name, config, ... }:
-    {
-      options = {
-        enable = mkEnableOption "Enable this virtual machine";
-
-        vcpus = mkOption {
-          type = types.int;
-          default = 2;
-          description = "Number of vCPUs to allocate to this VM";
-        };
-
-        memory = mkOption {
-          type = types.int;
-          #2048 causes qemu crash
-          default = 2054;
-          description = "Memory in MB to allocate to this VM";
-        };
-
-        mounts = mkOption {
-          type = types.listOf types.attrs;
-          default = [ ];
-          description = "Additional filesystem shares beyond the common ones";
-          example = literalExpression ''
-            [
-              {
-                source = "/host/path";
-                mountPoint = "/guest/path";
-                tag = "custom-share";
-                proto = "virtiofs";
-              }
-            ]
-          '';
-        };
-
-        networking = {
-          macAddress = mkOption {
-            type = types.str;
-            description = "MAC address for the VM's TAP interface";
-            example = "02:00:00:01:01:01";
-          };
-
-          ipAddress = mkOption {
-            type = types.str;
-            description = "IP address for the VM";
-            example = "10.0.0.10";
-          };
-
-          forwardPorts = mkOption {
-            type = types.listOf portsType;
-            description = "A list of port forwarding configurations.";
-            default = [ ];
-          };
-        };
-
-        devices = mkOption {
-          type = types.listOf types.attrs;
-          default = [ ];
-          description = "A list of devices to passthrough to the VM.";
-        };
-
-        credentialFiles = mkOption {
-          type = types.attrs;
-          default = { };
-          description = "systemd credentials to pass to the guest.";
-        };
-
-        config = mkOption {
-          type = types.attrs;
-          default = { };
-          description = "Additional NixOS configuration to pass to the MicroVM";
-          example = literalExpression ''
-            {
-              services.nginx.enable = true;
-              networking.firewall.allowedTCPPorts = [ 80 443 ];
-            }
-          '';
-        };
-
-        nixpkgsConfig = mkOption {
-          type = types.attrs;
-          default = { };
-          description = "Additional nixpkgs configuration for the VM";
-        };
-      };
-    }
-  );
+  # lord forgive me for my sins
+  microvm = (pkgs.callPackage "${inputs.microvm}/nixos-modules/host/options.nix" { });
 in
 {
   options = {
     hyperberry.virtualization = {
       vms = mkOption {
-        type = types.attrsOf vmType;
-        default = { };
-        description = "Virtual machines configuration";
-        example = literalExpression ''
-          {
-            myvm = {
-              enable = true;
-              vcpus = 4;
-              memory = 4096;
-              networking = {
-                macAddress = "02:00:00:01:01:01";
-                ipAddress = "10.0.0.10";
+        type = types.attrsOf (types.submodule ({ name, config, ... }: {
+          options = {
+            networking = {
+              macAddress = mkOption {
+                type = types.str;
+                description = "MAC address for the VM's TAP interface";
+                example = "02:00:00:01:01:01";
               };
-              config = {
-                services.nginx.enable = true;
+
+              ipAddress = mkOption {
+                type = types.str;
+                description = "IP address for the VM";
+                example = "10.0.0.10";
+              };
+        
+              forwardPorts = mkOption {
+                type = types.listOf portsType;
+                description = "A list of port forwarding configurations.";
+                default = [ ];
               };
             };
-          }
-        '';
+            # Copied from microvm module, but with config tweaked.
+            # https://github.com/microvm-nix/microvm.nix/blob/main/nixos-modules/host/options.nix
+            microvm = mkOption {
+              type = (types.submodule ({ name, config, ... }: {
+                options = {
+                  evaluatedConfig = mkOption {
+                    description = ''
+                      An already evaluated configuration of this MicroVM.
+                      Allows supplying an already evaluated configuration or an alternative configuration evaluation function instead of NixOS's default eval-config.
+                    '';
+                    default = null;
+                    type = nullOr types.unspecified;
+                  };
+
+                  config = mkOption {
+                    description = ''
+                      A specification of the desired configuration of this MicroVM,
+                      as a NixOS module, for building **without** a flake.
+                    '';
+                    default = null;
+                    type = types.nullOr types.deferredModule;
+                  };
+
+                  nixpkgs = mkOption {
+                    type = types.path;
+                    default = if config.pkgs != null then config.pkgs.path else pkgs.path;
+                    defaultText = literalExpression "pkgs.path";
+                    description = ''
+                      This option is only respected when `config` is
+                      specified.
+
+                      The nixpkgs path to use for the MicroVM. Defaults to the
+                      host's nixpkgs.
+                    '';
+                  };
+
+                  pkgs = mkOption {
+                    type = types.nullOr types.unspecified;
+                    default = pkgs;
+                    defaultText = literalExpression "pkgs";
+                    description = ''
+                      This option is only respected when `config` is specified.
+
+                      The package set to use for the MicroVM. Must be a
+                      nixpkgs package set with the microvm overlay. Determines
+                      the system of the MicroVM.
+
+                      If set to null, a new package set will be instantiated.
+                    '';
+                  };
+
+                  specialArgs = mkOption {
+                    type = types.attrsOf types.unspecified;
+                    default = {};
+                    description = ''
+                      This option is only respected when `config` is specified.
+
+                      A set of special arguments to be passed to NixOS modules.
+                      This will be merged into the `specialArgs` used to evaluate
+                      the NixOS configurations.
+                    '';
+                  };
+
+                  extraModules = mkOption {
+                    type = types.listOf types.deferredModule;
+                    default = [];
+                    description = ''
+                      This option is only respected when `config` is specified.
+
+                      A list of additional NixOS modules to be merged into
+                      the MicroVM's system configuration.
+                    '';
+                    defaultText = literalExpression ''
+                      [
+                        flakeInputs.some-project.nixosModules.example
+                        flakeInputs.another-project.nixosModules.default
+                      ]
+                    '';
+                  };
+
+                  flake = mkOption {
+                    description = "Source flake for declarative build";
+                    type = nullOr path;
+                    default = null;
+                    defaultText = literalExpression ''flakeInputs.my-infra'';
+                  };
+
+                  updateFlake = mkOption {
+                    description = "Source flakeref to store for later imperative update";
+                    type = nullOr str;
+                    default = null;
+                    defaultText = literalExpression ''"git+file:///home/user/my-infra"'';
+                  };
+
+                  autostart = mkOption {
+                    description = "Add this MicroVM to config.microvm.autostart?";
+                    type = bool;
+                    default = true;
+                  };
+
+                  restartIfChanged = mkOption {
+                    type = types.bool;
+                    default = config.config != null;
+                    description = ''
+                      Restart this MicroVM's services if the systemd units are changed,
+                      i.e. if it has been updated by rebuilding the host.
+
+                      Defaults to true for fully-declarative MicroVMs.
+                    '';
+                  };
+                };
+              }));
+            };
+          };
+        }));
       };
     };
   };
@@ -150,16 +182,13 @@ in
     systemd.tmpfiles.rules = flatten (
       mapAttrsToList (
         hostname: vmConfig:
-        optionals vmConfig.enable (
           [
             "d /var/lib/microvms/${hostname} 0750 microvm kvm"
             "d /var/lib/microvms/${hostname}/journal 0750 microvm kvm"
             "d /var/lib/microvms/${hostname}/tailscale 0750 microvm kvm"
             "d /var/lib/microvms/${hostname}/ssh-host-keys 0755 root root"
           ]
-        )
-      ) config.hyperberry.virtualization.vms
-    );
+      ) config.hyperberry.virtualization.vms);
 
     # Host-level SSH configuration
     programs.ssh.extraConfig = concatStringsSep "\n" (
@@ -168,7 +197,7 @@ in
         let
           ipAddress = vmConfig.networking.ipAddress;
         in
-        optionalString vmConfig.enable ''
+        ''
           Host ${hostname}
             HostName ${ipAddress}
             User root
@@ -189,34 +218,35 @@ in
     # MicroVM definitions
     microvm.vms = mapAttrs (
       hostname: vmConfig:
-      mkIf vmConfig.enable {
-        # Use x86_64-linux system for the VM
-        pkgs = import inputs.nixpkgs (
-          {
-            system = "x86_64-linux";
-          }
-          // vmConfig.nixpkgsConfig
-        );
+      # Apply berry guest defaults.
+      {
+        pkgs = 
+          if (vmConfig.microvm.pkgs == null) then
+            (import inputs.nixpkgs {
+              system = "x86_64-linux";
+            })
+          else
+            vmConfig.microvm.pkgs;
 
-        # Pass inputs as specialArgs to the VM configuration
-        specialArgs = {
+        specialArgs = vmConfig.microvm.specialArgs // {
           inherit inputs;
         };
 
-        config = mkMerge [
+        extraModules = vmConfig.microvm.extraModules ++ [
+          vmConfig.microvm.config
+        ];
+
+        config = { config, ... } @args:
           {
-            # Basic VM configuration
             networking.hostName = hostname;
             microvm.hypervisor = mkDefault "cloud-hypervisor";
             system.stateVersion = mkDefault "24.11";
 
-            # Configure networking
             networking.nameservers = [
               "1.1.1.1"
               "8.8.8.8"
             ];
 
-            # Configure TAP interface
             microvm.interfaces = [
               {
                 type = "tap";
@@ -231,7 +261,6 @@ in
             systemd.network.networks."20-lan" = {
               matchConfig.Type = "ether";
               networkConfig = {
-                #TODO: configurable subnet mask?
                 Address = "${vmConfig.networking.ipAddress}/24";
                 Gateway = "10.0.0.1";
                 DNS = [
@@ -241,12 +270,6 @@ in
               };
             };
 
-            microvm.mem = vmConfig.memory;
-            microvm.vcpu = vmConfig.vcpus;
-            microvm.devices = vmConfig.devices;
-            microvm.credentialFiles = vmConfig.credentialFiles;
-
-            # Filesystem shares
             microvm.shares = [
               {
                 source = "/nix/store";
@@ -275,9 +298,8 @@ in
                 proto = "virtiofs";
                 socket = "ssh-host-keys.sock";
               }
-            ] ++ vmConfig.mounts;
+            ];
 
-            # SSH configuration
             services.openssh = {
               enable = mkDefault true;
               settings = {
@@ -300,7 +322,6 @@ in
             # Configure root user SSH keys
             users.users.root.openssh.authorizedKeys.keyFiles = keys.ssh.hosts.hyperberry.paths;
 
-            # Network diagnostics and utilities
             environment.systemPackages = mkDefault (
               with pkgs;
               [
@@ -316,23 +337,16 @@ in
               ]
             );
 
-            # Firewall configuration
             networking.firewall = {
               enable = mkDefault true;
               allowPing = mkDefault true;
             };
 
-            # Boot configuration
             boot.loader.systemd-boot.enable = mkDefault true;
             boot.loader.timeout = mkDefault 1;
 
-            # Tailscale for remote access
             services.tailscale.enable = mkDefault true;
-          }
-
-          # User-provided configuration
-          vmConfig.config
-        ];
+          };
       }
     ) config.hyperberry.virtualization.vms;
   };

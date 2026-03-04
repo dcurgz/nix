@@ -16,7 +16,7 @@ hyperberry:
 	sudo chown -R root:wheel /etc/nixos
 	sudo chmod -R 774 /etc/nixos
 	# Go!
-	sudo nixos-rebuild switch --flake .#hyperberry --fast
+	sudo nixos-rebuild --no-reexec switch --flake .#hyperberry 
 
 blueberry:
 	# Fix permissions
@@ -49,10 +49,10 @@ bootstrap-weirdfi.sh:
 deploy:
 ifeq ($(HOSTNAME),hyperberry)
 	# build locally
-	deploy $(HOST) --skip-checks --skip-offline --fast-connection true -- --builders 'ssh://builder@miniberry aarch64-darwin - 16 1' --builders-use-substitutes --max-jobs 16 
+	deploy $(HOST) --skip-checks --skip-offline --no-rexec-connection true -- --builders 'ssh://builder@miniberry aarch64-darwin - 16 1' --builders-use-substitutes --max-jobs 16 
 else
 	# build remotely
-	deploy $(HOST) --skip-checks --skip-offline --fast-connection false -- $(REMOTE_BUILDER) --builders-use-substitutes --max-jobs 0
+	deploy $(HOST) --skip-checks --skip-offline --no-rexec-connection false -- $(REMOTE_BUILDER) --builders-use-substitutes --max-jobs 0
 endif
 
 weirdfi.sh:

@@ -20,10 +20,8 @@ in
 {
   hyperberry.virtualization = {
     vms.${hostname} = {
-      enable = true;
-
       vcpus = 4;
-      memory = 1024 * 4;
+      mem = 1024 * 4;
 
       networking = {
         macAddress = "02:00:00:00:00:04";

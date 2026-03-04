@@ -22,59 +22,55 @@ in
 {
   hyperberry.virtualization = {
     vms.${hostname} = {
-      enable = true;
-
-      vcpus = 6;
-      memory = 1024 * 16;
-
       networking = {
         macAddress = "02:00:00:00:00:06";
         ipAddress = "10.0.0.16";
       };
+      microvm = {
+        config = {
+          imports = [
+            inputs.neoforge-1-21-1.nixosModules.x86_64-linux.default
+            "${NIXOS_PRESETS}/packages/core"
+          ];
 
-      # Additional shares beyond the common ones
-      mounts = [
-        {
-          source = dataDir;
-          mountPoint = dataDir;
-          tag = "minecraft-data";
-          proto = "virtiofs";
-        }
-      ];
+          microvm.vcpu = 6;
+          microvm.mem = 1024 * 16;
+          microvm.shares = [
+            {
+              source = dataDir;
+              mountPoint = dataDir;
+              tag = "minecraft-data";
+              proto = "virtiofs";
+            }
+          ];
 
-      # VM-specific configuration
-      config = {
-        imports = [
-          inputs.neoforge-1-21-1.nixosModules.x86_64-linux.default
-          "${NIXOS_PRESETS}/packages/core"
-        ];
+          networking.firewall.allowedTCPPorts = [ 25565 ];
+          networking.firewall.allowedUDPPorts = [ 25565 ];
 
-        networking.firewall.allowedTCPPorts = [ 25565 ];
-        networking.firewall.allowedUDPPorts = [ 25565 ];
+          environment.systemPackages = with pkgs; [
+            jre_headless
+            rcon-cli
+          ];
 
-        environment.systemPackages = with pkgs; [
-          jre_headless
-          rcon-cli
-        ];
-
-        minecraft.neoforge = {
-          enable = true;
-          package = pkgs.by.neoforge-1-21-1;
-          overlays = {
-            modpack = pkgs.by.modpack-slime."${version}";
-            config = pkgs.linkFarm "config-overlay" [
-              {
-                name = "server.properties";
-                path = replaceOptionalVars ./server.properties {
-                  inherit version;
-                }; 
-              }
-            ];
+          minecraft.neoforge = {
+            enable = true;
+            package = pkgs.by.neoforge-1-21-1;
+            overlays = {
+              modpack = pkgs.by.modpack-slime."${version}";
+              config = pkgs.linkFarm "config-overlay" [
+                {
+                  name = "server.properties";
+                  path = replaceOptionalVars ./server.properties {
+                    inherit version;
+                  }; 
+                }
+              ];
+            };
+            dataDir = dataDir;
           };
-          dataDir = dataDir;
-        };
 
-        users.users.minecraft.extraGroups = [ "data" ];
+          users.users.minecraft.extraGroups = [ "data" ];
+        };
       };
     };
   };
