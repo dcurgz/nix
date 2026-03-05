@@ -194,10 +194,9 @@ in
                 port = 11434;
 
                 loadModels = [
-                  "dolphin3"
                   "gemma3:27b-it-qat"
                   "glm-4.7-flash:latest"
-                  "deepseek-r1:32b"
+                  "qwen3.5:27b"
                 ];
 
                 environmentVariables = {
