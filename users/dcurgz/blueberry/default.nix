@@ -25,11 +25,12 @@ in
     "${HM_PRESETS}/desktop/games/obs"
     # utilities
     "${HM_PRESETS}/desktop/utilities/bitwarden"
+    "${HM_PRESETS}/desktop/programs/jamesdsp"
     # terminal
     "${HM_PRESETS}/desktop/programs/fish"
     "${HM_PRESETS}/desktop/programs/vim"
+    "${HM_PRESETS}/desktop/programs/nvim"
     "${HM_PRESETS}/desktop/programs/firefox"
-    "${HM_PRESETS}/desktop/programs/zed"
     # packages
     "${HM_PRESETS}/packages/compilers"
     "${HM_PRESETS}/packages/core"
@@ -43,8 +44,10 @@ in
 
   home.packages = with pkgs; [
     vlc
+    feishin # audio player for jellyfin
     sshfs
     qemu
     qemu_kvm
+    lunarvim
   ];
 }

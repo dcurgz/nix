@@ -8,6 +8,8 @@
     plugins = with pkgs; [
       vimPlugins.vim-nix
       vimPlugins.rainbow
+      vimPlugins.goyo-vim
+      vimPlugins.ale
     ];
 
     extraConfig = ''
