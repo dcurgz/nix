@@ -12,7 +12,6 @@ let
 
   hostname = "vm-openwebui";
   dataDir = "/data/open-webui";
-  certsDir = "/data/open-webui.certs";
   ollamaDir = "/data/open-webui.ollama";
 
   internal_port = 8901;
@@ -23,7 +22,6 @@ in
 {
   systemd.tmpfiles.rules = [
     "d ${dataDir} 770 root data -"
-    "d ${certsDir} 770 root data -"
     "d ${ollamaDir} 770 root data -"
   ];
 
@@ -55,18 +53,18 @@ in
             microvm.mem = 1024 * 8 + 1;
             microvm.shares = [
               {
+                source = "/etc/ssl/certs";
+                mountPoint = "/etc/ssl/certs";
+                tag = "host-certs";
+                proto = "virtiofs";
+                socket = "openwebui-certs.sock";
+              }
+              {
                 source = dataDir;
                 mountPoint = "/var/lib/open-webui";
                 tag = "openwebui-data";
                 proto = "virtiofs";
                 socket = "openwebui-data.sock";
-              }
-              {
-                source = certsDir;
-                mountPoint = "/etc/ssl/certs";
-                tag = "openwebui-certs";
-                proto = "virtiofs";
-                socket = "openwebui-certs.sock";
               }
               {
                 source = ollamaDir;
@@ -86,6 +84,9 @@ in
                 path = by.hardware.pcie.nvidia_audio;
               }
             ];
+            microvm.writableStoreOverlay = "/nix/.rw-store";
+
+            nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"];
 
             age.secrets.tailscale-auth-key = {
               file = "${FLAKE_ROOT}/secrets/tailscale/guests/${hostname}.age"; 
@@ -114,8 +115,7 @@ in
             };
             users.groups.open-webui = {};
 
- 
-           services.nginx = 
+            services.nginx = 
               let
                 address = "vm-openwebui.${secrets.tailscale.magic_dns}";
               in
