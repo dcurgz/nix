@@ -7,8 +7,7 @@
 
 let
   naersk' = prev.callPackage inputs.naersk { };
-in
-{
+in rec {
   # Import our custom package set
   by = import ./pkgs {
     pkgs = final;
@@ -25,6 +24,15 @@ in
   niri = inputs.niri.packages.${prev.system}.niri-unstable;
 
   inherit (inputs.nfsm.packages.${prev.system}) nfsm nfsm-cli;
+
+  #sway-unwrapped = prev.sway-unwrapped.overrideAttrs (old: {
+  #  src = prev.fetchFromGitHub {
+  #    owner = "swaywm";
+  #    repo = "sway";
+  #    rev = "6d25b100a23a17e9663cab5c286934089f2c4460";
+  #    hash = "sha256-tIAHafuHAYUFVRoQQueFppqlA4FqXqdye4E+XlNBm8Y=";
+  #  };
+  #});
 
   # Local bin scripts
   local-scripts = prev.stdenv.mkDerivation {

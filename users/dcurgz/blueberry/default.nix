@@ -12,6 +12,7 @@ in
   imports = [
     # shell
     "${HM_PRESETS}/desktop/window-manager/niri"
+    "${HM_PRESETS}/desktop/window-manager/sway"
     "${HM_PRESETS}/desktop/shell/dank-material-shell"
     # common
     "${HM_PRESETS}/common"
