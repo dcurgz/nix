@@ -119,6 +119,8 @@ in
             };
           };
 
+          users.users.nginx.extraGroups = [ "data" ];
+
           # Additional firewall ports for immich
           networking.firewall.allowedTCPPorts = [
             22
