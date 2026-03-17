@@ -29,7 +29,6 @@ in
     # terminal
     "${HM_PRESETS}/desktop/programs/fish"
     "${HM_PRESETS}/desktop/programs/vim"
-    "${HM_PRESETS}/desktop/programs/nvim"
     "${HM_PRESETS}/desktop/programs/firefox"
     # packages
     "${HM_PRESETS}/packages/compilers"
@@ -49,5 +48,7 @@ in
     qemu
     qemu_kvm
     lunarvim
+    lutris
+    gamescope
   ];
 }

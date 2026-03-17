@@ -37,6 +37,7 @@ in
   options = {
     hyperberry.virtualization = {
       vms = mkOption {
+        default = {};
         type = types.attrsOf (types.submodule ({ name, config, ... }: {
           options = {
             networking = {
