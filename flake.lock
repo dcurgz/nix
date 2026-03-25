@@ -669,6 +669,21 @@
         "type": "github"
       }
     },
+    "nix-html": {
+      "locked": {
+        "lastModified": 1745822709,
+        "narHash": "sha256-Zy07r1z51MMCTH6OWmtK9vUGjygqjJVWSrc+hLEKBDQ=",
+        "owner": "NotAShelf",
+        "repo": "niXhtml",
+        "rev": "453c8b2b3592ea8a4e364ac8b635e2c09ce043c4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NotAShelf",
+        "repo": "niXhtml",
+        "type": "github"
+      }
+    },
     "nix-minecraft": {
       "inputs": {
         "flake-compat": "flake-compat_3",
@@ -1018,6 +1033,7 @@
         "niri": "niri",
         "nix-darwin": "nix-darwin",
         "nix-homebrew": "nix-homebrew",
+        "nix-html": "nix-html",
         "nix-minecraft": "nix-minecraft",
         "nix-rosetta-builder": "nix-rosetta-builder",
         "nix-time": "nix-time",

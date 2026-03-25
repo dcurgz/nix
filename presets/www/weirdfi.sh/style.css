@@ -1,27 +1,67 @@
-/* shamelessly copied and tweaked from https://causal.agency <3 */
-table.head, table.foot { width: 100%; }
-td.head-rtitle, td.foot-os { text-align: right; }
-td.head-vol { text-align: center; }
-div.Pp { margin: 1ex 0ex; }
-div.Nd, div.Bf, div.Op { display: inline; }
-span.Pa, span.Ad { font-style: italic; }
-span.Ms { font-weight: bold; }
-dl.Bl-diag > dt { font-weight: bold; }
-code.Nm, code.Fl, code.Cm, code.Ic, code.In, code.Fd, code.Fn,
-code.Cd { font-weight: bold; font-family: inherit; }
+/* vim: expandtab:ts=2:sw=2
+*/
+:root {
+  --c1: #d9865d;
+  --c2: #bba481;
+  --c3: #879274;
+  --c4: #645e72;
+  --c5: #453a4f;
+}
 
-div.head, div.foot { display: flex; justify-content: space-between; }
-.head-ltitle, .foot-date { flex: 1; }
-.head-vol { flex: 0 1 auto; text-align: center; }
-.head-rtitle, .foot-os { flex: 1; text-align: right; }
+body {
+  font-family: monospace;
+  max-width: 100ch;
+  margin: 1em auto;
+  padding: 0 1ch;
+}
 
-html { font-family: monospace; line-height: 1.25em; }
-body { max-width: 80ch; margin: 1em auto; padding: 0 1ch; }
-table { border-collapse: collapse; }
-table.Nm code.Nm { padding-right: 1ch; }
-table.foot { margin-top: 1em; }
+a {
+  color: var(--c4);
+}
 
-html { background-color: var(--ansi16); color: var(--ansi17); }
-a { color: var(--ansi4); }
-a:visited { color: var(--ansi5); }
-a.permalink { color: var(--ansi3); text-decoration: none; }
+.colour-palette {
+  width: 10ch;
+  height: 2ch;
+}
+
+.colour-box {
+  display: inline-block;
+  width: 20%;
+  height: 100%;
+}
+
+.colour-box-1 {
+  background-color: var(--c1);
+}
+.colour-box-2 {
+  background-color: var(--c2);
+}
+.colour-box-3 {
+  background-color: var(--c3);
+}
+.colour-box-4 {
+  background-color: var(--c4);
+}
+.colour-box-5 {
+  background-color: var(--c5);
+}
+
+.super-container {  
+  display: flex;
+}
+
+.side-column {
+  width: 20%; 
+  padding: 0 1rem;
+}
+
+.main-column {
+  width: 80%;
+}
+
+.column-block {
+  margin: 1ch 0;
+  padding: 1ch;
+  border: 1px solid var(--c4);
+  border-radius: 1rem;
+}

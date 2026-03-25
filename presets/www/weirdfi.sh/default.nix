@@ -1,7 +1,8 @@
 {
   self,
-  inputs,
   pkgs,
+  lib,
+  inputs,
   globals,
   ...
 }:
@@ -10,8 +11,8 @@ let
   inherit (globals) FLAKE_ROOT;
   inherit (pkgs) stdenv;
   inherit (inputs) nix-time;
-  html = stdenv.mkDerivation {
-    name = "html";
+  posts = stdenv.mkDerivation {
+    name = "weirdfish-posts";
     src = ./.;
     nativeBuildInputs = with pkgs; [ mandoc ];
     buildPhase = ''
@@ -48,8 +49,13 @@ let
             "${month} ${day}, ${year}";
     });
   };
+  index = builtins.toFile "index.html" (import ./index.nix { inherit self lib inputs; });
   webroot = (pkgs.linkFarm "webroot" [
-    (mkTemplate "index.html" "${html}/index.html")
+    #(mkTemplate "index.html" index)
+    {
+      name = "index.html";
+      path = index;
+    }
     {
       name = "style.css";
       path = ./style.css;

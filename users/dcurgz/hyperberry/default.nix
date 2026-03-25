@@ -17,6 +17,7 @@ in
     "${HM_PRESETS}/packages/compilers"
     "${HM_PRESETS}/desktop/fonts"
     "${HM_PRESETS}/desktop/programs/fish"
+    "${HM_PRESETS}/desktop/programs/vim"
   ];
 
   by.programs.alacritty.enable = true;

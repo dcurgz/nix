@@ -43,6 +43,7 @@
     weirdfish-server.inputs.nixpkgs.follows = "nixpkgs";
     weirdfish-server.url = "path:./pkgs/weirdfish-server";
     nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
+    nix-html.url = "github:NotAShelf/niXhtml";
   };
 
   outputs =
@@ -72,6 +73,7 @@
       nurpkgs,
       weirdfish-server,
       nixpkgs-wayland,
+      nix-html,
     }@inputs:
 
     let
@@ -171,7 +173,7 @@
                 nurpkgs.overlays.default
                 nixpkgs-wayland.overlays.default
               ];
-	      nixpkgs.config.allowUnfree = true;
+	          nixpkgs.config.allowUnfree = true;
             }
             ./modules/common
             ./modules/nixos
@@ -200,8 +202,8 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.sharedModules = [
-		./modules/home-manager/common
-		./modules/home-manager/nixos
+		      ./modules/home-manager/common
+		      ./modules/home-manager/nixos
                 # 3rd party modules
                 niri.homeModules.niri
                 dankMaterialShell.homeModules.dankMaterialShell.default
@@ -210,7 +212,7 @@
               home-manager.users.dcurgz = import ./users/dcurgz/blueberry;
               home-manager.extraSpecialArgs = {
                 # Pass arguments to home
-		inherit inputs globals;
+		        inherit inputs globals;
               };
               home-manager.backupFileExtension = "bak";
             }
@@ -291,7 +293,7 @@
                 (final: prev: import ./overlays.nix { inherit inputs final prev; })
                 nurpkgs.overlays.default
               ];
-	      nixpkgs.config.allowUnfree = true;
+	          nixpkgs.config.allowUnfree = true;
             }
             ./modules/common
             ./modules/nixos
