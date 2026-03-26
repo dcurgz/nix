@@ -320,6 +320,12 @@ in
               ];
             };
 
+            fileSystems = {
+              "/var/lib/ssh-host-keys" = {
+                neededForBoot = true;
+              };
+            };
+
             # Configure root user SSH keys
             users.users.root.openssh.authorizedKeys.keyFiles = keys.ssh.hosts.hyperberry.paths;
 

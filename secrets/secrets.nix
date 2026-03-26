@@ -14,8 +14,9 @@ with keys.ssh.hosts;
   "tailscale/hosts/hyperberry.age".publicKeys = (withDefault hyperberry.keys);
   "tailscale/hosts/blueberry.age".publicKeys  = (withDefault blueberry.keys);
   # guests
-  "tailscale/guests/vm-openwebui.age".publicKeys  = (withDefault vm-openwebui.keys);
-  "tailscale/guests/vm-vikunja.age".publicKeys    = (withDefault vm-vikunja.keys);
+  "tailscale/guests/vm-openwebui.age".publicKeys       = (withDefault vm-openwebui.keys);
+  "tailscale/guests/vm-vikunja.age".publicKeys         = (withDefault vm-vikunja.keys);
+  "tailscale/guests/vm-mc-leedlemon.age".publicKeys    = (withDefault vm-mc-leedlemon.keys);
   # hyperberry
   "backup/restic-password.age".publicKeys     = (withDefault hyperberry.keys);
   "backup/restic-envvars.age".publicKeys      = (withDefault hyperberry.keys);

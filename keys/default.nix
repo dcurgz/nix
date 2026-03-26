@@ -63,6 +63,7 @@ let
     (mkGuest "vm-mc-slime-sta")
     (mkGuest "vm-mc-wg-0")
     (mkGuest "vm-mc-wg-1")
+    (mkGuest "vm-mc-leedlemon")
   ];
 in
 {

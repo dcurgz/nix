@@ -14,4 +14,5 @@ with pkgs;
   neoforge-1-21-1 = pkgs.callPackage ./neoforge-1-21-1 { };
   # Modpacks
   modpack-slime = pkgs.callPackage ./modpack-slime { };
+  modpack-leedlemon = pkgs.callPackage ./modpack-leedlemon { };
 }

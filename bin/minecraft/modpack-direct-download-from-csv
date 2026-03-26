@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+### Given a modpack.csv file (exported from Prism Launcher) in the format...
+###   Mod Name,https://modrinth.com/mod/XxWD5pD3,19.2.17
+### Use the Modrinth API to get direct downloads for each of the mods.
+FILE="$1"
+LOADER="neoforge"
+while IFS="," read -r name url version; do
+    if [[ "$url" == *modrinth* ]]; then
+        PROJECT=$(echo "$url" | cut -d'/' -f5)
+        RESPONSE=$(curl https://api.modrinth.com/v2/project/$PROJECT/version/$version 2>/dev/null)
+        LINK=$(echo "$RESPONSE" | jq -r .files[0].url)
+        if [ -z "$LINK" ]; then
+            # this version isn't contained verbatim, search for it
+            VERSIONS=$(curl https://api.modrinth.com/v2/project/$PROJECT/version 2>/dev/null)
+            LINK=$(echo "$VERSIONS" | jq -r '.[] | select(.loaders[] | contains('\"$LOADER\"')) | select(.files[0].url | contains('\"$version\"')) | .files[0].url' | head -n1)
+        fi
+        if [ -z "$LINK" ]; then
+            echo "E: Cannot find version for $name ($url)"
+        else
+            echo "$LINK"
+        fi
+        sleep 0.1
+    else
+        echo "E: $name ($url) is not a Modrinth link, skipping..."
+    fi
+done < "$FILE"
