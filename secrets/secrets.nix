@@ -11,8 +11,9 @@ with keys.ssh.hosts;
 {
   ### Tailscale
   # hosts
-  "tailscale/hosts/hyperberry.age".publicKeys = (withDefault hyperberry.keys);
-  "tailscale/hosts/blueberry.age".publicKeys  = (withDefault blueberry.keys);
+  "tailscale/hosts/hyperberry.age".publicKeys   = (withDefault hyperberry.keys);
+  "tailscale/hosts/blueberry.age".publicKeys    = (withDefault blueberry.keys);
+  "tailscale/hosts/publicproxy.age".publicKeys  = (withDefault publicproxy.keys);
   # guests
   "tailscale/guests/vm-openwebui.age".publicKeys       = (withDefault vm-openwebui.keys);
   "tailscale/guests/vm-vikunja.age".publicKeys         = (withDefault vm-vikunja.keys);

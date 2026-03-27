@@ -54,6 +54,8 @@ let
     (mkGroupHost "tauberry"   ["host" "tauberry"]  [g_WG])
     (mkGroupHost "fooberry"   ["host" "root"]      [g_CRZ])
 
+    (mkGroupHost "publicproxy"   ["host"]      [g_EXT])
+
     (mkGuest "vm-jellyfin")
     (mkGuest "vm-vikunja")
     (mkGuest "vm-immich")
