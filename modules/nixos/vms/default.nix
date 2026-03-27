@@ -188,6 +188,7 @@ in
             "d /var/lib/microvms/${hostname}/journal 0750 microvm kvm"
             "d /var/lib/microvms/${hostname}/tailscale 0750 microvm kvm"
             "d /var/lib/microvms/${hostname}/ssh-host-keys 0755 root root"
+            "d /var/lib/microvms/${hostname}/root-home 0755 root root"
           ]
       ) config.hyperberry.virtualization.vms);
 
@@ -298,6 +299,13 @@ in
                 tag = "ssh-host-keys";
                 proto = "virtiofs";
                 socket = "ssh-host-keys.sock";
+              }
+              {
+                source = "/var/lib/microvms/${hostname}/root-home";
+                mountPoint = "/root";
+                tag = "root-home";
+                proto = "virtiofs";
+                socket = "root-home.sock";
               }
             ];
 
