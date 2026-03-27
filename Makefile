@@ -44,7 +44,10 @@ miniberry:
 	sudo darwin-rebuild switch --flake .#miniberry --show-trace
 
 bootstrap-weirdfi.sh:
-	$(NIX) run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./systems/weirdfi.sh-cax11-4gb/hardware-configuration.$(NIX) --flake .#weirdfish-cax11-4gb --target-host "root@weirdfi.sh"
+	$(NIX) run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./systems/weirdfi.sh-cax11-4gb/hardware-configuration.nix --flake .#weirdfish-cax11-4gb --target-host "root@weirdfi.sh"
+
+bootstrap-publicproxy:
+	$(NIX) run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./systems/publicproxy-cax11-4gb/hardware-configuration.nix --flake .#publicproxy-cax11-4gb --target-host "root@publicproxy"
 
 deploy:
 ifeq ($(HOSTNAME),hyperberry)
@@ -57,6 +60,9 @@ endif
 
 weirdfi.sh:
 	HOST=.#weirdfish-cax11-4gb make deploy 
+
+publicproxy:
+	HOST=.#publicproxy-cax11-4gb make deploy 
 
 # Update flake inputs and lock file
 update:

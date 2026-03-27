@@ -51,7 +51,7 @@ in
   services.fail2ban.enable = true;
 
   networking = {
-    hostName = "weirdfish-cax11-4gb";
+    hostName = "publicproxy-cax11-4gb";
     enableIPv6 = true;
     nameservers = [
       "1.1.1.1"

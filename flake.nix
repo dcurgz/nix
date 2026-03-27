@@ -361,6 +361,45 @@
             disko.nixosModules.disko
           ];
         };
+
+        publicproxy-cax11-4gb = nixpkgs.lib.nixosSystem rec {
+          system = "aarch64-linux";
+          specialArgs = {
+            # Pass arguments to all modules.
+            inherit self inputs globals;
+          };
+          modules = [
+            # Apply overlays to nixpkgs
+            {
+              nixpkgs.overlays = [
+                (final: prev: import ./overlays.nix { inherit inputs final prev; })
+                nixgl.overlay
+                nurpkgs.overlays.default
+              ];
+            }
+            ./modules/common
+            ./modules/nixos
+            ./modules/www
+            # git-crypt protected variables
+            ./secrets/berry.enc.nix
+            # Main configuration files
+            ./systems/publicproxy-cax11-4gb/hardware-configuration.nix
+            ./systems/publicproxy-cax11-4gb/disk-config.nix
+            ./systems/publicproxy-cax11-4gb
+            ./presets/common/ports.nix
+            ./presets/nixos/misc/nix-daemon.nix
+            ./presets/nixos/security/sudo
+            ./presets/nixos/security/groups
+            ./presets/nixos/packages/core
+            ./presets/nixos/packages/encryption
+            ./presets/nixos/packages/python
+            # 3rd party modules
+            microvm.nixosModules.host
+            agenix.nixosModules.default
+            # declarative partition management
+            disko.nixosModules.disko
+          ];
+        };
       };
 
       darwinConfigurations."airberry" = nix-darwin.lib.darwinSystem {
@@ -546,6 +585,16 @@
           profiles.system = {
             user = "root";
             path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.weirdfish-cax11-4gb;
+          };
+        };
+
+        publicproxy-cax11-4gb = {
+          hostname = "publicproxy";
+          sshUser = "root";
+          remoteBuild = true;
+          profiles.system = {
+            user = "root";
+            path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.publicproxy-cax11-4gb;
           };
         };
       };
