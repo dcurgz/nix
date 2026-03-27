@@ -4,15 +4,16 @@
 ### Use the Modrinth API to get direct downloads for each of the mods.
 FILE="$1"
 LOADER="neoforge"
-while IFS="," read -r name url version; do
+while IFS="," read -r name url version filename; do
     if [[ "$url" == *modrinth* ]]; then
         PROJECT=$(echo "$url" | cut -d'/' -f5)
         RESPONSE=$(curl https://api.modrinth.com/v2/project/$PROJECT/version/$version 2>/dev/null)
-        LINK=$(echo "$RESPONSE" | jq -r .files[0].url)
+        #LINK=$(echo "$RESPONSE" | jq -r .files[0].url)
+        LINK=""
         if [ -z "$LINK" ]; then
-            # this version isn't contained verbatim, search for it
+            # this version isn't contained verbatim, search for it with filename
             VERSIONS=$(curl https://api.modrinth.com/v2/project/$PROJECT/version 2>/dev/null)
-            LINK=$(echo "$VERSIONS" | jq -r '.[] | select(.loaders[] | contains('\"$LOADER\"')) | select(.files[0].url | contains('\"$version\"')) | .files[0].url' | head -n1)
+            LINK=$(echo "$VERSIONS" | jq -r '.[] | select(.loaders[] | contains('\"$LOADER\"')) | select(.files[0].filename | contains('\"$filename\"')) | .files[0].url' | head -n1)
         fi
         if [ -z "$LINK" ]; then
             echo "E: Cannot find version for $name ($url)"

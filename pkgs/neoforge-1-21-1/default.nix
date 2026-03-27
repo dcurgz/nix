@@ -5,14 +5,17 @@
 }:
 with lib;
 
+let
+  neoforge-version = "21.1.221";
+in
 pkgs.stdenvNoCC.mkDerivation {
   name = "neoforge-1.21.1";
   dontUnpack = true;
   dontFixup = true;
 
   src = pkgs.fetchurl {
-    url = "https://maven.neoforged.net/releases/net/neoforged/neoforge/21.1.218/neoforge-21.1.218-installer.jar";
-    hash = "sha256-J9dpTWoPfkdNTGxbVcxb1ZQTIvLxWU+ZJ/+Vc9+5MyM=";
+    url = "https://maven.neoforged.net/releases/net/neoforged/neoforge/${neoforge-version}/neoforge-${neoforge-version}-installer.jar";
+    hash = "sha256-mbyMIz7kF2MJTsoFcHSE225zVdfXf7P3IL+GCaLzAIE=";
   };
 
   nativeBuildInputs = with pkgs; [ jre_headless cacert ];
@@ -22,7 +25,7 @@ pkgs.stdenvNoCC.mkDerivation {
     java -jar "$src" --installServer "$out"
   '';
 
-  outputHash = "sha256-XzBGTaUAJzNfCSQclQ57y5jAlPbc7HK4I+JVZg0anDY=";
+  outputHash = "sha256-ix9Q2KFe8B/OsB8CNmvYgqTFGhMtbhZEAl2eYwccX3w=";
   outputHashMode = "recursive";
 }
 
