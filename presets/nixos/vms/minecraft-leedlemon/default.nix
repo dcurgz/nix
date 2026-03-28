@@ -44,6 +44,14 @@ in
               tag = "minecraft-data";
               proto = "virtiofs";
             }
+            # SSL certificates
+            {
+              source = "/etc/ssl/certs";
+              mountPoint = "/etc/ssl/certs";
+              tag = "ssl-certs";
+              proto = "virtiofs";
+              socket = "ssl-certs.sock";
+            }
           ];
 
           networking.firewall.allowedTCPPorts = [ 25565 ];

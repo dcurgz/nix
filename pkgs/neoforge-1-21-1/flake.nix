@@ -78,6 +78,7 @@
                   serviceConfig = {
                     Restart = "always";
                     RestartSec = "5s";
+                    TimeoutStopSec = "120s";
                     WorkingDirectory = "${homeDir}";
                   };
                   path = with pkgs; [ bash mount jre_headless ];

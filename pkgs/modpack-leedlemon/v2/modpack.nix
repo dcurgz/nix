@@ -67,4 +67,5 @@ pkgs.linkFarm "my-modpack" [
   { name = "scarecrowsterritory-1.1.11a-neoforge-mc1.21.jar"; path = pkgs.fetchurl { url = "https://cdn.modrinth.com/data/1RaTTUPz/versions/ItAjFaTb/scarecrowsterritory-1.1.11a-neoforge-mc1.21.jar"; hash = "sha256-5TXw11IrEr3QwOettPBj+rqURuS2ItHPF4i+LIqIGXs="; }; }
   { name = "lithostitched-1.6.3-neoforge-21.1.jar"; path = pkgs.fetchurl { url = "https://cdn.modrinth.com/data/XaDC71GB/versions/W21CcpMS/lithostitched-1.6.3-neoforge-21.1.jar"; hash = "sha256-q1tEVID+qNqBqEkywJeBLuADHvZ/swO+r+v39qS2bUA="; }; }
   { name = "tectonic-3.0.21-neoforge-21.1.jar"; path = pkgs.fetchurl { url = "https://cdn.modrinth.com/data/lWDHr9jE/versions/qrX9Y1PI/tectonic-3.0.21-neoforge-21.1.jar"; hash = "sha256-Ry1Z9CevotAl5U/XI8EE7JKVl7qGX1dA0ou62/nQ+Mw="; }; }
+  { name = "bluemap-5.7-neoforge.jar"; path = pkgs.fetchurl { url = "https://cdn.modrinth.com/data/swbUV1cr/versions/8iJcPOHJ/bluemap-5.7-neoforge.jar"; hash = "sha256-gnrDkhmG0NXpwk7yKA9HwRDSLcFNKE77ZTMAENLpUX0="; }; }
 ]
