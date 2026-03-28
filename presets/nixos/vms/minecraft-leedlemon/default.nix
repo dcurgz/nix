@@ -15,7 +15,7 @@ let
   nix-minecraft = inputs.nix-minecraft;
 
   dataDir = "/data/minecraft-leedlemon";
-  version = "v1";
+  version = "v2";
 
   inherit (pkgs.by.lib) replaceOptionalVars;
 in
