@@ -60,7 +60,6 @@ in
           age.secrets.tailscale-auth-key = {
             file = "${FLAKE_ROOT}/secrets/tailscale/guests/${hostname}.age"; 
             mode = "0440"; 
-            #group = "kvm";
           };
           services.tailscale.authKeyFile = config.age.secrets.tailscale-auth-key.path;
 
@@ -85,6 +84,16 @@ in
             };
             dataDir = dataDir;
           };
+
+          # Ensure that tailscaled is not terminated before the server shuts down.
+          systemd.services.neoforge-server = {
+            after = [ "tailscaled.service" ];
+            serviceConfig = {
+              Requires = [ "tailscaled.service" ];
+            };
+          };
+
+          #services.nginx.enable = true;
 
           users.users.minecraft.extraGroups = [ "data" ];
         };

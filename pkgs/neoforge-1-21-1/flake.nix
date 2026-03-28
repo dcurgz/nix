@@ -58,6 +58,26 @@
                   }
                 ];
                 configDir = cfg.overlays.config;
+
+                saveAndStop =
+                  let
+                    rcon = lib.getExe pkgs.rcon-cli;
+                  in
+                    pkgs.writeShellScriptBin "save-and-stop" ''
+                      ${rcon} --password leedlemon save-all
+                      ${rcon} --password leedlemon say Server is shutting down in 10s.
+                      sleep 5
+                      ${rcon} --password leedlemon say Server is shutting down in 5s.
+                      sleep 2
+                      ${rcon} --password leedlemon say Server is shutting down in 3s.
+                      sleep 1
+                      ${rcon} --password leedlemon say Server is shutting down in 2s.
+                      sleep 1
+                      ${rcon} --password leedlemon say Server is shutting down in 1s.
+                      sleep 1
+                      ${rcon} --password leedlemon stop
+                      sleep 10
+                    '';
               in
               {
                 users = {
@@ -78,8 +98,10 @@
                   serviceConfig = {
                     Restart = "always";
                     RestartSec = "5s";
-                    TimeoutStopSec = "120s";
                     WorkingDirectory = "${homeDir}";
+                    ExecStop = lib.getExe saveAndStop;
+                    TimeoutStopSec = "120s";
+                    Requires = [ "network.target" ];
                   };
                   path = with pkgs; [ bash mount jre_headless ];
                   script =
