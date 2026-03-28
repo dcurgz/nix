@@ -9,6 +9,7 @@
 
 let
   by = config.by.constants;
+  secrets = config.by.secrets;
   inherit (globals) FLAKE_ROOT NIXOS_PRESETS;
 
   hostname = "vm-mc-leedlemon";
@@ -93,9 +94,31 @@ in
             };
           };
 
-          #services.nginx.enable = true;
+          services.nginx =
+            let
+              domain = secrets.hosts.${hostname}.ssh.hostname;
+              bluemap_http = 8100;
+            in
+            {
+              enable = true;
+              recommendedProxySettings = true;
+              recommendedGzipSettings = true;
+              recommendedOptimisation = true;
+              recommendedTlsSettings = true;
+              virtualHosts."${domain}" = {
+                default = true;
+                forceSSL = true;
+                sslCertificate = "/etc/ssl/certs/${domain}.crt";
+                sslCertificateKey = "/etc/ssl/certs/${domain}.key";
+                locations."/" = {
+                  proxyPass = "http://localhost:${toString bluemap_http}";
+                  proxyWebsockets = true;
+                };
+              };
+            };
 
           users.users.minecraft.extraGroups = [ "data" ];
+          users.users.nginx.extraGroups     = [ "data" ];
         };
       };
     };
