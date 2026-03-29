@@ -51,5 +51,8 @@ in
     lunarvim
     lutris
     gamescope
+    chromium
+    wootility
+    rpcs3
   ];
 }

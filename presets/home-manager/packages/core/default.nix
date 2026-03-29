@@ -87,6 +87,7 @@
       with pkgs;
       [
         isd
+        usbutils
       ]
     );
 }

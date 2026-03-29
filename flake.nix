@@ -187,6 +187,7 @@
             ./presets/common/ssh.nix
             ./presets/common/git.nix
             ./presets/nixos/misc/nix-daemon.nix
+            ./presets/nixos/misc/wooting-udev.nix
             ./presets/nixos/security/sudo
             ./presets/nixos/security/groups
             ./presets/nixos/packages/core

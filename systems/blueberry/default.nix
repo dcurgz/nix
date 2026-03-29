@@ -71,6 +71,7 @@ in
     group = "dcurgz";
     extraGroups = [
       "wheel"
+      "input"
     ];
     home = "/home/dcurgz";
   };
