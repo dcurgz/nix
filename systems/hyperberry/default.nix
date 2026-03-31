@@ -274,7 +274,7 @@ in
       ];
       timerConfig.OnCalendar = "*-*-* 07:14:00";
     };
-    hyperberry-data-mc-leedlemon = {
+    hyperberry-data-mc-leedlemon-daily = {
       paths = [
         "/data/minecraft-leedlemon"
       ];
@@ -284,6 +284,15 @@ in
         "--keep-monthly=1"
       ];
       timerConfig.OnCalendar = "*-*-* 07:16:00";
+    };
+    hyperberry-data-mc-leedlemon-hourly = {
+      paths = [
+        "/data/minecraft-leedlemon"
+      ];
+      pruneOpts = [
+        "--keep-daily=5"
+      ];
+      timerConfig.OnCalendar = "*-*-* *:00:00";
     };
     hyperberry-data-teamspeak = {
       paths = [
