@@ -10,6 +10,7 @@ GUESTS=(
   'vm-mc-wg-0'
   'vm-mc-wg-1'
   'vm-mc-leedlemon'
+  'vm-mc-leedl-sta'
 )
 OUT_DIR="./keys/ssh"
 

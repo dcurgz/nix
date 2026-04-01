@@ -25,6 +25,8 @@
     naersk.url = "github:nix-community/naersk";
     neoforge-1-21-1.inputs.nixpkgs.follows = "nixpkgs";
     neoforge-1-21-1.url = "path:./pkgs/neoforge-1-21-1";
+    magma-1-21-1.inputs.nixpkgs.follows = "nixpkgs";
+    magma-1-21-1.url = "path:./pkgs/magma-1-21-1";
     nfsm.inputs.nixpkgs.follows = "nixpkgs";
     nfsm.url = "github:gvolpe/nfsm";
     niri.inputs.nixpkgs.follows = "nixpkgs";
@@ -61,6 +63,7 @@
       microvm,
       naersk,
       neoforge-1-21-1,
+      magma-1-21-1,
       nfsm,
       niri,
       nix-darwin,
@@ -131,6 +134,7 @@
                 ./presets/nixos/vms/minecraft-slime
                 #./presets/nixos/vms/minecraft-slime_staging
                 ./presets/nixos/vms/minecraft-leedlemon
+                ./presets/nixos/vms/minecraft-leedlemon_staging
                 ./presets/nixos/vms/teamspeak
                 ./presets/nixos/vms/jellyfin
                 ./presets/nixos/vms/open-webui

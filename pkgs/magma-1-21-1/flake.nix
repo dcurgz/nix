@@ -1,0 +1,141 @@
+{
+  description = "A very basic flake";
+
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
+  };
+
+  outputs = { flake-utils, nixpkgs, ... }:
+    flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = import nixpkgs {
+          inherit system;
+        };
+      in
+      {
+        packages.magma-1-21-1 = pkgs.callPackage ./. { };
+        nixosModules.default = ({ config, pkgs, lib, ... }:
+          with lib;
+
+          let
+            cfg = config.minecraft.magma;
+          in
+          {
+            options.minecraft.magma = {
+              enable = mkEnableOption "Enable the magma systemd service.";
+              package = mkOption {
+                type = types.package;
+                description = "The magma server package to use.";
+              };
+              overlays = {
+                modpack = mkOption {
+                  type = types.path;
+                  description = "A modpack overlay, given as a pkgs.linkFarm derivation.";
+                };
+                config = mkOption {
+                  type = types.path;
+                  description = "A config overlay, given as a pkgs.linkFarm derivation.";
+                };
+              };
+              dataDir = mkOption {
+                type = types.path;
+                description = ''
+                  The server directory is implemented as an overlayfs mount.
+                  The data directory will serve as the upper dir, where runtime
+                  files are stored.
+                  '';
+              };
+            };
+
+            config = mkIf (cfg.enable) (
+              let
+                homeDir = "/var/lib/minecraft";  
+                modpackDir = pkgs.linkFarm "modpack-overlay" [
+                  {
+                    name = "mods";
+                    path = cfg.overlays.modpack;
+                  }
+                ];
+                configDir = cfg.overlays.config;
+
+                saveAndStop =
+                  let
+                    rcon = lib.getExe pkgs.rcon-cli;
+                  in
+                    pkgs.writeShellScriptBin "save-and-stop" ''
+                      ${rcon} --password leedlemon save-all
+                      ${rcon} --password leedlemon say Server is shutting down in 10s.
+                      sleep 5
+                      ${rcon} --password leedlemon say Server is shutting down in 5s.
+                      sleep 2
+                      ${rcon} --password leedlemon say Server is shutting down in 3s.
+                      sleep 1
+                      ${rcon} --password leedlemon say Server is shutting down in 2s.
+                      sleep 1
+                      ${rcon} --password leedlemon say Server is shutting down in 1s.
+                      sleep 1
+                      ${rcon} --password leedlemon stop
+                      sleep 3
+                    '';
+              in
+              {
+                users = {
+                  users.minecraft = {
+                    description = "Minecraft server";
+                    home = "${homeDir}";
+                    createHome = true;
+                    homeMode = "770";
+                    isSystemUser = true;
+                    group = "minecraft";
+                  };
+                  groups.minecraft = { };
+                };
+
+                systemd.services.magma-server = {
+                  wantedBy = [ "multi-user.target" ];
+                  after = [ "network.target" ];
+                  serviceConfig = {
+                    Restart = "always";
+                    RestartSec = "5s";
+                    WorkingDirectory = "${homeDir}";
+                    ExecStop = lib.getExe saveAndStop;
+                    TimeoutStopSec = "120s";
+                    Requires = [ "network.target" ];
+                  };
+                  path = with pkgs; [ bash mount jre_headless ];
+                  script =
+                    let
+                      mountDir = "${homeDir}/server.0";
+                      serverDir = "${cfg.dataDir}/server";
+                      workDir = "${cfg.dataDir}/.overlayfs";
+                    in
+                    ''
+                    #!/usr/bin/env bash
+                    set -xe
+                    if [ ! -d "${mountDir}" ]; then
+                      mkdir -p "${mountDir}"
+                    fi
+                    if [ ! -d "${cfg.dataDir}" ]; then
+                      mkdir -vp "${cfg.dataDir}"
+                    fi
+                    if [ ! -d "${serverDir}" ]; then
+                      mkdir -vp "${serverDir}"
+                    fi
+                    if [ -d "${workDir}" ]; then
+                      rm -rf "${workDir}"
+                    fi
+                    mkdir -vp "${workDir}"
+                    # Configure overlayfs mount
+                    mount -t overlay overlay -o lowerdir="${cfg.package}":"${modpackDir}:${configDir}",upperdir="${serverDir}",workdir="${workDir}",userxattr ${mountDir}
+                    # Start the server
+                    cd "${mountDir}"
+                    ./run.sh
+                  '';
+                };
+              });
+            }
+        );
+      }
+    );
+}
