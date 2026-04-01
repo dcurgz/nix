@@ -290,7 +290,7 @@ in
         "/data/minecraft-leedlemon"
       ];
       pruneOpts = [
-        "--keep-daily=5"
+        "--keep-last=24"
       ];
       timerConfig.OnCalendar = "*-*-* *:00:00";
     };

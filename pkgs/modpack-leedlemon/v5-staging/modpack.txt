@@ -69,8 +69,8 @@ https://cdn.modrinth.com/data/Ce6I4WUE/versions/yY7vZB47/Mekanism-1.21.1-10.7.18
 https://cdn.modrinth.com/data/IZciqufR/versions/jCGHoMoI/mekanism_unleashed-0.3.2.jar
 https://cdn.modrinth.com/data/IiATswDj/versions/TpUCzFaW/Applied-Mekanistics-1.6.3.jar
 https://cdn.modrinth.com/data/J81TRJWm/versions/stJDU839/konkrete_neoforge_1.9.9_MC_1.21.jar
-https://cdn.modrinth.com/data/JbqjOoQj/versions/OdksqY6s/carryonextend-architectury-neoforge-1.5.1.jar
-https://cdn.modrinth.com/data/L3Jv0QZI/versions/vpLvW4Yz/railways-0.1.0%2Bneoforge-mc1.21.1.jar
+#https://cdn.modrinth.com/data/JbqjOoQj/versions/OdksqY6s/carryonextend-architectury-neoforge-1.5.1.jar
+#https://cdn.modrinth.com/data/L3Jv0QZI/versions/vpLvW4Yz/railways-0.1.0%2Bneoforge-mc1.21.1.jar
 https://cdn.modrinth.com/data/OFVYKsAk/versions/5XsSoiIJ/MekanismGenerators-1.21.1-10.7.18.84.jar
 https://cdn.modrinth.com/data/QHMDf0Sd/versions/m5pFB06e/refinedstorage-mekanism-integration-1.1.1.jar
 https://cdn.modrinth.com/data/fQO83PId/versions/sngZYqdK/reliquary-1.21.1-2.0.66.1363.jar
@@ -78,7 +78,7 @@ https://cdn.modrinth.com/data/fuuu3xnx/versions/iEE85X0w/Searchables-neoforge-1.
 https://cdn.modrinth.com/data/hMlaZH8f/versions/4NVApvnv/sophisticatedstorage-1.21.1-1.5.31.1549.jar
 https://cdn.modrinth.com/data/hvFdcxrV/versions/GbkhDlWF/MekanismLasers-1.12.1-1.1.10.2.jar
 https://cdn.modrinth.com/data/iAiqcykM/versions/mnCUZfmm/justzoom_neoforge_2.1.0_MC_1.21.1.jar
-https://cdn.modrinth.com/data/joEfVgkn/versions/cgZi7nC7/carryon-neoforge-1.21.1-2.2.4.4.jar
+#https://cdn.modrinth.com/data/joEfVgkn/versions/cgZi7nC7/carryon-neoforge-1.21.1-2.2.4.4.jar
 https://cdn.modrinth.com/data/kRaE85yQ/versions/g0Exmy3H/JustEnoughMekanismMultiblocks-1.21.1-7.7.jar
 https://mediafilez.forgecdn.net/files/7136/179/dysoncubeproject-1.0.2.jar
 https://mediafilez.forgecdn.net/files/7224/975/mekagenjei-1.2.jar
