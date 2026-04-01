@@ -37,7 +37,7 @@ in
           ];
 
           microvm.vcpu = 3;
-          microvm.mem = 1024 * 6;
+          microvm.mem = 1024 * 10;
           microvm.shares = [
             {
               source = dataDir;
