@@ -5,6 +5,7 @@ REMOTE_BUILDER := --builders "ssh://builder@hyperberry x86_64-linux,aarch64-linu
 HOME_MANAGER := home-manager --extra-experimental-features "nix-command flakes"
 
 NIX := nix --extra-experimental-features "nix-command flakes"
+NOM := --log-format internal-json -v |& nom --json
 
 HOSTNAME := $(shell cat /etc/hostname)
 
@@ -23,7 +24,7 @@ blueberry:
 	sudo chown -R root:wheel /etc/nixos
 	sudo chmod -R 774 /etc/nixos
 	# Go!
-	sudo nixos-rebuild switch --flake .#blueberry --log-format internal-json -v |& nom --json
+	sudo nixos-rebuild switch --flake .#blueberry $(NOM)
 
 piberry:
 	sudo nixos-rebuild $(REMOTE_BUILDER) --max-jobs 0 switch --flake .#piberry
@@ -55,7 +56,7 @@ ifeq ($(HOSTNAME),hyperberry)
 	deploy $(HOST) --skip-checks --skip-offline --fast-connection true -- --builders 'ssh://builder@miniberry aarch64-darwin - 16 1' --builders-use-substitutes --max-jobs 16 
 else
 	# build remotely
-	deploy $(HOST) --skip-checks --skip-offline --no-rexec-connection false -- $(REMOTE_BUILDER) --builders-use-substitutes --max-jobs 0
+	deploy $(HOST) --skip-checks --skip-offline --fast-connection false -- $(REMOTE_BUILDER) --builders-use-substitutes --max-jobs 0 
 endif
 
 weirdfi.sh:

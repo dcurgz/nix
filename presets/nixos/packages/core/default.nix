@@ -21,5 +21,6 @@
     tree
     vim
     which
+    nix-output-monitor
   ];
 }
