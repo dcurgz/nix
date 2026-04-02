@@ -44,7 +44,7 @@
     nurpkgs.url = "github:nix-community/NUR"; # Nix user repository
     weirdfish-server.inputs.nixpkgs.follows = "nixpkgs";
     weirdfish-server.url = "path:./pkgs/weirdfish-server";
-    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
+    #nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
     nix-html.url = "github:NotAShelf/niXhtml";
   };
 
@@ -75,7 +75,7 @@
       nixpkgs,
       nurpkgs,
       weirdfish-server,
-      nixpkgs-wayland,
+      #nixpkgs-wayland,
       nix-html,
     }@inputs:
 
@@ -176,7 +176,7 @@
               nixpkgs.overlays = [
                 (final: prev: import ./overlays.nix { inherit inputs final prev; })
                 nurpkgs.overlays.default
-                nixpkgs-wayland.overlays.default
+                #nixpkgs-wayland.overlays.default
               ];
 	          nixpkgs.config.allowUnfree = true;
             }

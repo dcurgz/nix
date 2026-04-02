@@ -12,7 +12,7 @@ in
   imports = [
     # shell
     "${HM_PRESETS}/desktop/window-manager/niri"
-    "${HM_PRESETS}/desktop/window-manager/sway"
+    #"${HM_PRESETS}/desktop/window-manager/sway"
     "${HM_PRESETS}/desktop/shell/dank-material-shell"
     # common
     "${HM_PRESETS}/common"
@@ -48,11 +48,12 @@ in
     sshfs
     qemu
     qemu_kvm
-    lunarvim
+    #lunarvim
     lutris
     gamescope
     chromium
     wootility
     rpcs3
+    tidal-hifi
   ];
 }
