@@ -76,7 +76,7 @@
                       ${rcon} --password leedlemon say Server is shutting down in 1s.
                       sleep 1
                       ${rcon} --password leedlemon stop
-                      sleep 3
+                      sleep 10
                     '';
               in
               {

@@ -1,1 +1,0 @@
-- `wallhaven-2182mg.jpg`: https://www.pixiv.net/en/users/50047601
