@@ -54,6 +54,7 @@ in
     # apps
     "alacritty"
     "zed"
+    "tidal"
     # services
     "tailscale-app"
     # browser
