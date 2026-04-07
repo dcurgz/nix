@@ -12,7 +12,7 @@ let
 
   hostname = "vm-openwebui";
   dataDir = "/data/open-webui";
-  ollamaDir = "/data/open-webui.ollama";
+  #ollamaDir = "/data/open-webui.ollama";
 
   internal_port = 8901;
 
@@ -22,7 +22,7 @@ in
 {
   systemd.tmpfiles.rules = [
     "d ${dataDir} 770 root data -"
-    "d ${ollamaDir} 770 root data -"
+    #"d ${ollamaDir} 770 root data -"
   ];
 
   hyperberry.virtualization = {
@@ -66,24 +66,24 @@ in
                 proto = "virtiofs";
                 socket = "openwebui-data.sock";
               }
-              {
-                source = ollamaDir;
-                mountPoint = "/var/lib/private/ollama";
-                tag = "openwebui-ollama";
-                proto = "virtiofs";
-                socket = "openwebui-ollama.sock";
-              }
+              #{
+              #  source = ollamaDir;
+              #  mountPoint = "/var/lib/private/ollama";
+              #  tag = "openwebui-ollama";
+              #  proto = "virtiofs";
+              #  socket = "openwebui-ollama.sock";
+              #}
             ];
-            microvm.devices = [
-              {
-                bus = "pci";
-                path = by.hardware.pcie.nvidia_gpu;
-              }
-              {
-                bus = "pci";
-                path = by.hardware.pcie.nvidia_audio;
-              }
-            ];
+            #microvm.devices = [
+            #  {
+            #    bus = "pci";
+            #    path = by.hardware.pcie.nvidia_gpu;
+            #  }
+            #  {
+            #    bus = "pci";
+            #    path = by.hardware.pcie.nvidia_audio;
+            #  }
+            #];
             microvm.writableStoreOverlay = "/nix/.rw-store";
 
             nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"];
@@ -143,75 +143,75 @@ in
             # give access to certs
             users.users.nginx.extraGroups = [ "data" ];
 
-            boot = {
-              kernelModules = [
-                "nvidia"
-                "nvidia_modeset"
-                "nvidia_drm"
-                "nvidia_uvm"
-              ];
+            #boot = {
+            #  kernelModules = [
+            #    "nvidia"
+            #    "nvidia_modeset"
+            #    "nvidia_drm"
+            #    "nvidia_uvm"
+            #  ];
 
-              kernelParams = [
-                "nvidia-drm.modeset=1"
-                "nvidia-drm.fbdev=1"
-              ];
-            };
+            #  kernelParams = [
+            #    "nvidia-drm.modeset=1"
+            #    "nvidia-drm.fbdev=1"
+            #  ];
+            #};
 
-            services.xserver.videoDrivers = [ "nvidia" ];
+            #services.xserver.videoDrivers = [ "nvidia" ];
 
-            hardware.graphics = {
-              enable = true;
-              extraPackages = with pkgs; [
-                #libva
-                #libva-utils
-                #libva-vdpau-driver
-                #libvdpau
-                #libvdpau-va-gl
-                #nvidia-vaapi-driver
-                #vdpauinfo
-              ];
-            };
+            #hardware.graphics = {
+            #  enable = true;
+            #  extraPackages = with pkgs; [
+            #    #libva
+            #    #libva-utils
+            #    #libva-vdpau-driver
+            #    #libvdpau
+            #    #libvdpau-va-gl
+            #    #nvidia-vaapi-driver
+            #    #vdpauinfo
+            #  ];
+            #};
 
-            hardware.nvidia = {
-              #forceFullCompositionPipeline = true;
-              modesetting.enable = true;
-              powerManagement.enable = true;
-              open = true;
-              nvidiaSettings = false;
-              nvidiaPersistenced = true;
-              package = nvidia;
-            };
+            #hardware.nvidia = {
+            #  #forceFullCompositionPipeline = true;
+            #  modesetting.enable = true;
+            #  powerManagement.enable = true;
+            #  open = true;
+            #  nvidiaSettings = false;
+            #  nvidiaPersistenced = true;
+            #  package = nvidia;
+            #};
 
-            services = {
-              ollama = {
-                enable = true;
-                user = "ollama";
-                group = "ollama";
+            #services = {
+            #  ollama = {
+            #    enable = true;
+            #    user = "ollama";
+            #    group = "ollama";
 
-                package = pkgs.ollama-cuda;
+            #    package = pkgs.ollama-cuda;
 
-                host = "0.0.0.0";
-                port = 11434;
+            #    host = "0.0.0.0";
+            #    port = 11434;
 
-                loadModels = [
-                  "gemma3:27b-it-qat"
-                  "glm-4.7-flash:latest"
-                  "qwen3.5:27b"
-                ];
+            #    loadModels = [
+            #      "gemma3:27b-it-qat"
+            #      "glm-4.7-flash:latest"
+            #      "qwen3.5:27b"
+            #    ];
 
-                environmentVariables = {
-                  OLLAMA_FLASH_ATTENTION = "true";
-                  OLLAMA_CONTEXT_LENGTH = "32768";
-  # OL  LAMA_CONTEXT_LENGTH = "16384";
-                  OLLAMA_KV_CACHE_TYPE = "q8_0";
-                  OLLAMA_KEEP_ALIVE = "10m";
-                  OLLAMA_MAX_LOADED_MODELS = "4";
-                  OLLAMA_MAX_QUEUE = "64";
-                  OLLAMA_NUM_PARALLEL = "1";
-                  OLLAMA_ORIGINS = "*";
-                };
-              };
-            };
+            #    environmentVariables = {
+            #      OLLAMA_FLASH_ATTENTION = "true";
+            #      OLLAMA_CONTEXT_LENGTH = "32768";
+  # OL  LAMA#_CONTEXT_LENGTH = "16384";
+            #      OLLAMA_KV_CACHE_TYPE = "q8_0";
+            #      OLLAMA_KEEP_ALIVE = "10m";
+            #      OLLAMA_MAX_LOADED_MODELS = "4";
+            #      OLLAMA_MAX_QUEUE = "64";
+            #      OLLAMA_NUM_PARALLEL = "1";
+            #      OLLAMA_ORIGINS = "*";
+            #    };
+            #  };
+            #};
 
            # systemd.services.ollama.serviceConfig = {
            #   DeviceAllow = lib.mkForce [ ];
@@ -224,17 +224,17 @@ in
            # };
            # users.groups.ollama = {};
 
-            systemd.services.nvidia-gpu-config = {
-              description = "Configure NVIDIA GPU";
-              wantedBy = [ "multi-user.target" ];
-              path = [ nvidia.bin ];
-              # just running `nvidia-smi` seems to be enough to initialize the GPU,
-              # before this must be done before ollama starts.
-              script = "nvidia-smi";
-              serviceConfig.Type = "oneshot";
-            };
+            #systemd.services.nvidia-gpu-config = {
+            #  description = "Configure NVIDIA GPU";
+            #  wantedBy = [ "multi-user.target" ];
+            #  path = [ nvidia.bin ];
+            #  # just running `nvidia-smi` seems to be enough to initialize the GPU,
+            #  # before this must be done before ollama starts.
+            #  script = "nvidia-smi";
+            #  serviceConfig.Type = "oneshot";
+            #};
 
-            systemd.services.ollama.after = [ "nvidia-gpu-config.service" ];
+            #systemd.services.ollama.after = [ "nvidia-gpu-config.service" ];
 
             networking.firewall.allowedTCPPorts = [
               22

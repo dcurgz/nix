@@ -100,6 +100,8 @@ in
             package = pkgs.postgresql_17;
           };
 
+          users.users.postgres.extraGroups = [ "data" ];
+
           # Nginx reverse proxy with SSL
           services.nginx = {
             enable = true;

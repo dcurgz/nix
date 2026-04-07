@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  pkgs-ollama,
   globals,
   ...
 }:
@@ -10,6 +11,8 @@ let
   inherit (globals) FLAKE_ROOT;
   keys = import "${FLAKE_ROOT}/keys" { inherit lib; };
   by = config.by.constants;
+
+  ollamaDir = "/data/open-webui.ollama";
 in
 {
   # Use the systemd-boot EFI boot loader.
@@ -328,7 +331,50 @@ in
     "Z /etc/nixos 770 root wheel"
     "Z /media 770 root media" 
     "Z /data 770 root data" 
+    # ollama
+    "d ${ollamaDir} 770 root data -"
   ];
+
+  services = {
+    ollama = {
+      enable = true;
+      user = "ollama";
+      group = "ollama";
+
+      home = ollamaDir;
+      package = pkgs-ollama.ollama-cuda;
+
+      host = "10.0.0.1"; # bind on br0
+      port = 11434;
+
+      loadModels = [
+        "gemma4:31b"
+        "gemma4:26b" #A4B
+        "gemma3:27b-it-qat"
+        "glm-4.7-flash:latest"
+        "qwen3.5:27b"
+      ];
+      syncModels = true;
+
+      environmentVariables = {
+        OLLAMA_FLASH_ATTENTION = "true";
+        OLLAMA_CONTEXT_LENGTH = "32768";
+        OLLAMA_KV_CACHE_TYPE = "q8_0";
+        OLLAMA_KEEP_ALIVE = "10m";
+        OLLAMA_MAX_LOADED_MODELS = "4";
+        OLLAMA_MAX_QUEUE = "64";
+        OLLAMA_NUM_PARALLEL = "1";
+        OLLAMA_ORIGINS = "*";
+      };
+    };
+  };
+
+  users.users.ollama = {
+    isSystemUser = true;
+    group = "ollama";
+    extraGroups = [ "data" ];
+  };
+  users.groups.ollama = {};
 
   ##########################################################################################
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .

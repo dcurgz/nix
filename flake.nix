@@ -40,6 +40,7 @@
     nix-time.url = "path:./pkgs/flockenzeit";
     nixgl.url = "github:nix-community/nixGL";
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs-ollama.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nurpkgs.inputs.nixpkgs.follows = "nixpkgs";
     nurpkgs.url = "github:nix-community/NUR"; # Nix user repository
     weirdfish-server.inputs.nixpkgs.follows = "nixpkgs";
@@ -73,6 +74,7 @@
       nix-time,
       nixgl,
       nixpkgs,
+      nixpkgs-ollama,
       nurpkgs,
       weirdfish-server,
       #nixpkgs-wayland,
@@ -102,6 +104,10 @@
               specialArgs = {
                 # Pass arguments to all modules.
                 inherit inputs globals;
+                pkgs-ollama = import nixpkgs-ollama {
+                  inherit system;
+                  config.allowUnfree = true;
+                };
               };
               modules = [
                 # Apply overlays to nixpkgs
