@@ -15,6 +15,13 @@ let
   inherit (by) NIXOS_PRESETS;
 in
 {
+  age.secrets.wifi = {
+    file = "${FLAKE_ROOT}/secrets/wg/Wi-Fi.age";
+    mode = "770";
+    owner = "root";
+    group = "wpa_supplicant";
+  };
+
   boot = {
     kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;
     initrd.availableKernelModules = [
@@ -43,33 +50,45 @@ in
     wheelNeedsPassword = false;
   };
 
-  networking = {
-    hostName = "piberry";
-    firewall = {
-      enable = true;
-      allowedTCPPorts = [
-        22
-        80
-        443
+  networking =
+    let
+      wifi = by.hardware.interfaces.wifi;
+    in
+    {
+      hostName = "piberry";
+      enableIPv6 = true;
+      firewall = {
+        enable = true;
+        allowedTCPPorts = [
+          22
+          80
+          443
+        ];
+      };
+      interfaces.end0 = {
+        ipv4.addresses = [
+          {
+            address = "192.168.0.11";
+            prefixLength = 24;
+          }
+        ];
+      };
+      defaultGateway = {
+        address = "192.168.0.1";
+        interface = "end0";
+      };
+      nameservers = [
+        "1.1.1.1"
+        "1.0.0.1"
       ];
+
+      # Setup Wi-Fi.
+      wireless = {
+        enable = true;
+        secretsFile = config.age.secrets.wifi.path;
+        networks."Stan Chappell Roan".pskRaw = "ext:psk";
+      };
     };
-    interfaces.end0 = {
-      ipv4.addresses = [
-        {
-          address = "192.168.0.11";
-          prefixLength = 24;
-        }
-      ];
-    };
-    defaultGateway = {
-      address = "192.168.0.1";
-      interface = "end0";
-    };
-    nameservers = [
-      "1.1.1.1"
-      "1.0.0.1"
-    ];
-  };
 
   services.tailscale.enable = true;
 
