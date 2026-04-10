@@ -88,8 +88,6 @@ in
             database = {
               enable = true;
               createDB = true;
-              # Disable pgvecto.rs vectors (smart search) - not compatible with older PostgreSQL
-              enableVectors = false;
             };
           };
 

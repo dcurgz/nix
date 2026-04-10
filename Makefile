@@ -9,6 +9,8 @@ NOM := --log-format internal-json -v |& nom --json
 
 HOSTNAME := $(shell cat /etc/hostname)
 
+CHECK_MINECRAFT := ssh vm-mc-leedlemon "rcon-cli --password leedlemon list"
+
 .PHONY: hyperberry piberry airberry update
 
 # Build host-specific configurations
@@ -17,7 +19,11 @@ hyperberry:
 	sudo chown -R root:wheel /etc/nixos
 	sudo chmod -R 774 /etc/nixos
 	# Go!
-	sudo nixos-rebuild --no-reexec switch --flake .#hyperberry 
+	$(CHECK_MINECRAFT)
+	@read -p "Proceed? [y/N] " ans && ans=$${ans:-N} ; \
+	if [ $${ans} = y ] || [ $${ans} = Y ]; then \
+		sudo nixos-rebuild --no-reexec switch --flake .#hyperberry ; \
+	fi
 
 blueberry:
 	# Fix permissions

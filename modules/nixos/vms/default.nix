@@ -239,7 +239,11 @@ in
         ];
 
         config = { config, ... } @args:
-          {
+        {
+            imports = [
+              "${FLAKE_ROOT}/presets/nixos/misc/lix.nix"
+            ];
+
             networking.hostName = hostname;
             microvm.hypervisor = mkDefault "cloud-hypervisor";
             system.stateVersion = mkDefault "24.11";

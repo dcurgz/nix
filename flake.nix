@@ -25,8 +25,6 @@
     naersk.url = "github:nix-community/naersk";
     neoforge-1-21-1.inputs.nixpkgs.follows = "nixpkgs";
     neoforge-1-21-1.url = "path:./pkgs/neoforge-1-21-1";
-    magma-1-21-1.inputs.nixpkgs.follows = "nixpkgs";
-    magma-1-21-1.url = "path:./pkgs/magma-1-21-1";
     nfsm.inputs.nixpkgs.follows = "nixpkgs";
     nfsm.url = "github:gvolpe/nfsm";
     niri.inputs.nixpkgs.follows = "nixpkgs";
@@ -64,7 +62,6 @@
       microvm,
       naersk,
       neoforge-1-21-1,
-      magma-1-21-1,
       nfsm,
       niri,
       nix-darwin,
@@ -130,6 +127,7 @@
                 ./presets/common/ssh.nix
                 ./presets/common/git.nix
                 ./presets/nixos/misc/nix-daemon.nix
+                ./presets/nixos/misc/lix.nix
                 ./presets/nixos/security/sudo
                 ./presets/nixos/security/groups
                 ./presets/nixos/packages/core
@@ -154,8 +152,8 @@
                     ./modules/home-manager/nixos
                     # 3rd party modules
                     niri.homeModules.niri
-                    dankMaterialShell.homeModules.dankMaterialShell.default
-                    dankMaterialShell.homeModules.dankMaterialShell.niri
+                    dankMaterialShell.homeModules.dank-material-shell
+                    dankMaterialShell.homeModules.niri
                   ];
                   home-manager.extraSpecialArgs = {
                     # Pass arguments to home
@@ -197,6 +195,7 @@
             ./presets/common/ssh.nix
             ./presets/common/git.nix
             ./presets/nixos/misc/nix-daemon.nix
+            ./presets/nixos/misc/lix.nix
             ./presets/nixos/misc/wooting-udev.nix
             ./presets/nixos/security/sudo
             ./presets/nixos/security/groups
@@ -218,8 +217,8 @@
 		      ./modules/home-manager/nixos
                 # 3rd party modules
                 niri.homeModules.niri
-                dankMaterialShell.homeModules.dankMaterialShell.default
-                dankMaterialShell.homeModules.dankMaterialShell.niri
+                dankMaterialShell.homeModules.dank-material-shell
+                dankMaterialShell.homeModules.niri
               ];
               home-manager.users.dcurgz = import ./users/dcurgz/blueberry;
               home-manager.extraSpecialArgs = {
@@ -254,6 +253,7 @@
             ./secrets/berry.enc.nix
             ./systems/piberry
             ./presets/nixos/misc/nix-daemon.nix
+            ./presets/nixos/misc/lix.nix
             ./presets/nixos/packages/core
             ./presets/nixos/security/groups
             ./presets/nixos/services/home-assistant
@@ -283,6 +283,7 @@
             ./systems/tauberry/hardware.nix
             ./presets/nixos/misc/rpi-disable-kernel-modules.nix
             ./presets/nixos/misc/nix-daemon.nix
+            ./presets/nixos/misc/lix.nix
             ./presets/nixos/packages/core
             ./presets/nixos/security/groups
             ./presets/nixos/services/mopidy
@@ -317,6 +318,7 @@
             ./systems/fooberry
             ./presets/common/ssh.nix
             ./presets/nixos/misc/nix-daemon.nix
+            ./presets/nixos/misc/lix.nix
             ./presets/nixos/security/sudo
             ./presets/nixos/security/groups
             ./presets/nixos/packages/core
@@ -354,6 +356,7 @@
             ./systems/weirdfi.sh-cax11-4gb
             ./presets/common/ports.nix
             ./presets/nixos/misc/nix-daemon.nix
+            ./presets/nixos/misc/lix.nix
             ./presets/nixos/security/sudo
             ./presets/nixos/security/groups
             ./presets/nixos/packages/core
@@ -399,6 +402,7 @@
             ./systems/publicproxy-cax11-4gb
             ./presets/common/ports.nix
             ./presets/nixos/misc/nix-daemon.nix
+            ./presets/nixos/misc/lix.nix
             ./presets/nixos/security/sudo
             ./presets/nixos/security/groups
             ./presets/nixos/packages/core
@@ -432,6 +436,7 @@
           ./secrets/berry.enc.nix
           ./presets/common/ssh.nix
           ./presets/darwin/misc/nix-daemon.nix
+          ./presets/nixos/misc/lix.nix
           ./systems/airberry
           {
             home-manager.useGlobalPkgs = true;
@@ -529,15 +534,16 @@
           };
         };
 
-        hyperberry = {
-          hostname = "hyperberry";
-          sshUser = "dcurgz";
-          remoteBuild = true;
-          profiles.system = {
-            user = "root";
-            path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.hyperberry;
-          };
-        };
+        # weird bug where we don't use the build cache if we're remote building to the same host
+        #hyperberry = {
+        #  hostname = "hyperberry";
+        #  sshUser = "dcurgz";
+        #  remoteBuild = true;
+        #  profiles.system = {
+        #    user = "root";
+        #    path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.hyperberry;
+        #  };
+        #};
 
         piberry = {
           hostname = "piberry";

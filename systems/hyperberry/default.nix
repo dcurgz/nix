@@ -344,7 +344,7 @@ in
       home = ollamaDir;
       package = pkgs-ollama.ollama-cuda;
 
-      host = "10.0.0.1"; # bind on br0
+      host = "0.0.0.0"; 
       port = 11434;
 
       loadModels = [
