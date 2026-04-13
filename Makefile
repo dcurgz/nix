@@ -9,7 +9,7 @@ NOM := --log-format internal-json -v |& nom --json
 
 HOSTNAME := $(shell cat /etc/hostname)
 
-CHECK_MINECRAFT := ssh vm-mc-leedlemon "rcon-cli --password leedlemon list"
+CHECK_MINECRAFT := ssh vm-mc-leedlemon "rcon-cli --password leedlemon list" || true
 
 .PHONY: hyperberry piberry airberry update
 

@@ -38,7 +38,8 @@
     nix-time.url = "path:./pkgs/flockenzeit";
     nixgl.url = "github:nix-community/nixGL";
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs-ollama.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs-ollama.url = "github:nixos/nixpkgs?rev=9d29d5f667d7467f98efc31881e824fa586c927e";
+    nixpkgs-immich.url = "github:nixos/nixpkgs?rev=0fd2db475afdde93c9e4b1625aafb8eb41b99807";
     nurpkgs.inputs.nixpkgs.follows = "nixpkgs";
     nurpkgs.url = "github:nix-community/NUR"; # Nix user repository
     weirdfish-server.inputs.nixpkgs.follows = "nixpkgs";
@@ -72,6 +73,7 @@
       nixgl,
       nixpkgs,
       nixpkgs-ollama,
+      nixpkgs-immich,
       nurpkgs,
       weirdfish-server,
       #nixpkgs-wayland,
@@ -105,6 +107,7 @@
                   inherit system;
                   config.allowUnfree = true;
                 };
+                pkgs-immich = import nixpkgs-immich { inherit system; };
               };
               modules = [
                 # Apply overlays to nixpkgs

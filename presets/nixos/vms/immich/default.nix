@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  pkgs-immich,
   inputs,
   globals,
   ...
@@ -16,6 +17,8 @@ let
   immich_port = 8903;
   immich_media = "/data/immich";
   immich_db = "/data/immich-db";
+
+  package = pkgs-immich.immich;
 in
 {
   hyperberry.virtualization = {
@@ -25,10 +28,7 @@ in
         ipAddress = "10.0.0.12";
       };
       microvm = {
-        pkgs = (import inputs.nixpkgs {
-          system = "x86_64-linux";
-          config.allowUnfree = true;
-        });
+        pkgs = pkgs-immich;
         config = { config, ... }: {
           imports = [
             "${NIXOS_PRESETS}/packages/core"
@@ -83,6 +83,7 @@ in
           # Immich service configuration
           services.immich = {
             enable = true;
+            inherit package;
             openFirewall = true;
             host = "0.0.0.0";
             port = immich_port;
@@ -104,7 +105,7 @@ in
           # Nginx reverse proxy with SSL
           services.nginx =
             let
-              address = secrets.hosts.vm-immich.ssh.host;
+              address = secrets.hosts.vm-immich.ssh.hostname;
             in
             {
               enable = true;
