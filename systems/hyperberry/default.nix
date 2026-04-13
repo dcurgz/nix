@@ -120,15 +120,9 @@ in
       enable = true;
       allowedTCPPorts = [
         22
-        25565
-        25566
       ];
-      allowedUDPPorts = [
-        25565
-        25566
-        #dns
-        67
-        68
+      interfaces."br0".allowedTCPPorts = [
+        11434 # ollama
       ];
     };
     interfaces."${by.hardware.interfaces.ethernet}" = {
@@ -204,7 +198,7 @@ in
     initialize = true;
     pruneOpts = [
       "--keep-daily=2"
-      "--keep-weekly=2"
+      "--keep-weekly=8"
     ];
     timerConfig = {
       OnCalendar = "*-*-* 06:00:00";
@@ -220,8 +214,8 @@ in
       paths = [ "/media/photos" ];
       pruneOpts = [
         "--keep-daily=7"
-        "--keep-weekly=1"
-        "--keep-monthly=1"
+        "--keep-weekly=8"
+        "--keep-monthly=2"
       ];
       repository = "s3:s3.eu-central-1.s4.mega.io/restic-hyperberry-media";
       timerConfig.OnCalendar = "*-*-* 06:00:00";
@@ -230,8 +224,8 @@ in
       paths = [ "/media/content" ];
       pruneOpts = [
         "--keep-daily=7"
-        "--keep-weekly=1"
-        "--keep-monthly=1"
+        "--keep-weekly=8"
+        "--keep-monthly=2"
       ];
       repository = "s3:s3.eu-central-1.s4.mega.io/restic-hyperberry-media";
       timerConfig.OnCalendar = "*-*-* 06:05:00";
@@ -240,6 +234,11 @@ in
       paths = [
         "/data/immich"
         "/data/immich-db"
+      ];
+      pruneOpts = [
+        "--keep-daily=2"
+        "--keep-weekly=8"
+        "--keep-monthly=2"
       ];
       timerConfig.OnCalendar = "*-*-* 06:15:00";
     };

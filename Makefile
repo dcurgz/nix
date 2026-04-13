@@ -4,7 +4,7 @@ REMOTE_BUILDER := --builders "ssh://builder@hyperberry x86_64-linux,aarch64-linu
 
 HOME_MANAGER := home-manager --extra-experimental-features "nix-command flakes"
 
-NIX := nix --extra-experimental-features "nix-command flakes"
+NIX := nix --extra-experimental-features "nix-command flakes" --extra-deprecated-features url-literals
 NOM := --log-format internal-json -v |& nom --json
 
 HOSTNAME := $(shell cat /etc/hostname)

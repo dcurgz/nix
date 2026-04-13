@@ -9,6 +9,7 @@
 
 let
   by = config.by.constants;
+  secrets = config.by.secrets;
   inherit (globals) NIXOS_PRESETS;
 
   hostname = "vm-immich";
@@ -94,30 +95,34 @@ in
           users.users.immich.extraGroups = [ "media" "data" ];
 
           # Pin PostgreSQL to version 17
-          services.postgresql = {
-            package = pkgs.postgresql_17;
-          };
+          #services.postgresql = {
+          #  package = pkgs.postgresql_17;
+          #};
 
           users.users.postgres.extraGroups = [ "data" ];
 
           # Nginx reverse proxy with SSL
-          services.nginx = {
-            enable = true;
-            virtualHosts."immich" = {
-              default = true;
-              forceSSL = true;
-              sslCertificate = "/etc/ssl/certs/selfsigned.crt";
-              sslCertificateKey = "/etc/ssl/certs/selfsigned.key";
-              locations."/" = {
-                proxyPass = "http://localhost:${toString immich_port}";
-                proxyWebsockets = true;
+          services.nginx =
+            let
+              address = secrets.hosts.vm-immich.ssh.host;
+            in
+            {
+              enable = true;
+              virtualHosts."immich" = {
+                default = true;
+                forceSSL = true;
+                sslCertificate = "/etc/ssl/certs/${address}.crt";
+                sslCertificateKey = "/etc/ssl/certs/${address}.key";
+                locations."/" = {
+                  proxyPass = "http://localhost:${toString immich_port}";
+                  proxyWebsockets = true;
 
-                extraConfig = ''
-                  client_max_body_size 16G;
-                '';
+                  extraConfig = ''
+                    client_max_body_size 16G;
+                  '';
+                };
               };
             };
-          };
 
           users.users.nginx.extraGroups = [ "data" ];
 
