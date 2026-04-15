@@ -19,10 +19,4 @@ in
       enable = true;
     };
   };
-
-  config.home = mkIf (cfg.enable) {
-    file = {
-      ".config/DankMaterialShell/settings.json".source = ./settings.json;
-    };
-  };
 }

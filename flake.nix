@@ -26,7 +26,8 @@
     neoforge-1-21-1.inputs.nixpkgs.follows = "nixpkgs";
     neoforge-1-21-1.url = "path:./pkgs/neoforge-1-21-1";
     nfsm.inputs.nixpkgs.follows = "nixpkgs";
-    nfsm.url = "github:gvolpe/nfsm";
+    # https://github.com/gvolpe/nfsm/pull/3/changes/211eb44e77ce0b6e10f32b15f78f8aee5340fcbd
+    nfsm.url = "github:gvolpe/nfsm?rev=211eb44e77ce0b6e10f32b15f78f8aee5340fcbd";
     niri.inputs.nixpkgs.follows = "nixpkgs";
     niri.url = "github:sodiboo/niri-flake";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
