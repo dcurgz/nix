@@ -18,7 +18,6 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
-    import-tree.url = "github:vic/import-tree";
     isd.url = "github:kainctl/isd"; # systemd tui
     maccel.url = "github:Gnarus-G/maccel"; # mouse acceleration kernel driver
     microvm.inputs.nixpkgs.follows = "nixpkgs";
@@ -46,10 +45,12 @@
     nurpkgs.url = "github:nix-community/NUR"; # Nix user repository
     weirdfish-server.inputs.nixpkgs.follows = "nixpkgs";
     weirdfish-server.url = "path:./pkgs/weirdfish-server";
+    import-tree.url = "github:vic/import-tree";
   };
 
   outputs = inputs:
     let
+      inherit (inputs.nixpkgs) lib;
       globals = {
         FLAKE_ROOT = ./.;
       };
@@ -57,17 +58,15 @@
     inputs.flake-parts.lib.mkFlake
       {
         inherit inputs;
-        specialArgs = { inherit globals; };
+        specialArgs = {
+          inherit globals;
+          pkgs = (import inputs.nixpkgs {
+            config.allowUnfree = true;
+          });
+        };
       }
       {
-        systems = [
-          "aarch64-linux"
-          "aarch64-darwin"
-          "x86_64-linux"
-        ];
-        imports = [
-          inputs.flake-parts.flakeModules.modules
-          (inputs.import-tree ./modules)
-        ];
+        systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ];
+        imports = (inputs.import-tree.withLib lib).leafs ./modules;
       };
 }

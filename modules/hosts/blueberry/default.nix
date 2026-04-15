@@ -10,35 +10,41 @@ let
   inherit (args.config) flake;
 in
 {
-  flake.nixosConfigurations.blueberry = (inputs.self.lib.mkNixOS {
+  flake.nixosConfigurations.blueberry = inputs.self.lib.mkNixOS {
     system = "x86_64-linux";
     modules = with flake.modules; [
-      generic.flake-default
-      generic.git-secrets
-      nixos.blueberry
-      nixos.blueberry-hardware
-      nixos.blueberry-disk
-      nixos.nix-daemon
-      nixos.ssh
-      nixos.gpg
-      nixos.git
-      nixos.linux-sudo
-      nixos.linux-groups
-      nixos.packages-core
-      nixos.drivers-nvidia
-      nixos.drivers-maccel
-      nixos.desktop-xdg
-      nixos.desktop-audio
-      nixos.desktop-wooting
-      nixos.home-manager
-      home-manager.blueberry
-      home-manager.niri
-      home-manager.sway
-      home-manager.dank-material-shell
+      generic.flake-default'
+      generic.git-secrets'
+      nixos.blueberry'
+      nixos.blueberry-hardware'
+      nixos.blueberry-disk'
+      nixos.nix-daemon'
+      nixos.ssh'
+      nixos.gpg'
+      nixos.git'
+      nixos.linux-sudo'
+      nixos.linux-groups'
+      nixos.packages-core'
+      nixos.packages-encryption'
+      nixos.packages-python'
+      nixos.drivers-nvidia'
+      nixos.drivers-maccel'
+      nixos.desktop-xdg'
+      nixos.desktop-audio'
+      nixos.desktop-wooting'
+      (nixos.home-manager'' {
+        user = "dcurgz";
+        modules = [
+          home-manager.blueberry'
+          home-manager.niri'
+          home-manager.sway'
+          home-manager.dank-material-shell'
+        ];
+      })
     ];
-  });
+  };
 
-  flake.modules.nixos.blueberry = 
+  flake.modules.nixos.blueberry' = 
     {
       lib,
       pkgs,
@@ -129,7 +135,7 @@ in
       programs.command-not-found.enable = true;
       programs.fish.enable = true;
     
-      by.configure-ssh = {
+      by.ssh = {
         enable = true;
         groups = [
           {
@@ -146,7 +152,7 @@ in
       system.stateVersion = "25.05";
     };
 
-  flake.modules.home-manager.blueberry =
+  flake.modules.home-manager.blueberry' =
     {
       lib,
       ...

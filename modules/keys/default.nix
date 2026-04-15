@@ -5,6 +5,9 @@
 }:
 
 let
+  inherit (inputs.nixpkgs) lib;
+  flake-lib = config.flake.lib;
+
   g_PRIVILEGED = "privileged";
   g_WG = "wg";
   g_CRZ = "crz";
@@ -143,5 +146,5 @@ in
     };
   };
 
-  flake.modules.generic.flake-default.imports = [ config.flake.modules.generic.keys ];
+  flake.modules.generic.flake-default.imports = with config.flake.modules; [ generic.keys ];
 }

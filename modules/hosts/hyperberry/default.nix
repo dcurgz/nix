@@ -13,16 +13,20 @@ in
   flake.nixosConfigurations.hyperberry = flake.lib.mkNixOS {
     system = "x86_64-linux";
     modules = with flake.modules; [
-      generic.flake-default
-      generic.git-secrets
-      nixos.hyperberry
-      nixos.hyperberry-hardware
-      nixos.home-manager
-      home-manager.hyperberry
+      generic.flake-default'
+      generic.git-secrets'
+      nixos.hyperberry'
+      nixos.hyperberry-hardware'
+      (nixos.home-manager'' {
+        user = "dcurgz";
+        modules = [
+          home-manager.hyperberry'
+        ];
+      })
     ];
   };
 
-  flake.modules.nixos.hyperberry =
+  flake.modules.nixos.hyperberry' =
     {
       config,
       lib,
@@ -85,7 +89,7 @@ in
         settings.PasswordAuthentication = false;
       };
 
-      by.configure-ssh = {
+      by.ssh = {
         enable = true;
         groups = [
           {

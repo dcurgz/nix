@@ -4,7 +4,7 @@
 }:
 
 {
-  flake.modules.nixos.git = 
+  flake.modules.nixos.git' = 
     {
       lib,
       config,
@@ -22,7 +22,7 @@
       };
     };
 
-  flake.modules.darwin.git = 
+  flake.modules.darwin.git' = 
     {
       lib,
       config,
