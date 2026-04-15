@@ -10,7 +10,7 @@ let
   inherit (args.config) flake;
 in
 {
-  flake.nixosConfigurations.blueberry = inputs.self.lib.mkNixOS {
+  flake.nixosConfigurations.blueberry = (inputs.self.lib.mkNixOS {
     system = "x86_64-linux";
     modules = with flake.modules; [
       generic.flake-default
@@ -20,17 +20,15 @@ in
       nixos.blueberry-disk
       nixos.nix-daemon
       nixos.ssh
+      nixos.gpg
       nixos.git
       nixos.linux-sudo
       nixos.linux-groups
       nixos.packages-core
-      nixos.packages-encryption
-      nixos.packages-python
       nixos.drivers-nvidia
       nixos.drivers-maccel
       nixos.desktop-xdg
       nixos.desktop-audio
-      nixos.desktop-gpg
       nixos.desktop-wooting
       nixos.home-manager
       home-manager.blueberry
@@ -38,7 +36,7 @@ in
       home-manager.sway
       home-manager.dank-material-shell
     ];
-  };
+  });
 
   flake.modules.nixos.blueberry = 
     {

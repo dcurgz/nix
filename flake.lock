@@ -571,14 +571,15 @@
         ]
       },
       "locked": {
+        "lastModified": 1,
+        "narHash": "sha256-Q/AHpxfJIdYAqUSCjczN4GwtqbIgi571qQ9gTnCeK9Q=",
         "path": "./pkgs/neoforge-1-21-1",
         "type": "path"
       },
       "original": {
         "path": "./pkgs/neoforge-1-21-1",
         "type": "path"
-      },
-      "parent": []
+      }
     },
     "nfsm": {
       "inputs": {
@@ -756,14 +757,15 @@
     },
     "nix-time": {
       "locked": {
+        "lastModified": 1,
+        "narHash": "sha256-CmwZKPlhcySy0lxLyW/c7exgDb4evrzFyRrbERPAdDY=",
         "path": "./pkgs/flockenzeit",
         "type": "path"
       },
       "original": {
         "path": "./pkgs/flockenzeit",
         "type": "path"
-      },
-      "parent": []
+      }
     },
     "nixgl": {
       "inputs": {
@@ -937,11 +939,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774790401,
-        "narHash": "sha256-5hHglnyP5AdmEYTPHi7Kihgk+RUgk4oYTwer7ef0Ruc=",
+        "lastModified": 1776215764,
+        "narHash": "sha256-6SRG4tuM2qHVfzCSgp20fr2clWqa37MgzFKh9WVoTZA=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "e250d28d64c9016c2cc8314b555426a796ef1deb",
+        "rev": "720fd439c88aa7a521c3f97624464767476bbb3c",
         "type": "github"
       },
       "original": {
@@ -1290,14 +1292,15 @@
         ]
       },
       "locked": {
+        "lastModified": 1,
+        "narHash": "sha256-buzULRZdtayEP3WDmDAck1QNHtHb9N4ozTgsj0q3cqA=",
         "path": "./pkgs/weirdfish-server",
         "type": "path"
       },
       "original": {
         "path": "./pkgs/weirdfish-server",
         "type": "path"
-      },
-      "parent": []
+      }
     },
     "xwayland-satellite-stable": {
       "flake": false,
