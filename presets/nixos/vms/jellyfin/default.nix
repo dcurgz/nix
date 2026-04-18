@@ -15,9 +15,16 @@ let
   hostname = "vm-jellyfin";
   jellyfin_library = "/media/content";
   jellyfin_data = "/data/jellyfin-data";
+  jellyfin_cache = "/data/jellyfin-cache";
   jellyfin_http = 8096;
 in
 {
+
+  systemd.tmpfiles.rules = [
+    "d ${jellyfin_data} root data"
+    "d ${jellyfin_cache} root data"
+  ];
+
   hyperberry.virtualization = {
     vms.${hostname} = {
       networking = {
@@ -50,6 +57,14 @@ in
               tag = "jellyfin-data";
               proto = "virtiofs";
               socket = "jellyfin-data.sock";
+            }
+            # jellyfin cache directory
+            {
+              source = jellyfin_cache;
+              mountPoint = "/var/cache/jellyfin";
+              tag = "jellyfin-cache";
+              proto = "virtiofs";
+              socket = "jellyfin-cache.sock";
             }
             # SSL certificates
             {
