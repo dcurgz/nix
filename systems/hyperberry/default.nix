@@ -197,8 +197,9 @@ in
   by.restic.defaults = {
     initialize = true;
     pruneOpts = [
-      "--keep-daily=2"
+      "--keep-daily=7"
       "--keep-weekly=8"
+      "--keep-weekly=3"
     ];
     timerConfig = {
       OnCalendar = "*-*-* 06:00:00";
@@ -209,24 +210,15 @@ in
     environmentFile = config.age.secrets.restic-envvars.path;
     progressFps = 0.5;
   };
+  # WARNING: pruneOpts are currently global
   by.restic.backups = {
     hyperberry-media-photos = {
       paths = [ "/media/photos" ];
-      pruneOpts = [
-        "--keep-daily=7"
-        "--keep-weekly=8"
-        "--keep-monthly=2"
-      ];
       repository = "s3:s3.eu-central-1.s4.mega.io/restic-hyperberry-media";
       timerConfig.OnCalendar = "*-*-* 06:00:00";
     };
     hyperberry-media-content = {
       paths = [ "/media/content" ];
-      pruneOpts = [
-        "--keep-daily=7"
-        "--keep-weekly=8"
-        "--keep-monthly=2"
-      ];
       repository = "s3:s3.eu-central-1.s4.mega.io/restic-hyperberry-media";
       timerConfig.OnCalendar = "*-*-* 06:05:00";
     };
@@ -234,11 +226,6 @@ in
       paths = [
         "/data/immich"
         "/data/immich-db"
-      ];
-      pruneOpts = [
-        "--keep-daily=2"
-        "--keep-weekly=8"
-        "--keep-monthly=2"
       ];
       timerConfig.OnCalendar = "*-*-* 06:15:00";
     };
@@ -258,32 +245,17 @@ in
       paths = [
         "/data/minecraft-slime"
       ];
-      pruneOpts = [
-        "--keep-daily=7"
-        "--keep-weekly=1"
-        "--keep-monthly=1"
-      ];
       timerConfig.OnCalendar = "*-*-* 07:00:00";
     };
     hyperberry-data-mc-wg-0 = {
       paths = [
         "/data/minecraft-wg-0"
       ];
-      pruneOpts = [
-        "--keep-daily=7"
-        "--keep-weekly=1"
-        "--keep-monthly=1"
-      ];
       timerConfig.OnCalendar = "*-*-* 07:14:00";
     };
     hyperberry-data-mc-leedlemon-daily = {
       paths = [
         "/data/minecraft-leedlemon"
-      ];
-      pruneOpts = [
-        "--keep-daily=7"
-        "--keep-weekly=1"
-        "--keep-monthly=1"
       ];
       timerConfig.OnCalendar = "*-*-* 07:16:00";
     };
@@ -301,6 +273,12 @@ in
         "/data/teamspeak"
       ];
       timerConfig.OnCalendar = "*-*-* 07:30:00";
+    };
+    hyperberry-data-trilium = {
+      paths = [
+        "/data/trilium-data"
+      ];
+      timerConfig.OnCalendar = "*-*-* 07:35:00";
     };
   };
 

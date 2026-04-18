@@ -19,6 +19,7 @@ with keys.ssh.hosts;
   "tailscale/guests/vm-vikunja.age".publicKeys         = (withDefault vm-vikunja.keys);
   "tailscale/guests/vm-mc-leedlemon.age".publicKeys    = (withDefault vm-mc-leedlemon.keys);
   "tailscale/guests/vm-mc-leedl-sta.age".publicKeys    = (withDefault vm-mc-leedl-sta.keys);
+  "tailscale/guests/vm-trilium.age".publicKeys         = (withDefault vm-trilium.keys);
   # hyperberry
   "backup/restic-password.age".publicKeys     = (withDefault hyperberry.keys);
   "backup/restic-envvars.age".publicKeys      = (withDefault hyperberry.keys);

@@ -67,6 +67,7 @@ let
     (mkGuest "vm-mc-wg-1")
     (mkGuest "vm-mc-leedlemon")
     (mkGuest "vm-mc-leedl-sta")
+    (mkGuest "vm-trilium")
   ];
 in
 {

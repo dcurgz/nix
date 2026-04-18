@@ -147,6 +147,7 @@
                 ./presets/nixos/vms/jellyfin
                 ./presets/nixos/vms/open-webui
                 ./presets/nixos/vms/vikunja
+                ./presets/nixos/vms/trilium
                 {
                   home-manager.useGlobalPkgs = true;
                   home-manager.useUserPackages = true;

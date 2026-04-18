@@ -11,6 +11,7 @@ GUESTS=(
   'vm-mc-wg-1'
   'vm-mc-leedlemon'
   'vm-mc-leedl-sta'
+  'vm-trilium'
 )
 OUT_DIR="./keys/ssh"
 
