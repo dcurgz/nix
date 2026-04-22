@@ -10,41 +10,57 @@ let
   inherit (args.config) flake;
 in
 {
-  flake.nixosConfigurations.blueberry = inputs.self.lib.mkNixOS {
-    system = "x86_64-linux";
-    modules = with flake.modules; [
-      generic.flake-default'
-      generic.git-secrets'
-      nixos.blueberry'
-      nixos.blueberry-hardware'
-      nixos.blueberry-disk'
-      nixos.nix-daemon'
-      nixos.ssh'
-      nixos.gpg'
-      nixos.git'
-      nixos.linux-sudo'
-      nixos.linux-groups'
-      nixos.packages-core'
-      nixos.packages-encryption'
-      nixos.packages-python'
-      nixos.drivers-nvidia'
-      nixos.drivers-maccel'
-      nixos.desktop-xdg'
-      nixos.desktop-audio'
-      nixos.desktop-wooting'
-      (nixos.home-manager'' {
-        user = "dcurgz";
-        modules = [
-          home-manager.blueberry'
-          home-manager.niri'
-          home-manager.sway'
-          home-manager.dank-material-shell'
+  flake.nixosConfigurations.blueberry =
+    let
+      pkgs = (import inputs.nixpkgs {
+        overlays = [
+          (final: prev: import "${FLAKE_ROOT}/pkgs" { inherit inputs final prev; })
         ];
-      })
-    ];
-  };
+        config.allowUnfree = true;
+      });
+    in
+    inputs.self.lib.mkNixOS {
+      system = "x86_64-linux";
+      specialArgs = {
+        inherit pkgs;
+      };
+      modules = with flake.modules;
+      [
+        generic.git-secrets
+        nixos.blueberry
+        nixos.blueberry-hardware
+        nixos.blueberry-disk
+        nixos.nix-daemon
+        nixos.ssh
+        nixos.gpg
+        nixos.git
+        nixos.linux-sudo
+        nixos.linux-groups
+        nixos.packages-core
+        nixos.drivers-nvidia
+        nixos.drivers-maccel
+        nixos.desktop-xdg
+        nixos.desktop-audio
+        nixos.desktop-wooting
+        (nixos.home-manager' {
+          user = "dcurgz";
+          modules = [
+            home-manager.blueberry
+            home-manager.niri
+            home-manager.dank-material-shell
+          ];
+        })
+        # NixOS modules
+        inputs.nixpkgs.nixosModules.readOnlyPkgs
+        ({
+          nixpkgs.pkgs = pkgs;
+        })
+        # 3rd party modules
+        inputs.agenix.nixosModules.default
+      ] ++ generic.__flake-default ++ nixos.__flake-default;
+    };
 
-  flake.modules.nixos.blueberry' = 
+  flake.modules.nixos.blueberry = 
     {
       lib,
       pkgs,
@@ -152,13 +168,13 @@ in
       system.stateVersion = "25.05";
     };
 
-  flake.modules.home-manager.blueberry' =
+  flake.modules.home-manager.blueberry =
     {
       lib,
       ...
     }:
 
     {
-      # ...
+      home.stateVersion = "25.05";
     };
 }

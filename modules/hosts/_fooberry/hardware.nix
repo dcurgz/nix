@@ -16,7 +16,7 @@
   swapDevices = [ ];
 
   # Expose some constants for the main configuration.
-  by.constants.hardware = {
+  by.host-constants.hardware = {
     interfaces.ethernet = "enp3s0f1";
   };
 

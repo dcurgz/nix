@@ -29,7 +29,7 @@ let
   };
 in
 {
-  flake.modules.nixos.ssh' = 
+  flake.modules.nixos.ssh = 
     {
       lib,
       config,
@@ -70,7 +70,7 @@ in
           ) cfg.groups));
     };
 
-  flake.modules.darwin.ssh' = 
+  flake.modules.darwin.ssh = 
     {
       lib,
       config,

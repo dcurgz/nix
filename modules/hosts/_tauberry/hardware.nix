@@ -57,7 +57,7 @@
     };
   };
 
-  by.constants.hardware = {
+  by.host-constants.hardware = {
     interfaces.wifi = "wlan0";
   };
 }

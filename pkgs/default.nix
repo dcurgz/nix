@@ -1,18 +1,17 @@
 {
-  pkgs,
-  naersk',
-  ...
+  inputs,
+  prev,
+  final,
 }:
-with pkgs;
 
 {
-  firefox-csshacks = pkgs.callPackage ./firefox-csshacks { };
-  flockenzeit = pkgs.callPackage ./flockenzeit { };
-  weirdfish-server = pkgs.callPackage ./weirdfish-server { };
-  keylight = pkgs.callPackage ./keylight { };
+  firefox-csshacks = prev.callPackage ./firefox-csshacks { };
+  flockenzeit = prev.callPackage ./flockenzeit { };
+  weirdfish-server = prev.callPackage ./weirdfish-server { };
+  keylight = prev.callPackage ./keylight { };
   # Minecraft
-  neoforge-1-21-1 = pkgs.callPackage ./neoforge-1-21-1 { };
+  neoforge-1-21-1 = prev.callPackage ./neoforge-1-21-1 { };
   # Modpacks
-  modpack-slime = pkgs.callPackage ./modpack-slime { };
-  modpack-leedlemon = pkgs.callPackage ./modpack-leedlemon { };
+  modpack-slime = prev.callPackage ./modpack-slime { };
+  modpack-leedlemon = prev.callPackage ./modpack-leedlemon { };
 }

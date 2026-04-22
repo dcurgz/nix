@@ -72,79 +72,69 @@ let
   ];
 in
 {
-  flake.modules.generic.keys = 
-  { 
-    lib,
-    ...
-  }:
-
-  {
-    options.by.keys = lib.mkOption {
-      type = lib.types.attrsOf lib.types.unspecified;
-      default = { };
-    };
-
-    config.by.keys = {
-      ssh = {
-        # An attrset of groups, mapped to an attrset of {paths, keys}.
-        groups = lib.listToAttrs (builtins.map (groupname: {
-          name = groupname;
-          value = rec {
-            paths =
-              let
-                filtered = (builtins.filter (host: (builtins.elem groupname host.groups)) host_defs);
-              in
-                lib.flatten (builtins.map (host: (builtins.map (user: ./. + "/ssh/${host.hostname}/${user}_ed25519.pub") host.names)) filtered);
-            keys = (mkListFromPaths paths);
-          };
-        }) groupnames);
-
-        # An attrset of hosts, mapped to an attrset of {paths, keys}.
-        hosts = lib.listToAttrs (builtins.map (host: {
-          name = host.hostname;
-          value = rec {
-            paths = (builtins.map (user: ./. + "/ssh/${host.hostname}/${user}_ed25519.pub") host.names);
-            keys = (mkListFromPaths paths);
-          };
-        }) host_defs);
-
-        # An attrset of hosts, mapped to an attrset of {paths, keys}. 
-        # The paths and keys lists contain exclusively host keys.
-        knownHosts =
-          let
-            filtered = (builtins.filter (host: host.isHost) host_defs);
-          in
-          lib.listToAttrs (builtins.map (host: {
-            name = host.hostname;
-            value = {
-              publicKeyFile = (./. + "/ssh/${host.hostname}/host_ed25519.pub");
-            };
-          }) filtered);
-        };
-
-      gpg = {
-        groups = lib.listToAttrs (builtins.map (groupname: {
-          name = groupname;
-          value = rec {
-            paths =
-              let
-                filtered = (builtins.filter (host: host.hasGpg && (builtins.elem groupname host.groups)));
-              in
-                (builtins.map (host: ./. + "/gpg/${host.hostname}.asc") filtered);
-            keys = (mkListFromPaths paths);
-          };
-        }) groupnames);
-
-        hosts = lib.listToAttrs (builtins.map (host: {
-          name = host.hostname;
-          value = rec {
-            paths = [ ( ./. + "/gpg/${host.hostname}" ) ];
-            keys = (mkListFromPaths paths);
-          };
-        }) host_defs);
-      };
-    };
+  options.by.keys = lib.mkOption {
+    type = lib.types.attrsOf lib.types.unspecified;
+    default = { };
   };
 
-  flake.modules.generic.flake-default.imports = with config.flake.modules; [ generic.keys ];
+  config.by.keys = {
+    ssh = {
+      # An attrset of groups, mapped to an attrset of {paths, keys}.
+      groups = lib.listToAttrs (builtins.map (groupname: {
+        name = groupname;
+        value = rec {
+          paths =
+            let
+              filtered = (builtins.filter (host: (builtins.elem groupname host.groups)) host_defs);
+            in
+              lib.flatten (builtins.map (host: (builtins.map (user: ./. + "/ssh/${host.hostname}/${user}_ed25519.pub") host.names)) filtered);
+          keys = (mkListFromPaths paths);
+        };
+      }) groupnames);
+
+      # An attrset of hosts, mapped to an attrset of {paths, keys}.
+      hosts = lib.listToAttrs (builtins.map (host: {
+        name = host.hostname;
+        value = rec {
+          paths = (builtins.map (user: ./. + "/ssh/${host.hostname}/${user}_ed25519.pub") host.names);
+          keys = (mkListFromPaths paths);
+        };
+      }) host_defs);
+
+      # An attrset of hosts, mapped to an attrset of {paths, keys}. 
+      # The paths and keys lists contain exclusively host keys.
+      knownHosts =
+        let
+          filtered = (builtins.filter (host: host.isHost) host_defs);
+        in
+        lib.listToAttrs (builtins.map (host: {
+          name = host.hostname;
+          value = {
+            publicKeyFile = (./. + "/ssh/${host.hostname}/host_ed25519.pub");
+          };
+        }) filtered);
+      };
+
+    gpg = {
+      groups = lib.listToAttrs (builtins.map (groupname: {
+        name = groupname;
+        value = rec {
+          paths =
+            let
+              filtered = (builtins.filter (host: host.hasGpg && (builtins.elem groupname host.groups)));
+            in
+              (builtins.map (host: ./. + "/gpg/${host.hostname}.asc") filtered);
+          keys = (mkListFromPaths paths);
+        };
+      }) groupnames);
+
+      hosts = lib.listToAttrs (builtins.map (host: {
+        name = host.hostname;
+        value = rec {
+          paths = [ ( ./. + "/gpg/${host.hostname}" ) ];
+          keys = (mkListFromPaths paths);
+        };
+      }) host_defs);
+    };
+  };
 }

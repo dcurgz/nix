@@ -11,7 +11,7 @@ let
   keys = import "${FLAKE_ROOT}/keys" { inherit lib; };
   secrets = config.by.secrets;
 
-  by = config.by.constants;
+  by = config.by.host-constants;
   inherit (by) NIXOS_PRESETS;
 in
 {

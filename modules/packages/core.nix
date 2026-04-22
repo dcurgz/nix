@@ -35,9 +35,9 @@ let
     # Python
     python313
     uv
-  ] // (lib.optionals pkgs.stdenv.isLinux [
+  ] ++ (lib.optionals pkgs.stdenv.isLinux [
     # Linux-specific packages
-  ]) // (libs.optionals pkgs.stdenv.isDarwin [
+  ]) ++ (lib.optionals pkgs.stdenv.isDarwin [
     # Darwin-specific packages
     libiconv
   ]);

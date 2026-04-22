@@ -29,7 +29,7 @@ in
     ];
   };
 
-  flake.modules.darwin.airberry' = 
+  flake.modules.darwin.airberry = 
     {
       lib,
       pkgs,
@@ -119,7 +119,7 @@ in
       system.stateVersion = 6;
     };
 
-  flake.modules.home-manager.airberry' =
+  flake.modules.home-manager.airberry =
     {
       pkgs,
       ...

@@ -26,7 +26,7 @@ in
     ];
   };
 
-  flake.modules.nixos.hyperberry' =
+  flake.modules.nixos.hyperberry =
     {
       config,
       lib,
@@ -35,7 +35,7 @@ in
     }:  
 
     let
-      by = config.by.constants;
+      by = config.by.host-constants;
       keys = config.by.keys;
     in
     {

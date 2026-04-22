@@ -53,7 +53,7 @@
       # Load nvidia driver for Xorg and Wayland
       services.xserver.videoDrivers = ["nvidia"];
     
-      by.constants.hardware = {
+      by.host-constants.hardware = {
         # Define ethernet interface.
         interfaces.ethernet = "eno1";
     

@@ -9,7 +9,7 @@
 let
   inherit (globals) FLAKE_ROOT;
   keys = import "${FLAKE_ROOT}/keys" { inherit lib; };
-  by = config.by.constants;
+  by = config.by.host-constants;
 in
 {
   boot.loader.systemd-boot = {

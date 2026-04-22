@@ -7,7 +7,7 @@ let
   inherit (inputs.self) flake;
 in
 {
-  flake.modules.nixos.home-manager'' =
+  flake.modules.nixos.home-manager' =
     {
       user ? "dcurgz",
       modules ? [ ],
@@ -34,7 +34,7 @@ in
       home-manager.sharedModules = modules;
     };
 
-  flake.modules.darwin.home-manager'' =
+  flake.modules.darwin.home-manager' =
     {
       user ? "dcurgz",
       modules ? [ ],

@@ -18,7 +18,7 @@
     };
   };
 
-  config.flake.modules.home-manager.alacritty' =
+  config.flake.modules.home-manager.alacritty =
     args: let
       config' = args.config;
       cfg = config.by.programs.alacritty;

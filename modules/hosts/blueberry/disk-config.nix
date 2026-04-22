@@ -11,6 +11,10 @@
     }:
 
     {
+      imports = [
+        inputs.disko.nixosModules.default
+      ];
+
       # hostid needs to be fetched before installing
       # ssh into machine and run hostid
       networking.hostId = "8425e349";
