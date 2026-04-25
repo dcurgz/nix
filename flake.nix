@@ -148,6 +148,7 @@
                 ./presets/nixos/vms/open-webui
                 ./presets/nixos/vms/vikunja
                 ./presets/nixos/vms/trilium
+                ./presets/nixos/vms/claude
                 {
                   home-manager.useGlobalPkgs = true;
                   home-manager.useUserPackages = true;

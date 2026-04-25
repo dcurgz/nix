@@ -313,6 +313,10 @@ in
               }
             ];
 
+            nix.nixPath = [
+              "nixpkgs=${pkgs.path}"
+            ];
+
             services.openssh = {
               enable = mkDefault true;
               settings = {

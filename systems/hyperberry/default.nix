@@ -82,9 +82,6 @@ in
   # Enable Fail2Ban for basic intrusion prevention.
   services.fail2ban.enable = true;
 
-  # Enable Docker service.
-  virtualisation.docker.enable = true;
-
   # Enable Avahi for network service discovery.
   services.avahi = {
     enable = true;
@@ -289,7 +286,6 @@ in
     group = "dcurgz";
     extraGroups = [
       "wheel"
-      "docker"
       "media"
       "data"
     ];
@@ -325,13 +321,13 @@ in
       port = 11434;
 
       loadModels = [
-        "gemma4:31b"
-        "gemma4:26b" #A4B
         "gemma3:27b-it-qat"
+        "gemma4:26b" #A4B
+        "gemma4:31b"
         "glm-4.7-flash:latest"
         "qwen3.5:27b"
+        "qwen3.6:35b"
       ];
-      syncModels = true;
 
       environmentVariables = {
         OLLAMA_FLASH_ATTENTION = "true";

@@ -48,6 +48,7 @@ let
     (mkPrivilegedHost "blueberry"   ["host" "root" "dcurgz"])
     (mkPrivilegedHost "hyperberry"  ["host" "root" "dcurgz"])
     (mkSpecialKey "swiss")
+    (mkSpecialKey "blueberry-nt")
 
     (mkGroupHost "miniberry"  ["host" "dcurgz"]    [g_WG])
     (mkGroupHost "piberry"    ["host" "piberry"]   [g_WG])
@@ -68,6 +69,7 @@ let
     (mkGuest "vm-mc-leedlemon")
     (mkGuest "vm-mc-leedl-sta")
     (mkGuest "vm-trilium")
+    (mkGuest "vm-claude")
   ];
 in
 {
