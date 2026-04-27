@@ -1,5 +1,48 @@
 /* shamelessly copied and tweaked from https://causal.agency <3 */
-/* i'm aware i need to define a scheme */
+:root {
+  --bg: #fbf1c7;
+  --fg: #3c3836;
+  --c1: #d9865d;
+  --c2: #bba481;
+  --c3: #879274;
+  --c4: #645e72;
+  --c5: #453a4f;
+}
+
+body {
+  font-family: monospace;
+  max-width: 100ch;
+  margin: 1em auto;
+  padding: 0 1ch;
+}
+
+.colour-palette {
+  width: 10ch;
+  height: 2ch;
+}
+
+.colour-box {
+  display: inline-block;
+  width: 20%;
+  height: 100%;
+}
+
+.colour-box-1 {
+  background-color: var(--c1);
+}
+.colour-box-2 {
+  background-color: var(--c2);
+}
+.colour-box-3 {
+  background-color: var(--c3);
+}
+.colour-box-4 {
+  background-color: var(--c4);
+}
+.colour-box-5 {
+  background-color: var(--c5);
+}
+
 table.head, table.foot { width: 100%; }
 td.head-rtitle, td.foot-os { text-align: right; }
 td.head-vol { text-align: center; }
@@ -22,7 +65,7 @@ table { border-collapse: collapse; }
 table.Nm code.Nm { padding-right: 1ch; }
 table.foot { margin-top: 1em; }
 
-html { background-color: var(--ansi16); color: var(--ansi17); }
-a { color: var(--ansi4); }
-a:visited { color: var(--ansi5); }
-a.permalink { color: var(--ansi3); text-decoration: none; }
+html { background-color: var(--bg); color: var(--fg); }
+a { color: var(--c4); }
+a.permalink { color: var(--c3); text-decoration: none; }
+a.permalink:before { content: "# "; }

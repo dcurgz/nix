@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+### This bash utility, `m`, is a thin wrapper to run GNU Make in any subtree of
+### a Make project. For example, where ./ contains a Makefile, running `m` in
+### ./a/b/c is equivalent to running `make` under `./`
+MAKE="/usr/bin/env make"
+
+DIR=$(pwd)
+while : ; do
+if [ -f "$DIR/Makefile" ]; then
+    break
+fi
+OLDDIR="$DIR"
+DIR=$(realpath "$DIR/..")
+if [ "$OLDDIR" == "$DIR" ]; then
+    echo "E: Cannot find a Makefile in any parent directory!"
+    exit 1
+fi
+done
+
+ARGS=$@
+if [[ -z "$ARGS" ]]; then
+    ARGS=$(cat "$DIR/.last-command")
+    echo "I: No argument provided. Running last command: $ARGS"
+else
+    echo $ARGS > "$DIR/.last-command"
+fi
+
+cd "$DIR" && $MAKE "$ARGS"

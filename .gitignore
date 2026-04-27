@@ -4,3 +4,4 @@ tmp/
 .direnv
 .env
 **/.DS_Store
+.last-command

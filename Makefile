@@ -13,6 +13,13 @@ CHECK_MINECRAFT := ssh vm-mc-leedlemon "rcon-cli --password leedlemon list" || t
 
 .PHONY: hyperberry piberry airberry update
 
+# weird Nix bug where local relative flake inputs are broken when they are
+# garbage collected from the nix store
+update-local-inputs:
+	nix flake update neoforge-server
+	nix flake update nix-time
+	nix flake update weirdfish-server
+
 # Build host-specific configurations
 hyperberry:
 	# Fix permissions
@@ -22,7 +29,7 @@ hyperberry:
 	$(CHECK_MINECRAFT)
 	@read -p "Proceed? [y/N] " ans && ans=$${ans:-N} ; \
 	if [ $${ans} = y ] || [ $${ans} = Y ]; then \
-		sudo nixos-rebuild --no-reexec switch --flake .#hyperberry ; \
+		sudo nixos-rebuild switch --flake .#hyperberry ; \
 	fi
 
 blueberry:
