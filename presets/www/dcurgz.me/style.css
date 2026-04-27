@@ -69,3 +69,15 @@ html { background-color: var(--bg); color: var(--fg); }
 a { color: var(--c4); }
 a.permalink { color: var(--c3); text-decoration: none; }
 a.permalink:before { content: "# "; }
+
+code-inline {
+    padding: 3px;
+    border-radius: 3px;
+    border: solid 1px var(--c1);
+}
+
+pre {
+    padding: 3px;
+    border-radius: 3px;
+    border: solid 1px var(--c1);
+}

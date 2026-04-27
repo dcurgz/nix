@@ -7,16 +7,17 @@
 .Nd Software Engineer (they/he)
 .
 .Sh ABOUT
-You have arrived at dcurgz's personal website. I'm interested in projects like
-NixOS and GrapheneOS (and other AOSP forks), things like robust infrastructure,
-DevOps and CI/CD, and ideals such as decentralization, sustainability, security
-and privacy. 
+You have arrived at dcurgz's personal website.
+
+I'm interested in projects like NixOS and GrapheneOS (and other AOSP forks),
+things like robust infrastructure, DevOps and CI/CD, and ideals such as
+decentralization, sustainability, security and privacy. 
 .Pp
 Here are some of my recent posts.
 .Bl
 .It
 .Lk /posts/001_NixOS.html 001 NixOS
-— How I'm using NixOS today
+— How I'm using NixOS today (WIP!)
 .El
 .
 .Sh LINKS
@@ -27,9 +28,16 @@ Here are some of my recent posts.
 .Nd
 .Lk /rss.xml /rss
 .
+.Sh CONTACT
+.Bd -literal -offset indent -compact
+__PREPROCESS(@chroma@ -l bash)
+#!/usr/bin/env bash
+echo "zr@phem.fu" | tr "[n-za-m]" "[a-z]"
+__END
+.Ed
 .Pp
 Thank you for visiting my website.
 .Pp
-This site was built on <code>@nix-rfc822@</code> by
-.Lk https://github.com/dcurgz/nix/blob/master/www/dcurgz.me/index.7 dcurgz/nix .
+This site was built on __RAW<code-inline>@nix-rfc822@</code-inline>__END by
+.Lk https://github.com/dcurgz/nix/blob/master/presets/www/dcurgz.me/index.7 dcurgz/nix .
 .El
