@@ -41,14 +41,21 @@ let
       waitpid $pid, 0;
       $result }gse' \
   '';
-
   renderMdoc = path: lib.pipe path [
-    # 1. pre-processing
+    ### (1.) pre-mandoc; mdoc format.
+    # replace templates first, which might require substitution themselves.
     (path: replaceOptionalVars path {
-      # preset for rendering code-blocks with chroma
+      # Templates
+      "include:header" = builtins.readFile ./templates/header.7;
+      "include:build-time" = builtins.readFile ./templates/build-time.7;
+      "include:email" = builtins.readFile ./templates/email.7;
+    })
+    # now substitute mdoc vars.
+    (path: replaceOptionalVars path {
+      # Code-formatting command preset
       chroma = "chroma --html --html-only --html-prevent-surrounding-pre --html-lines";
     })
-    # 2. render with mandoc and unescape
+    ### (2.) render mdoc(7) to html.
     (path: stdenv.mkDerivation (
       let
         name  = builtins.baseNameOf path;
@@ -71,7 +78,7 @@ let
           cp ./${name'} "$out"
         '';
       }))
-    # 3. post-processing
+    ### (3.) post-mandoc; html format.
     (path: replaceOptionalVars path {
       nix-gitrev =
         toString (self.shortRev or self.dirtyShortRev or self.lastModified or "unknown");
@@ -87,7 +94,6 @@ let
       color-scheme = builtins.readFile ./color-scheme.html;
     })
   ];
-
   webroot = (pkgs.linkFarm "webroot" [
     # TODO: Define this programmatically.
     {
