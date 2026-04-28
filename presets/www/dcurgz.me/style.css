@@ -67,7 +67,11 @@ table.foot { margin-top: 1em; }
 
 html { background-color: var(--bg); color: var(--fg); }
 a { color: var(--c4); }
-a.permalink { color: var(--c3); text-decoration: none; }
+a.permalink {
+    color: var(--c3);
+    text-decoration: none;
+    line-height: 1em;
+}
 a.permalink:before { content: "# "; }
 
 code-inline {

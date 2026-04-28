@@ -1,12 +1,80 @@
 @include:header@
 .
-.Sh NAME
+.Sh NixOS
 .Nm 001 NixOS
-.Nd What I'm doing with Nix - WIP!
-.Sh DESCRIPTION
+.Nd What I'm doing with Nix (WIP!)
 .
 .Bd -literal
-I'm still writing this one! Check back soon.
+Unpublished: I'm still drafting this post.
 .Ed
 .
+.Pp
+I invest quite a bit of time in maintaining my Nix config, so naturally, I
+often find myself trying to answer the question, for interested and/or
+concerned friends and family members, "What's the point of it?".
+.Pp
+It's difficult to explain because my use of Nix is considerably broad.
+Primarily, it's architecture-as-code for my homelab servers and Hetzner VPSes,
+which is already difficult to explain to a layperson. It's purpose in that
+regard is as an abstraction layer to make self-hosting various web services and
+game servers more convenient.
+.Pp
+But I also use it to manage my personal machines, such as the Linux partition
+of my x86 desktop computer, or my Macbook Air with nix-darwin. Nix is an
+amazing piece of software that fundamentally changes how you are able to manage
+computer systems. 
+.Pp
+In this post, I'll go over things I've been doing with Nix over the last ~14
+months, what I've learned along the way, and the techniques I've discovered to
+take full advantage of the capability of Nix and NixOS.
+.Sh What is Nix?
+If you're already familiar with Nix and NixOS, you may skip this section. Note,
+my explanations here will assume a background of working with Linux systems. If
+you're new to Linux and would like to get into it, I can recommend [TODO] as a
+starting point.
+.Pp
+It's not fully correct to describe Nix as a piece of software. Rather, it is a
+collection of things. First and foremost, Nix is a functional programming
+language, like Elixir or Haskell, as opposed to a procedural programming
+language, such as...most programming languages today. Java, C#, JavaScript,
+C/C++ and Swift are all examples of procedural programming languages.
+.Pp
+A procedural programming language describes, at a high level, the instructions
+that the computer should execute. Take the below example of a C program.
+.Bd -literal
+__POSTPROCESS(@chroma@ -l c)
+@include:fibonacci.c@
+__END
+.Ed
+You can run this program like so.
+.Bd -literal
+__POSTPROCESS(@chroma@ -l bash)
+$ gcc fibonacci.c -o fibonacci
+$ ./fibonacci 23
+$ # ==> __PREPROCESS(gcc -x c - -o fibonacci && ./fibonacci 23)
+@include:fibonacci.c@
+__END
+__END
+.Ed
+.Pp
+Procedural programming languages are so popular because they are such a great
+way to implement many classes of software. However, some problems are better
+suited to functional programming languages. 
+.
+Here is an implementation of the same program in Haskell, a functional language.
+.Bd -literal
+__POSTPROCESS(@chroma@ -l haskell)
+@include:fibonacci.hs@
+__END
+.Ed
+Similarly, you can run the program like this.
+.Bd -literal
+__POSTPROCESS(@chroma@ -l bash)
+$ ghc fibonacci.hs -o fibonacci
+$ ./fibonacci 23
+$ # ==> __PREPROCESS(ghc --frontend GhcStdin -ffrontend-opt "-o fibonacci" &>/dev/null && ./fibonacci 23)
+@include:fibonacci.hs@
+__END
+__END
+.Ed
 @include:build-time@

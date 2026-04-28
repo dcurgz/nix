@@ -26,14 +26,19 @@ let
   '';
   # __PREPROCESS(command)...__END blocks will invoke `command`, pass the block
   # contents into stdin, and replace the whole block with the command output.
-  preprocessHtml = ''
-    perl -0777 -MIPC::Open2 -pe 's{__PREPROCESS\((.*?)\)(.*?)__END} {
+  # __PREPROCESS and __POSTPROCESS as equivalent, but one the former runs
+  # before mandoc compilation, while the latter runs after compilation, on
+  # HTML.
+  transform = blockName: ''
+    perl -0777 -MIPC::Open3 -pe 's{__${blockName}\((.*?)\)(.*?)__END} {
       my ($cmd, $block) = ($1, $2);
-      $block=~s/&amp;/&/g;
-      $block=~s/&gt;/>/g;
-      $block=~s/&lt;/</g;
-      $block=~s/&quot;/"/g;
-      my $pid = open2(my $out, my $in, $cmd);
+      for ($cmd, $block) {
+        s/&amp;/&/g;
+        s/&gt;/>/g;
+        s/&lt;/</g;
+        s/&quot;/"/g;
+      }
+      my $pid = open3(my $in, my $out, 0, "bash", "-c", $cmd);
       print $in $block;
       close $in;
       local $/;
@@ -44,12 +49,21 @@ let
   renderMdoc = path: lib.pipe path [
     ### (1.) pre-mandoc; mdoc format.
     # replace templates first, which might require substitution themselves.
-    (path: replaceOptionalVars path {
-      # Templates
-      "include:header" = builtins.readFile ./templates/header.7;
-      "include:build-time" = builtins.readFile ./templates/build-time.7;
-      "include:email" = builtins.readFile ./templates/email.7;
-    })
+    (path: (replaceOptionalVars path
+      (let
+        readFileAndTrim = path: (lib.pipe path [
+          builtins.readFile
+          (lib.removeSuffix "\n")
+        ]);
+      in
+      {
+        # Templates
+        "include:build-time"   = readFileAndTrim ./templates/build-time.7;
+        "include:email"        = readFileAndTrim ./templates/email.7;
+        "include:fibonacci.c"  = readFileAndTrim ./templates/fibonacci.c;
+        "include:fibonacci.hs" = readFileAndTrim ./templates/fibonacci.hs;
+        "include:header"       = readFileAndTrim ./templates/header.7;
+      })))
     # now substitute mdoc vars.
     (path: replaceOptionalVars path {
       # Code-formatting command preset
@@ -63,14 +77,24 @@ let
       in
       {
         inherit name;
-        nativeBuildInputs = with pkgs; [ mandoc perl chroma ];
+        nativeBuildInputs = with pkgs; [
+          mandoc
+          perl
+          chroma
+          gcc
+          (haskellPackages.ghcWithPackages.override { } (
+            p: with p; [ ghc-stdin ]
+          ))
+        ];
         src = builtins.dirOf path;
         # Render a .7 mdoc source file into HTML, unescape, pre-process, then
         # write to output file.
         buildPhase = ''
-          mandoc -T html -O style=/style.css "$src/${name}" \
+          cat "$src/${name}" \
+            | ${transform "PREPROCESS"} \
+            | mandoc -T html -O style=/style.css \
             | ${unescapeHtml} \
-            | ${preprocessHtml} \
+            | ${transform "POSTPROCESS"} \
             > ${name'} 
         '';
         # Copy into the out directory.
