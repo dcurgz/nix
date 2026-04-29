@@ -1,6 +1,7 @@
 /* shamelessly copied and tweaked from https://causal.agency <3 */
 :root {
   --bg: #fbf1c7;
+  --bg-darken: #f6ebbe;
   --fg: #3c3836;
   --c1: #d9865d;
   --c2: #bba481;
@@ -86,7 +87,8 @@ code-inline {
 }
 
 pre {
-    padding: 3px;
-    border-radius: 3px;
+    padding: 1em;
+    border-radius: 6px;
     border: solid 1px var(--c2);
+    background-color: var(--bg-darken);
 }
