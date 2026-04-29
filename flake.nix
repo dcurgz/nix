@@ -47,6 +47,7 @@
     weirdfish-server.url = "path:./pkgs/weirdfish-server";
     #nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
     nix-html.url = "github:NotAShelf/niXhtml";
+    mandoc-forked.url = "path:./pkgs/external/mandoc";
   };
 
   outputs =
@@ -79,6 +80,7 @@
       weirdfish-server,
       #nixpkgs-wayland,
       nix-html,
+      mandoc-forked,
     }@inputs:
 
     let

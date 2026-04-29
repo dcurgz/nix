@@ -1,0 +1,95 @@
+diff --git a/mdoc.c b/mdoc.c
+index 475a6aa..4618409 100644
+--- amdoc.c
++++ bmdoc.c
+@@ -40,7 +40,7 @@
+ const	char *const __mdoc_argnames[MDOC_ARG_MAX] = {
+ 	"split",		"nosplit",		"ragged",
+ 	"unfilled",		"literal",		"file",
+-	"offset",		"bullet",		"dash",
++	"offset",		"decorate",     "bullet",		"dash",
+ 	"hyphen",		"item",			"enum",
+ 	"tag",			"diag",			"hang",
+ 	"ohang",		"inset",		"column",
+diff --git a/mdoc.h b/mdoc.h
+index 2f32fa4..0393fc7 100644
+--- amdoc.h
++++ bmdoc.h
+@@ -27,6 +27,7 @@ enum	mdocargt {
+ 	MDOC_Literal, /* -literal */
+ 	MDOC_File, /* -file */
+ 	MDOC_Offset, /* -offset */
++	MDOC_Decorate, /* -decorate */
+ 	MDOC_Bullet, /* -bullet */
+ 	MDOC_Dash, /* -dash */
+ 	MDOC_Hyphen, /* -hyphen */
+@@ -114,6 +115,7 @@ struct	mdoc_bd {
+ 	const char	 *offs; /* -offset */
+ 	enum mdoc_disp	  type; /* -ragged, etc. */
+ 	int		  comp; /* -compact */
++    const char *decorate; /* -decorate */
+ };
+ 
+ struct	mdoc_bl {
+diff --git a/mdoc_argv.c b/mdoc_argv.c
+index 1bfd336..52fbd1a 100644
+--- amdoc_argv.c
++++ bmdoc_argv.c
+@@ -69,6 +69,7 @@ static	const enum argvflag argvflags[MDOC_ARG_MAX] = {
+ 	ARGV_NONE,	/* MDOC_Literal */
+ 	ARGV_SINGLE,	/* MDOC_File */
+ 	ARGV_SINGLE,	/* MDOC_Offset */
++	ARGV_SINGLE,	/* MDOC_Decorate */
+ 	ARGV_NONE,	/* MDOC_Bullet */
+ 	ARGV_NONE,	/* MDOC_Dash */
+ 	ARGV_NONE,	/* MDOC_Hyphen */
+@@ -108,6 +109,7 @@ static	const enum mdocargt args_Bd[] = {
+ 	MDOC_Literal,
+ 	MDOC_File,
+ 	MDOC_Offset,
++	MDOC_Decorate,
+ 	MDOC_Compact,
+ 	MDOC_Centred,
+ 	MDOC_ARG_MAX
+diff --git a/mdoc_html.c b/mdoc_html.c
+index c0a0a6a..85fe04f 100644
+--- amdoc_html.c
++++ bmdoc_html.c
+@@ -970,6 +970,13 @@ mdoc_bd_pre(MDOC_ARGS)
+ 	if (n->norm->Bd.type == DISP_literal)
+ 		(void)strlcat(buf, " Li", sizeof(buf));
+ 
++    /* Handle the -decorate argument. */
++
++    if (n->norm->Bd.decorate != NULL) {
++        (void)strlcat(buf, " ", sizeof(buf));
++        (void)strlcat(buf, n->norm->Bd.decorate, sizeof(buf));
++    }
++
+ 	print_otag_id(h, TAG_DIV, buf, n);
+ 	return 1;
+ }
+diff --git a/mdoc_validate.c b/mdoc_validate.c
+index e1cd3ae..8ba7ca0 100644
+--- amdoc_validate.c
++++ bmdoc_validate.c
+@@ -849,6 +849,19 @@ post_bd(POST_ARGS)
+ 			rewrite_macro2len(mdoc, argv->value);
+ 			n->norm->Bd.offs = argv->value[0];
+ 			break;
++		case MDOC_Decorate:
++			if (0 == argv->sz) {
++				mandoc_msg(MANDOCERR_ARG_EMPTY,
++				    argv->line, argv->pos, "Bd -decorate");
++				break;
++			}
++			if (NULL != n->norm->Bd.decorate)
++				mandoc_msg(MANDOCERR_ARG_REP,
++				    argv->line, argv->pos,
++				    "Bd -decorate %s", argv->value[0]);
++			rewrite_macro2len(mdoc, argv->value);
++			n->norm->Bd.decorate = argv->value[0];
++			break;
+ 		case MDOC_Compact:
+ 			if (n->norm->Bd.comp)
+ 				mandoc_msg(MANDOCERR_ARG_REP,

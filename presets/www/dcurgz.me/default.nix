@@ -79,7 +79,7 @@ let
       {
         inherit name;
         nativeBuildInputs = with pkgs; [
-          mandoc
+          inputs.mandoc-forked.packages.${pkgs.system}.default
           perl
           chroma
           gcc
