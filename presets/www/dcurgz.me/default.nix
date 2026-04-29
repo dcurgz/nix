@@ -60,7 +60,7 @@ let
         # Templates
         "include:back"         = readFileAndTrim ./templates/back.7;
         "include:build-time"   = readFileAndTrim ./templates/build-time.7;
-        "include:email"        = readFileAndTrim ./templates/email.7;
+        "include:contact"      = readFileAndTrim ./templates/contact.7;
         "include:fibonacci.c"  = readFileAndTrim ./templates/fibonacci.c;
         "include:fibonacci.hs" = readFileAndTrim ./templates/fibonacci.hs;
         "include:header"       = readFileAndTrim ./templates/header.7;
