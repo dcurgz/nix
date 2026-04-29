@@ -68,7 +68,7 @@ let
     # now substitute mdoc vars.
     (path: replaceOptionalVars path {
       # Code-formatting command preset
-      chroma = "chroma --html --html-only --html-prevent-surrounding-pre --html-lines";
+      chroma = "chroma --html --html-only --html-lines --html-prevent-surrounding-pre";
     })
     ### (2.) render mdoc(7) to html.
     (path: stdenv.mkDerivation (
