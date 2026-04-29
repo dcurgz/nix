@@ -16,13 +16,13 @@ let
 
   # mandoc escapes HTML in its '-T html' output mode. This reverses it.
   unescapeHtml = ''
-    perl -pe 's{__RAW(.*?)__END}{
+    perl -0777 -pe 's{__RAW(.*?)__END}{
       my $s=$1;
       $s=~s/&amp;/&/g;
       $s=~s/&gt;/>/g;
       $s=~s/&lt;/</g;
       $s=~s/&quot;/"/g;
-      $s }ge' \
+      $s }gse' \
   '';
   # __PREPROCESS(command)...__END blocks will invoke `command`, pass the block
   # contents into stdin, and replace the whole block with the command output.
@@ -58,6 +58,7 @@ let
       in
       {
         # Templates
+        "include:back"         = readFileAndTrim ./templates/back.7;
         "include:build-time"   = readFileAndTrim ./templates/build-time.7;
         "include:email"        = readFileAndTrim ./templates/email.7;
         "include:fibonacci.c"  = readFileAndTrim ./templates/fibonacci.c;

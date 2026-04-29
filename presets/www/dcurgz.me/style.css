@@ -67,6 +67,9 @@ table.foot { margin-top: 1em; }
 
 html { background-color: var(--bg); color: var(--fg); }
 a { color: var(--c4); }
+a.Sx:before {
+    content: "→ ";
+}
 a.permalink {
     color: var(--c3);
     text-decoration: none;

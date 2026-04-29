@@ -1,9 +1,12 @@
 @include:header@
+.Pp
+@include:back@
 .
-.Sh NixOS
+.Sh NAME
 .Nm 001 NixOS
 .Nd What I'm doing with Nix (WIP!)
 .
+.Sh DESCRIPTION
 .Bd -literal
 Unpublished: I'm still drafting this post.
 .Ed
@@ -21,32 +24,52 @@ game servers more convenient.
 .Pp
 But I also use it to manage my personal machines, such as the Linux partition
 of my x86 desktop computer, or my Macbook Air with nix-darwin. Nix is an
-amazing piece of software that fundamentally changes how you are able to manage
-computer systems. 
+amazing piece of "software" that fundamentally changes how you are able to
+manage computer systems. 
 .Pp
 In this post, I'll go over things I've been doing with Nix over the last ~14
 months, what I've learned along the way, and the techniques I've discovered to
 take full advantage of the capability of Nix and NixOS.
-.Sh What is Nix?
-If you're already familiar with Nix and NixOS, you may skip this section. Note,
-my explanations here will assume a background of working with Linux systems. If
-you're new to Linux and would like to get into it, I can recommend [TODO] as a
-starting point.
+.Ss What is Nix?
+If you're already familiar with Nix and NixOS, you may skip this section.
+.Sx TODO
+Note, my description here will assume a background of working with Linux
+systems. 
 .Pp
-It's not fully correct to describe Nix as a piece of software. Rather, it is a
-collection of things. First and foremost, Nix is a functional programming
-language, like Elixir or Haskell, as opposed to a procedural programming
-language, such as...most programming languages today. Java, C#, JavaScript,
-C/C++ and Swift are all examples of procedural programming languages.
+It's incomplete to describe Nix as software. Nix is a collection of
+co-operating tools, such as the Nix language, the Nix daemon (and store), and a
+suite of scripts that evaluate and activate configurations written in Nix.
+Further, a large part of Nix's superpower is the community behind it; nixpkgs
+is the largest package repository in the world today.
+.Pp
+Nix is a functional programming language. Most programming languages today are
+not functional, but procedural: this includes Java, C, C++, C#, Swift...etc.
+Functional languages are far more rare, some notable ones being Haskell and
+Elixir. It's important to understand this when looking at Nix definitions, as
+functional languages express things quite differently to their procedural
+counterparts.
+.Ss Some background on languages
 .Pp
 A procedural programming language describes, at a high level, the instructions
-that the computer should execute. Take the below example of a C program.
+that the computer should execute.
+.Pp
+The __RAW<dfn>fibonacci</dfn>__END function is defined as a recurrence relation:
 .Bd -literal
-__POSTPROCESS(@chroma@ -l c)
+fib(0) = 0
+fib(1) = 1
+fib(n) = fib(n-1) + fib(n-2)
+.Ed
+Below is an example of the __RAW<dfn>fibonacci</dfn>__END function written in
+C. 
+.Bd -literal
+__POSTPROCESS(cat | grep "int fib(" -A10 | @chroma@ -l c)
 @include:fibonacci.c@
 __END
 .Ed
-You can run this program like so.
+The C implementation is written iteratively, rather than recursively, because
+this is overwhelmingly more optimal for a typical procedural language such as
+C. The main function and argument parsing have been omitted for brevity. You
+can run the program like so to compute fibonacci of a given `n`.
 .Bd -literal
 __POSTPROCESS(@chroma@ -l bash)
 $ gcc fibonacci.c -o fibonacci
@@ -61,13 +84,26 @@ Procedural programming languages are so popular because they are such a great
 way to implement many classes of software. However, some problems are better
 suited to functional programming languages. 
 .
-Here is an implementation of the same program in Haskell, a functional language.
+Here is an implementation of the same function in Haskell, a functional language.
 .Bd -literal
-__POSTPROCESS(@chroma@ -l haskell)
+__POSTPROCESS(cat | grep "fib ::" -A3 | @chroma@ -l haskell)
 @include:fibonacci.hs@
 __END
 .Ed
-Similarly, you can run the program like this.
+Here, we are able to take advantage of the terseness of a functional language:
+.Bl
+.It
+Pattern matching allows us to express our base cases, `fib(0) = 0` and `fib(1) =
+1`, as simple definitions. 
+.It 
+Recursion lets us write the fibonacci function in its natural form, as a
+function of itself.
+.It
+Overall, the syntax is smaller, allowing us to focus on the problem at hand.
+.El
+.Pp
+Again, the main function has been omitted for brevity. You can compile and run
+the program like this:
 .Bd -literal
 __POSTPROCESS(@chroma@ -l bash)
 $ ghc fibonacci.hs -o fibonacci
@@ -77,4 +113,32 @@ $ # ==> __PREPROCESS(ghc --frontend GhcStdin -ffrontend-opt "-o fibonacci" &>/de
 __END
 __END
 .Ed
+It is possible to achieve some terseness with C by writing the function
+recursively, as with the Haskell function. However, it is significantly more
+efficient to write C programs iteratively instead, as C does not implement
+__RAW<dfn>tail-call optimization.</dfn>__END
+Likewise, if held at gunpoint, a Haskell developer could likely write an
+"iterative" version of a function better expressed recursively. 
+.Pp
+Programming languages are designed to optimally support their intended
+usecases. C is designed to provide a minimal abstraction over modern CPU
+instructions, so that developers may take full advantage of the underlying
+hardware. Haskell is designed to allow developers to write expressive code at a
+high level of abstraction, focusing on a more mathematical description of the
+problem being solved, leaning on the compiler to make clever optimizations to
+run the code efficiently on modern CPUs.
+.Ss Nix as a language
+.Pp
+Nix is a weird language. It is functional like Haskell, but it doesn't have
+features that are commonplace in functional languages, such as pattern matching
+and tail-call optimization. It is simple like C, but it is not optimized to
+emit efficient machine code; rather, it is evaluated, and quite slow!
+.Pp
+In spite of these limitations, it is still an incredibly powerful language in
+its problem domain - configuration.
+.Ss TODO
+The rest of the article.
+.
 @include:build-time@
+.Pp
+@include:back@
