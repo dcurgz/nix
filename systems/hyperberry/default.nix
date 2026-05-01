@@ -15,6 +15,10 @@ let
   ollamaDir = "/data/open-webui.ollama";
 in
 {
+  age.secrets.br1-wg-key = {
+    file = "${FLAKE_ROOT}/secrets/wireguard/001-key.age";
+  };
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot = {
     enable = true;
@@ -115,6 +119,7 @@ in
     ];
     firewall = {
       enable = true;
+      checkReversePath = "loose";
       allowedTCPPorts = [
         22
       ];
@@ -146,9 +151,15 @@ in
     };
   };
 
-  systemd.network.networks."10-lan-bridge-config" = {
+  systemd.network.netdevs."br1" = {
+    netdevConfig = {
+      Name = "br1";
+      Kind = "bridge";
+    };
+  };
+
+  systemd.network.networks."10-add-interfaces-to-br0" = {
     matchConfig.Name = [
-      "eth0"
       "vm-*"
     ];
     networkConfig = {
@@ -156,7 +167,16 @@ in
     };
   };
 
-  systemd.network.networks."20-lan-bridge" = {
+  systemd.network.networks."20-add-interfaces-to-br1" = {
+    matchConfig.Name = [
+      "vx-*"
+    ];
+    networkConfig = {
+      Bridge = "br1";
+    };
+  };
+
+  systemd.network.networks."30-configure-gateway-for-br0" = {
     matchConfig.Name = "br0";
     networkConfig = {
       Address = [ "10.0.0.1/24" ];
@@ -165,17 +185,78 @@ in
     };
   };
 
+  systemd.network.networks."40-configure-gateway-for-br1" = {
+    matchConfig.Name = "br1";
+    networkConfig = {
+      Address = [ "10.0.9.1/24" ];
+      DHCPServer = true;
+      IPv6SendRA = true;
+    };
+  };
+
   # Allow internet access
   networking.nat = {
     enable = true;
-    externalInterface = "eno1";
-    internalInterfaces = [
-      "br0"
-    ];
+    externalInterface = by.hardware.interfaces.ethernet;
+    internalInterfaces = [ "br0" ];
   };
 
-  services.tailscale.enable = true;
-  services.tailscale.useRoutingFeatures = lib.mkDefault "both";
+  networking.wg-quick.interfaces."wg0" =
+    let
+      ip = "${pkgs.iproute2}/bin/ip";
+      nft = lib.getExe pkgs.nftables;
+      git-secrets = config.by.secrets.wireguard."001";
+      br1-subnet = "10.0.9.0/24";
+    in
+    {
+      table = "off";
+      inherit (git-secrets) address;
+      peers = [
+        {
+          inherit (git-secrets) endpoint publicKey;
+          allowedIPs = [ "0.0.0.0/0" "::/0" ];
+        }
+      ];
+      privateKeyFile = config.age.secrets.br1-wg-key.path;
+      postUp = ''
+        # Policy routing: send br1 subnet traffic via wg0
+        ${ip} route add ${br1-subnet} dev br1 table 51820
+        ${ip} route add default dev wg0 table 51820
+        ${ip} rule add from ${br1-subnet} table 51820 priority 100
+
+        # Forward br1 traffic through wg0
+        ${nft} add table inet wg-br1
+        ${nft} add chain inet wg-br1 forward '{ type filter hook forward priority 0; policy accept; }'
+        ${nft} add rule inet wg-br1 forward iifname "br1" oifname "wg0" accept
+        ${nft} add rule inet wg-br1 forward iifname "wg0" oifname "br1" ct state established,related accept
+        ${nft} add chain inet wg-br1 postrouting '{ type nat hook postrouting priority 100; }'
+        ${nft} add rule inet wg-br1 postrouting oifname "wg0" ip saddr ${br1-subnet} masquerade
+      '';
+      postDown = ''
+        ${ip} rule del from ${br1-subnet} table 51820 priority 100 || true
+        ${ip} route del default dev wg0 table 51820 || true
+        ${ip} route del ${br1-subnet} dev br1 table 51820 || true
+        ${nft} delete table inet wg-br1
+      '';
+    };
+
+  services.tailscale = {
+    enable = true;
+  };
+
+  networking.nftables = {
+    enable = true;
+    tables."hyperberry" = {
+      family = "inet";
+      content = ''
+        chain forward {
+          type filter hook forward priority -1; policy accept;
+          # Block br1 from reaching ethernet directly (must use WireGuard)
+          iifname "br1" oifname "${by.hardware.interfaces.ethernet}" drop
+        }
+      '';
+    };
+  };
 
   programs.command-not-found.enable = true;
   programs.fish.enable = true;

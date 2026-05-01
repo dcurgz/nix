@@ -151,6 +151,7 @@
                 ./presets/nixos/vms/vikunja
                 ./presets/nixos/vms/trilium
                 ./presets/nixos/vms/claude
+                ./presets/nixos/vms/vx-jupiter/default.enc.nix
                 {
                   home-manager.useGlobalPkgs = true;
                   home-manager.useUserPackages = true;
@@ -543,15 +544,15 @@
         };
 
         # weird bug where we don't use the build cache if we're remote building to the same host
-        #hyperberry = {
-        #  hostname = "hyperberry";
-        #  sshUser = "dcurgz";
-        #  remoteBuild = true;
-        #  profiles.system = {
-        #    user = "root";
-        #    path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.hyperberry;
-        #  };
-        #};
+        hyperberry = {
+          hostname = "hyperberry";
+          sshUser = "dcurgz";
+          remoteBuild = true;
+          profiles.system = {
+            user = "root";
+            path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.hyperberry;
+          };
+        };
 
         piberry = {
           hostname = "piberry";

@@ -6,6 +6,9 @@ with lib;
 
 {
   options.by.secrets = {
+    wireguard = mkOption {
+      type = types.unspecified;
+    };
     tailscale.magic_dns = mkOption {
       type = types.str;
       description = "The Magic DNS root subdomain for berry hosts.";

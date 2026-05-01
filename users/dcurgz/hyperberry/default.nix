@@ -23,4 +23,6 @@ in
   by.programs.alacritty.enable = true;
 
   programs.home-manager.enable = true;
+
+  home.packages = with pkgs; [ maestral ];
 }
