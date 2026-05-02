@@ -30,6 +30,7 @@ with keys.ssh.hosts;
   "tailscale/guests/vm-teamspeak.age".publicKeys    = (withDefault vm-teamspeak.keys);
   "tailscale/guests/vm-trilium.age".publicKeys      = (withDefault vm-trilium.keys);
   "tailscale/guests/vm-vikunja.age".publicKeys      = (withDefault vm-vikunja.keys);
+  "tailscale/guests/vx-jupiter.age".publicKeys      = (withDefault vx-jupiter.keys);
   # hyperberry
   "backup/restic-password.age".publicKeys     = (withDefault hyperberry.keys);
   "backup/restic-envvars.age".publicKeys      = (withDefault hyperberry.keys);

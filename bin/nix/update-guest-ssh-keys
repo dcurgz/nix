@@ -1,18 +1,19 @@
 #!/usr/bin/env bash
 GUESTS=(
-  'vm-jellyfin'
-  'vm-vikunja'
+  'vm-claude'
   'vm-immich'
-  'vm-teamspeak'
-  'vm-openwebui'
+  'vm-jellyfin'
+  'vm-mc-leedl-sta'
+  'vm-mc-leedlemon'
   'vm-mc-slime-0'
   'vm-mc-slime-1'
   'vm-mc-wg-0'
   'vm-mc-wg-1'
-  'vm-mc-leedlemon'
-  'vm-mc-leedl-sta'
+  'vm-openwebui'
+  'vm-teamspeak'
   'vm-trilium'
-  'vm-claude'
+  'vm-vikunja'
+  'vx-jupiter'
 )
 OUT_DIR="./keys/ssh"
 

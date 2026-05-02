@@ -57,19 +57,20 @@ let
 
     (mkGroupHost "publicproxy"   ["host"]      [g_EXT])
 
-    (mkGuest "vm-jellyfin")
-    (mkGuest "vm-vikunja")
+    (mkGuest "vm-claude")
     (mkGuest "vm-immich")
-    (mkGuest "vm-teamspeak")
-    (mkGuest "vm-openwebui")
+    (mkGuest "vm-jellyfin")
+    (mkGuest "vm-mc-leedl-sta")
+    (mkGuest "vm-mc-leedlemon")
     (mkGuest "vm-mc-slime-0")
     (mkGuest "vm-mc-slime-1")
     (mkGuest "vm-mc-wg-0")
     (mkGuest "vm-mc-wg-1")
-    (mkGuest "vm-mc-leedlemon")
-    (mkGuest "vm-mc-leedl-sta")
+    (mkGuest "vm-openwebui")
+    (mkGuest "vm-teamspeak")
     (mkGuest "vm-trilium")
-    (mkGuest "vm-claude")
+    (mkGuest "vm-vikunja")
+    (mkGuest "vx-jupiter")
   ];
 in
 {
