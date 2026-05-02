@@ -242,16 +242,14 @@ in
         {
             imports = [
               "${FLAKE_ROOT}/presets/nixos/misc/lix.nix"
+              "${FLAKE_ROOT}/presets/nixos/networking/dns.nix"
             ];
 
             networking.hostName = hostname;
             microvm.hypervisor = mkDefault "cloud-hypervisor";
             system.stateVersion = mkDefault "24.11";
 
-            networking.nameservers = [
-              "1.1.1.1"
-              "8.8.8.8"
-            ];
+            # ...nameservers are handled by the preset.
 
             microvm.interfaces = [
               {

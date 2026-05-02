@@ -136,16 +136,17 @@
                 ./presets/nixos/misc/lix.nix
                 ./presets/nixos/security/sudo
                 ./presets/nixos/security/groups
+                ./presets/nixos/networking/dns.nix
                 ./presets/nixos/packages/core
                 ./presets/nixos/packages/encryption
                 ./presets/nixos/packages/python
                 ./presets/nixos/vms/immich
                 #./presets/nixos/vms/minecraft-wg-0
                 ./presets/nixos/vms/minecraft-slime
-                ./presets/nixos/vms/minecraft-slime_staging
+                #./presets/nixos/vms/minecraft-slime_staging
                 ./presets/nixos/vms/minecraft-leedlemon
-                ./presets/nixos/vms/minecraft-leedlemon_staging
-                ./presets/nixos/vms/teamspeak
+                #./presets/nixos/vms/minecraft-leedlemon_staging
+                #./presets/nixos/vms/teamspeak
                 ./presets/nixos/vms/jellyfin
                 ./presets/nixos/vms/open-webui
                 ./presets/nixos/vms/vikunja

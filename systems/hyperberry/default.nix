@@ -112,11 +112,7 @@ in
   networking = {
     hostName = "hyperberry";
     enableIPv6 = true;
-    nameservers = [
-      "1.1.1.1"
-      "8.8.8.8"
-      "8.8.4.4"
-    ];
+    # ...nameservers are handled by the preset.
     firewall = {
       enable = true;
       checkReversePath = "loose";
@@ -194,12 +190,16 @@ in
     };
   };
 
-  # Allow internet access
+  # Allow internet access for VMs
   networking.nat = {
     enable = true;
     externalInterface = by.hardware.interfaces.ethernet;
     internalInterfaces = [ "br0" ];
   };
+
+  # Ensure wg-quick starts after br1 bridge is up
+  systemd.services."wg-quick-wg0".after = [ "sys-subsystem-net-devices-br1.device" ];
+  systemd.services."wg-quick-wg0".requires = [ "sys-subsystem-net-devices-br1.device" ];
 
   networking.wg-quick.interfaces."wg0" =
     let
