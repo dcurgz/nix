@@ -77,7 +77,6 @@ in
           age.secrets.tailscale-auth-key = {
             file = "${FLAKE_ROOT}/secrets/tailscale/guests/${hostname}.age"; 
             mode = "0440"; 
-            #group = "kvm";
           };
           services.tailscale.authKeyFile = config.age.secrets.tailscale-auth-key.path;
 

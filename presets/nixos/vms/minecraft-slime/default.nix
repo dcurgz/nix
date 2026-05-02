@@ -9,9 +9,9 @@
 
 let
   by = config.by.constants;
-  inherit (globals) NIXOS_PRESETS;
+  inherit (globals) FLAKE_ROOT NIXOS_PRESETS;
 
-  hostname = "vm-mc-slime";
+  hostname = "vm-mc-slime-0";
   nix-minecraft = inputs.nix-minecraft;
 
   dataDir = "/data/minecraft-slime";
@@ -27,8 +27,9 @@ in
         ipAddress = "10.0.0.16";
       };
       microvm = {
-        config = {
+        config = { config, ... }: {
           imports = [
+            inputs.agenix.nixosModules.default
             inputs.neoforge-1-21-1.nixosModules.x86_64-linux.default
             "${NIXOS_PRESETS}/packages/core"
           ];
@@ -70,6 +71,12 @@ in
           };
 
           users.users.minecraft.extraGroups = [ "data" ];
+
+          age.secrets.tailscale-auth-key = {
+            file = "${FLAKE_ROOT}/secrets/tailscale/guests/${hostname}.age"; 
+            mode = "0440"; 
+          };
+          services.tailscale.authKeyFile = config.age.secrets.tailscale-auth-key.path;
         };
       };
     };

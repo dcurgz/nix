@@ -9,7 +9,7 @@
 
 let
   by = config.by.constants;
-  inherit (globals) NIXOS_PRESETS;
+  inherit (globals) FLAKE_ROOT NIXOS_PRESETS;
 
   hostname = "vm-mc-wg-0";
   nix-minecraft = inputs.nix-minecraft;
@@ -25,10 +25,12 @@ in
         ipAddress = "10.0.0.11";
       };
       microvm = {
-        # VM-specific configuration
-        config = {
+        extraModules = [
+          inputs.agenix.nixosModules.default
+          inputs.nix-minecraft.nixosModules.minecraft-servers
+        ];
+        config = { config, ... }: {
           imports = [
-            inputs.nix-minecraft.nixosModules.minecraft-servers
             "${NIXOS_PRESETS}/packages/core"
             "${NIXOS_PRESETS}/security/groups"
           ];
@@ -81,6 +83,12 @@ in
                 bash ./run.sh
               '';
             };
+
+          age.secrets.tailscale-auth-key = {
+            file = "${FLAKE_ROOT}/secrets/tailscale/guests/${hostname}.age"; 
+            mode = "0440"; 
+          };
+          services.tailscale.authKeyFile = config.age.secrets.tailscale-auth-key.path;
         };
       };
 

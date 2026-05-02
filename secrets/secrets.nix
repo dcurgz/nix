@@ -17,12 +17,19 @@ with keys.ssh.hosts;
   "tailscale/hosts/blueberry.age".publicKeys    = (withDefault blueberry.keys);
   "tailscale/hosts/publicproxy.age".publicKeys  = (withDefault publicproxy.keys);
   # guests
-  "tailscale/guests/vm-openwebui.age".publicKeys       = (withDefault vm-openwebui.keys);
-  "tailscale/guests/vm-vikunja.age".publicKeys         = (withDefault vm-vikunja.keys);
-  "tailscale/guests/vm-mc-leedlemon.age".publicKeys    = (withDefault vm-mc-leedlemon.keys);
-  "tailscale/guests/vm-mc-leedl-sta.age".publicKeys    = (withDefault vm-mc-leedl-sta.keys);
-  "tailscale/guests/vm-trilium.age".publicKeys         = (withDefault vm-trilium.keys);
-  "tailscale/guests/vm-claude.age".publicKeys          = (withDefault vm-claude.keys);
+  "tailscale/guests/vm-claude.age".publicKeys       = (withDefault vm-claude.keys);
+  "tailscale/guests/vm-immich.age".publicKeys       = (withDefault vm-immich.keys);
+  "tailscale/guests/vm-jellyfin.age".publicKeys     = (withDefault vm-jellyfin.keys);
+  "tailscale/guests/vm-mc-leedl-sta.age".publicKeys = (withDefault vm-mc-leedl-sta.keys);
+  "tailscale/guests/vm-mc-leedlemon.age".publicKeys = (withDefault vm-mc-leedlemon.keys);
+  "tailscale/guests/vm-mc-wg-0.age".publicKeys      = (withDefault vm-mc-wg-0.keys);
+  "tailscale/guests/vm-mc-wg-1.age".publicKeys      = (withDefault vm-mc-wg-1.keys);
+  "tailscale/guests/vm-mc-slime-0.age".publicKeys   = (withDefault vm-mc-slime-0.keys);
+  "tailscale/guests/vm-mc-slime-1.age".publicKeys   = (withDefault vm-mc-slime-1.keys);
+  "tailscale/guests/vm-openwebui.age".publicKeys    = (withDefault vm-openwebui.keys);
+  "tailscale/guests/vm-teamspeak.age".publicKeys    = (withDefault vm-teamspeak.keys);
+  "tailscale/guests/vm-trilium.age".publicKeys      = (withDefault vm-trilium.keys);
+  "tailscale/guests/vm-vikunja.age".publicKeys      = (withDefault vm-vikunja.keys);
   # hyperberry
   "backup/restic-password.age".publicKeys     = (withDefault hyperberry.keys);
   "backup/restic-envvars.age".publicKeys      = (withDefault hyperberry.keys);

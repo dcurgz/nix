@@ -11,7 +11,7 @@
 let
   by = config.by.constants;
   secrets = config.by.secrets;
-  inherit (globals) NIXOS_PRESETS;
+  inherit (globals) FLAKE_ROOT NIXOS_PRESETS;
 
   hostname = "vm-immich";
   immich_port = 8903;
@@ -28,6 +28,9 @@ in
         ipAddress = "10.0.0.12";
       };
       microvm = {
+        extraModules = [
+          inputs.agenix.nixosModules.default
+        ];
         pkgs = pkgs-immich;
         config = { config, ... }: {
           imports = [
@@ -133,6 +136,12 @@ in
             80
             443
           ];
+
+          age.secrets.tailscale-auth-key = {
+            file = "${FLAKE_ROOT}/secrets/tailscale/guests/${hostname}.age"; 
+            mode = "0440"; 
+          };
+          services.tailscale.authKeyFile = config.age.secrets.tailscale-auth-key.path;
         };
       };
     };

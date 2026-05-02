@@ -9,9 +9,9 @@
 
 let
   by = config.by.constants;
-  inherit (globals) NIXOS_PRESETS;
+  inherit (globals) FLAKE_ROOT NIXOS_PRESETS;
 
-  hostname = "vm-mc-slime-sta";
+  hostname = "vm-mc-slime-1";
   nix-minecraft = inputs.nix-minecraft;
 
   dataDir = "/data/minecraft-slime_staging";
@@ -22,58 +22,65 @@ in
 {
   hyperberry.virtualization = {
     vms.${hostname} = {
-      vcpus = 6;
-      mem = 1024 * 12;
-
       networking = {
         macAddress = "02:00:00:00:00:07";
         ipAddress = "10.0.0.17";
       };
-
-      # Additional shares beyond the common ones
-      mounts = [
-        {
-          source = dataDir;
-          mountPoint = dataDir;
-          tag = "minecraft-data";
-          proto = "virtiofs";
-        }
-      ];
-
-      # VM-specific configuration
-      config = {
-        imports = [
+      microvm = {
+        extraModules = [
+          inputs.agenix.nixosModules.default
           inputs.neoforge-1-21-1.nixosModules.x86_64-linux.default
-          "${NIXOS_PRESETS}/packages/core"
-          "${NIXOS_PRESETS}/security/groups"
         ];
+        config = { config, ... }: {
+          imports = [
+            "${NIXOS_PRESETS}/packages/core"
+            "${NIXOS_PRESETS}/security/groups"
+          ];
 
-        networking.firewall.allowedTCPPorts = [ 25565 ];
-        networking.firewall.allowedUDPPorts = [ 25565 ];
+          microvm.vcpu = 6;
+          microvm.mem = 1024 * 12;
+          microvm.shares = [
+            {
+              source = dataDir;
+              mountPoint = dataDir;
+              tag = "minecraft-data";
+              proto = "virtiofs";
+            }
+          ];
 
-        environment.systemPackages = with pkgs; [
-          jre_headless
-          rcon-cli
-        ];
+          networking.firewall.allowedTCPPorts = [ 25565 ];
+          networking.firewall.allowedUDPPorts = [ 25565 ];
 
-        minecraft.neoforge = {
-          enable = true;
-          package = pkgs.by.neoforge-1-21-1;
-          overlays = {
-            modpack = pkgs.by.modpack-slime."${version}";
-            config = pkgs.linkFarm "config-overlay" [
-              {
-                name = "server.properties";
-                path = replaceOptionalVars ./server.properties {
-                  inherit version;
-                };
-              }
-            ];
+          environment.systemPackages = with pkgs; [
+            jre_headless
+            rcon-cli
+          ];
+
+          minecraft.neoforge = {
+            enable = true;
+            package = pkgs.by.neoforge-1-21-1;
+            overlays = {
+              modpack = pkgs.by.modpack-slime."${version}";
+              config = pkgs.linkFarm "config-overlay" [
+                {
+                  name = "server.properties";
+                  path = replaceOptionalVars ./server.properties {
+                    inherit version;
+                  };
+                }
+              ];
+            };
+            dataDir = dataDir;
           };
-          dataDir = dataDir;
-        };
 
-        users.users.minecraft.extraGroups = [ "data" ];
+          users.users.minecraft.extraGroups = [ "data" ];
+
+          age.secrets.tailscale-auth-key = {
+            file = "${FLAKE_ROOT}/secrets/tailscale/guests/${hostname}.age"; 
+            mode = "0440"; 
+          };
+          services.tailscale.authKeyFile = config.age.secrets.tailscale-auth-key.path;
+        };
       };
     };
   };

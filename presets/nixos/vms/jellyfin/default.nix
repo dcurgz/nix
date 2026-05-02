@@ -10,7 +10,7 @@
 let
   by = config.by.constants;
   secrets = config.by.secrets;
-  inherit (globals) NIXOS_PRESETS;
+  inherit (globals) FLAKE_ROOT NIXOS_PRESETS;
 
   hostname = "vm-jellyfin";
   jellyfin_library = "/media/content";
@@ -33,7 +33,10 @@ in
       };
       
       microvm = {
-        config = {
+        extraModules = [
+          inputs.agenix.nixosModules.default
+        ];
+        config = { config, ... }: {
           imports = [
             "${NIXOS_PRESETS}/packages/core"
             "${NIXOS_PRESETS}/security/groups"
@@ -120,6 +123,12 @@ in
             80
             443
           ];
+
+          age.secrets.tailscale-auth-key = {
+            file = "${FLAKE_ROOT}/secrets/tailscale/guests/${hostname}.age"; 
+            mode = "0440"; 
+          };
+          services.tailscale.authKeyFile = config.age.secrets.tailscale-auth-key.path;
         };
       };
     };

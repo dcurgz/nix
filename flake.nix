@@ -142,7 +142,7 @@
                 ./presets/nixos/vms/immich
                 #./presets/nixos/vms/minecraft-wg-0
                 ./presets/nixos/vms/minecraft-slime
-                #./presets/nixos/vms/minecraft-slime_staging
+                ./presets/nixos/vms/minecraft-slime_staging
                 ./presets/nixos/vms/minecraft-leedlemon
                 ./presets/nixos/vms/minecraft-leedlemon_staging
                 ./presets/nixos/vms/teamspeak
