@@ -32,7 +32,7 @@ hyperberry: update-index
 	$(CHECK_MINECRAFT)
 	@read -p "Proceed? [y/N] " ans && ans=$${ans:-N} ; \
 	if [ $${ans} = y ] || [ $${ans} = Y ]; then \
-		sudo nixos-rebuild switch --flake .#hyperberry ; \
+		sudo nixos-rebuild boot --flake .#hyperberry ; \
 	fi
 
 blueberry: update-index
