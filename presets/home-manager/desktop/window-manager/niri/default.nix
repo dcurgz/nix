@@ -1,4 +1,5 @@
 {
+  lib,
   config,
   pkgs,
   inputs,
@@ -75,6 +76,7 @@ in
     "Mod+Shift+S".action.screenshot = {};
     "Mod+Shift+E".action.quit = {};
     "Mod+Shift+Q".action.close-window = {};
+    "Mod+Space" = lib.mkForce { action.toggle-window-floating = {}; };
   };
 
   programs.niri.settings.spawn-at-startup = [
