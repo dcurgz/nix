@@ -55,5 +55,6 @@ in
     wootility
     rpcs3
     tidal-hifi
+    zed-editor
   ];
 }
