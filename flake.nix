@@ -462,9 +462,6 @@
             };
             home-manager.backupFileExtension = "bak";
           }
-          {
-            nix.linux-builder.enable = true;
-          }
           # 3rd party modules
           nix-homebrew.darwinModules.nix-homebrew
           home-manager.darwinModules.home-manager
