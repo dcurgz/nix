@@ -40,7 +40,7 @@ blueberry: update-index
 	sudo chown -R root:wheel /etc/nixos
 	sudo chmod -R 774 /etc/nixos
 	# Go!
-	sudo nixos-rebuild --no-reexec switch --flake .#blueberry $(NOM)
+	sudo nixos-rebuild switch --flake .#blueberry $(REMOTE_BUILDER) $(NOM)
 
 piberry: update-index
 	sudo nixos-rebuild $(REMOTE_BUILDER) --max-jobs 0 switch --flake .#piberry

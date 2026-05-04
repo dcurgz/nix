@@ -49,7 +49,7 @@ in
     qemu
     qemu_kvm
     #lunarvim
-    lutris
+    #lutris
     gamescope
     chromium
     wootility

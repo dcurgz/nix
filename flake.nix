@@ -36,7 +36,7 @@
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
     nix-rosetta-builder.url = "github:cpick/nix-rosetta-builder";
     nix-rosetta-builder.inputs.nixpkgs.follows = "nixpkgs";
-    nix-time.url = "path:./pkgs/flockenzeit";
+    nix-time.url = "path:./pkgs/external/flockenzeit";
     nixgl.url = "github:nix-community/nixGL";
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs-ollama.url = "github:nixos/nixpkgs?rev=9d29d5f667d7467f98efc31881e824fa586c927e";

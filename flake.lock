@@ -707,11 +707,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-CmwZKPlhcySy0lxLyW/c7exgDb4evrzFyRrbERPAdDY=",
-        "path": "./pkgs/flockenzeit",
+        "path": "./pkgs/external/flockenzeit",
         "type": "path"
       },
       "original": {
-        "path": "./pkgs/flockenzeit",
+        "path": "./pkgs/external/flockenzeit",
         "type": "path"
       }
     },
