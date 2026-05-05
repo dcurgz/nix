@@ -12,22 +12,18 @@ in
 {
   flake.nixosConfigurations.hyperberry = flake.lib.mkNixOS {
     system = "x86_64-linux";
-    modules = with flake.modules; [
-      generic.flake-default'
-      generic.git-secrets'
-      nixos.hyperberry'
-      nixos.hyperberry-hardware'
-      (nixos.home-manager'' {
-        user = "dcurgz";
-        modules = [
-          home-manager.hyperberry'
-        ];
-      })
+    aspects = with flake.modules; [
+      generic.flake-default
+      generic.git-secrets
+      nixos.hyperberry
+      nixos.hyperberry-hardware
+      (nixos.home-manager' { user = "dcurgz"; })
+      home-manager.hyperberry'
     ];
   };
 
-  flake.modules.nixos.hyperberry =
-    {
+  flake.modules.nixos.hyperberry = flake.lib.nixos.mkAspect (with flake.tags; [ hosts ])
+    ({
       config,
       lib,
       pkgs,
@@ -353,5 +349,5 @@ in
       # In the vast majority of cases, do not change this version.
       ##########################################################################################
       system.stateVersion = "24.11";
-    };
+    });
 }

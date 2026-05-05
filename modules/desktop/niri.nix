@@ -1,11 +1,15 @@
 {
   inputs,
+  config,
   ...
 }:
 
+let
+  inherit (config) flake;
+in
 {
-  flake.modules.home-manager.niri = 
-    {
+  flake.modules.home-manager.niri = flake.lib.home-manager.mkAspect []
+    ({
       lib,
       config,
       pkgs,
@@ -111,5 +115,5 @@
       programs.niri.settings.input.keyboard.repeat-delay = 225;
       programs.niri.settings.input.keyboard.repeat-rate = 20;
       programs.niri.settings.input.mouse.accel-speed = -1;
-    };
+    });
 }

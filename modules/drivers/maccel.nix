@@ -1,11 +1,15 @@
 {
   inputs,
+  config,
   ...
 }:
 
+let
+  inherit (config) flake;
+in
 {
-  flake.modules.nixos.drivers-maccel = 
-    {
+  flake.modules.nixos.drivers-maccel = flake.lib.nixos.mkAspect []
+    ({
       lib,
       config,
       ...
@@ -27,5 +31,5 @@
           limit = 2.0;
         };
       };
-    };
+    });
 }

@@ -12,25 +12,25 @@ in
 {
   flake.darwinConfigurations.airberry = inputs.self.lib.mkDarwin {
     system = "aarch64-darwin";
-    modules = with flake.modules; [
-      generic.flake-default'
-      generic.git-secrets'
-      darwin.airberry'
-      darwin.ssh'
-      darwin.git'
-      inputs.nix-homebrew.darwinModules.nix-homebrew
-      (darwin.home-manager'' {
+    aspects = with flake.modules; [
+      generic.flake-default
+      generic.git-secrets
+      darwin.airberry
+      darwin.ssh
+      darwin.git
+      (darwin.home-manager' {
         user = "dylan";
-        modules = [
-          home-manager.airberry'
-          home-manager.alacritty'
-        ];
       })
+      home-manager.airberry'
+      home-manager.alacritty'
+    ];
+    modules = [
+      inputs.nix-homebrew.darwinModules.nix-homebrew
     ];
   };
 
-  flake.modules.darwin.airberry = 
-    {
+  flake.modules.darwin.airberry = flake.lib.darwin.mkAspect (with flake.tags; [ hosts ])
+    ({
       lib,
       pkgs,
       config,
@@ -117,10 +117,10 @@ in
       # Used for backwards compatibility, please read the changelog before changing.
       # $ darwin-rebuild changelog
       system.stateVersion = 6;
-    };
+    });
 
-  flake.modules.home-manager.airberry =
-    {
+  flake.modules.home-manager.airberry = flake.lib.home-manager.mkAspect []
+    ({
       pkgs,
       ...
     }:
@@ -128,5 +128,5 @@ in
     {
       home.stateVersion = "25.05";
       home.packages = with pkgs; [ libiconv ];
-    };
+    });
 }

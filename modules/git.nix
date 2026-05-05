@@ -1,11 +1,15 @@
 {
   inputs,
+  config,
   ...
 }:
 
+let
+  inherit (config) flake;
+in
 {
-  flake.modules.nixos.git = 
-    {
+  flake.modules.nixos.git = flake.lib.nixos.mkAspect (with flake.tags; [ nixos-desktop ])
+    ({
       lib,
       config,
       ...
@@ -20,10 +24,10 @@
         user.email = "me+git@curz.sh";
         user.name = "Dylan C";
       };
-    };
+    });
 
-  flake.modules.darwin.git = 
-    {
+  flake.modules.darwin.git = flake.lib.darwin.mkAspect (with flake.tags; [ darwin-desktop ])
+    ({
       lib,
       config,
       ...
@@ -31,5 +35,5 @@
 
     {
       # TODO
-    };
+    });
 }

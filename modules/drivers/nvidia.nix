@@ -1,11 +1,15 @@
 {
   inputs,
+  config,
   ...
 }:
 
+let
+  inherit (config) flake;
+in
 {
-  flake.modules.nixos.drivers-nvidia = 
-    {
+  flake.modules.nixos.drivers-nvidia = flake.lib.nixos.mkAspect []
+    ({
       lib,
       config,
       ...
@@ -23,5 +27,5 @@
         nvidiaSettings = true;
         package = config.boot.kernelPackages.nvidiaPackages.stable;
       };
-    };
+    });
 }

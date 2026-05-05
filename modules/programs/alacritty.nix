@@ -6,23 +6,16 @@
   ...
 }:
 
+let
+  inherit (config) flake;
+in
 {
-  options.by.programs.alacritty = lib.mkOption {
-    type = lib.types.submodule {
-      options = {
-        package = lib.mkOption {
-          type = lib.types.nullOr lib.types.package;
-          default = pkgs.alacritty;
-        };
-      };
-    };
-  };
+  flake.modules.home-manager.alacritty' =
+    {
+      package ? pkgs.alacritty,
+    } @cfg:
 
-  config.flake.modules.home-manager.alacritty =
-    args: let
-      config' = args.config;
-      cfg = config.by.programs.alacritty;
-    in
+    flake.lib.home-manager.mkAspect []
     {
       home = {
         packages = lib.mkIf (cfg.package != null) [

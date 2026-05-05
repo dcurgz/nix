@@ -2,7 +2,7 @@
   inputs,
   lib,
   ...
-}@args:
+} @args:
 
 let
   inherit (args.config) flake; 
@@ -17,23 +17,17 @@ in
   options.by = {
     # An attrset of various git-crypt secrets.
     git-secrets = unspecified;
-    # An attrset of program options, which are implemented by NixOS, nix-darwin or home-manager modules.
-    programs = unspecified;
-    # An attrset of service options, which are implemented by NixOS, nix-darwin or home-manager modules.
-    services = unspecified;
   };
 
   config = {
-    flake.modules.nixos.by =
-      _args:
+    flake.modules.nixos.by = flake.lib.nixos.mkAspect (with flake.tags; [ flake-default ])
+      (_args:
 
       {
         options.by = {
           # An attrset of hostnames, where each value is an attrset of constants associated with that host.
           host-constants = unspecified;
         };
-      };
-
-    flake.modules.nixos.flake-default.imports = with flake.modules; lib.mkMerge [ nixos.by ];
+      });
   };
 }

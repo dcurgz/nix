@@ -1,11 +1,15 @@
 {
   inputs,
+  config,
   ...
 }:
 
+let
+  inherit (config) flake;
+in
 {
-  flake.modules.nixos.desktop-audio = 
-    {
+  flake.modules.nixos.desktop-audio = flake.lib.nixos.mkAspect (with flake.tags; [ nixos-desktop ])
+    ({
       lib,
       config,
       ...
@@ -32,5 +36,5 @@
           };
         };
       };
-    };
+    });
 }

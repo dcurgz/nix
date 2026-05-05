@@ -1,11 +1,15 @@
 {
   inputs,
+  config,
   ...
 }:
 
+let
+  inherit (config) flake;
+in
 {
-  flake.modules.home-manager.dank-material-shell = 
-    {
+  flake.modules.home-manager.dank-material-shell = flake.lib.home-manager.mkAspect []
+    ({
       lib,
       config,
       ...
@@ -25,5 +29,5 @@
           enableSpawn = true;
         };
       };
-    };
+    });
 }

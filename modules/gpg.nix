@@ -1,11 +1,15 @@
 {
   inputs,
+  config,
   ...
 }:
 
+let
+  inherit (config) flake;
+in
 {
-  flake.modules.nixos.gpg = 
-    {
+  flake.modules.nixos.gpg = flake.lib.nixos.mkAspect []
+    ({
       lib,
       config,
       pkgs,
@@ -17,10 +21,10 @@
         enable = true;
         pinentryPackage = pkgs.pinentry-curses;
       };
-    };
+    });
 
-  flake.modules.darwin.gpg = 
-    {
+  flake.modules.darwin.gpg = flake.lib.darwin.mkAspect (with flake.tags; [ nixos-base ])
+    ({
       lib,
       config,
       pkgs,
@@ -33,5 +37,5 @@
         enable = true;
         pinentryPackage = pkgs.pinentry-curses;
       };
-    };
+    });
 }

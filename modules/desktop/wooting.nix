@@ -1,11 +1,15 @@
 {
   inputs,
+  config,
   ...
 }:
 
+let
+  inherit (config) flake;
+in
 {
-  flake.modules.nixos.desktop-wooting = 
-    {
+  flake.modules.nixos.desktop-wooting = flake.lib.nixos.mkAspect []
+    ({
       lib,
       config,
       ...
@@ -32,5 +36,5 @@
         SUBSYSTEM=="hidraw", ATTRS{idVendor}=="31e3", TAG+="uaccess"
         SUBSYSTEM=="usb", ATTRS{idVendor}=="31e3", TAG+="uaccess"
       '';
-    };
+    });
 }

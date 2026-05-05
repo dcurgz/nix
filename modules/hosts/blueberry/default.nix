@@ -24,8 +24,13 @@ in
       specialArgs = {
         inherit pkgs;
       };
-      modules = with flake.modules;
+      aspects = with flake.modules;
       [
+        (with flake.tags; flake.lib.use [
+          flake-default
+          nixos-base
+          nixos-desktop
+        ])
         generic.git-secrets
         nixos.blueberry
         nixos.blueberry-hardware
@@ -42,14 +47,12 @@ in
         nixos.desktop-xdg
         nixos.desktop-audio
         nixos.desktop-wooting
-        (nixos.home-manager' {
-          user = "dcurgz";
-          modules = [
-            home-manager.blueberry
-            home-manager.niri
-            home-manager.dank-material-shell
-          ];
-        })
+        (nixos.home-manager' { user = "dcurgz"; })
+        home-manager.blueberry
+        home-manager.niri
+        home-manager.dank-material-shell
+      ];
+      modules = [
         # NixOS modules
         inputs.nixpkgs.nixosModules.readOnlyPkgs
         ({
@@ -57,11 +60,11 @@ in
         })
         # 3rd party modules
         inputs.agenix.nixosModules.default
-      ] ++ generic.__flake-default ++ nixos.__flake-default;
+      ];
     };
 
-  flake.modules.nixos.blueberry = 
-    {
+  flake.modules.nixos.blueberry = flake.lib.nixos.mkAspect (with flake.tags; [ hosts ])
+    ({
       lib,
       pkgs,
       config,
@@ -166,15 +169,15 @@ in
       # In the vast majority of cases, do not change this version.
       ##########################################################################################
       system.stateVersion = "25.05";
-    };
+    });
 
-  flake.modules.home-manager.blueberry =
-    {
+  flake.modules.home-manager.blueberry = flake.lib.home-manager.mkAspect []
+    ({
       lib,
       ...
     }:
 
     {
       home.stateVersion = "25.05";
-    };
+    });
 }
