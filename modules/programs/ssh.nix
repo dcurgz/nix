@@ -5,26 +5,24 @@
 
 let
   inherit (inputs.nixpkgs) lib;
-  sshOptions = lib.types.submodule {
-    options = {
-      enable = lib.mkEnableOption "Enable ssh key configuration.";
-      groups = lib.mkOption {
-        description = "A list of ssh key configuration groups.";
-        type = lib.types.listOf (lib.types.submodule {
-          options = {
-            users = lib.mkOption {
-              description = "The users that can be used to login to ssh.";
-              type = lib.types.listOf lib.types.str;
-              default = [ "dcurgz" ];
-            };
-            keys = lib.mkOption {
-              description = "The list of keys that should be granted access to each user.";
-              type = lib.types.listOf lib.types.path;
-              default = [ ];
-            };
+  sshOptions = {
+    enable = lib.mkEnableOption "Enable ssh key configuration.";
+    groups = lib.mkOption {
+      description = "A list of ssh key configuration groups.";
+      type = lib.types.listOf (lib.types.submodule {
+        options = {
+          users = lib.mkOption {
+            description = "The users that can be used to login to ssh.";
+            type = lib.types.listOf lib.types.str;
+            default = [ "dcurgz" ];
           };
-        });
-      };
+          keys = lib.mkOption {
+            description = "The list of keys that should be granted access to each user.";
+            type = lib.types.listOf lib.types.path;
+            default = [ ];
+          };
+        };
+      });
     };
   };
 in
@@ -38,12 +36,10 @@ in
 
     let
       inherit (config.by) keys;
-      cfg = config.by.ssh;
+      cfg = config.by.programs.ssh;
     in
     {
-      options.by.ssh = lib.mkOption {
-        type = sshOptions;
-      };
+      options.by.programs.ssh = sshOptions;
 
       config.programs.ssh =
         let
@@ -53,7 +49,7 @@ in
               HostName ${hostConfig.ssh.hostname}
               User ${hostConfig.ssh.user}
             '');
-            hosts = (lib.mapAttrsToList mkHostConfig config.by.secrets.hosts);
+            hosts = (lib.mapAttrsToList mkHostConfig config.by.git-secrets.hosts);
         in
         {
           extraConfig = (lib.concatStringsSep "\n" hosts);
@@ -79,12 +75,10 @@ in
 
     let
       inherit (config.by) keys;
-      cfg = config.by.ssh;
+      cfg = config.by.programs.ssh;
     in
     {
-      options.by.ssh = lib.mkOption {
-        type = sshOptions;
-      };
+      options.by.programs.ssh = sshOptions;
 
       config.programs.ssh =
         let
@@ -94,7 +88,7 @@ in
               HostName ${hostConfig.ssh.hostname}
               User ${hostConfig.ssh.user}
             '');
-            hosts = (lib.mapAttrsToList mkHostConfig config.by.secrets.hosts);
+            hosts = (lib.mapAttrsToList mkHostConfig config.by.git-secrets.hosts);
         in
         {
           extraConfig = (lib.concatStringsSep "\n" hosts);

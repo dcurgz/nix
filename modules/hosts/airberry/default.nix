@@ -13,9 +13,21 @@ in
   flake.darwinConfigurations.airberry = inputs.self.lib.mkDarwin {
     system = "aarch64-darwin";
     aspects = with flake.modules; [
-      generic.flake-default
-      generic.git-secrets
+      (with flake.tags; flake.lib.use [
+        flake-default
+        darwin-base
+        darwin-desktop
+      ])
+      #generic.git-secrets
       darwin.airberry
+      (darwin.authorized-keys' {
+        groups = [
+          {
+            users = [ "root" "dylan" ];
+            keys = keys.ssh.groups.privileged.paths;
+          }
+        ];
+      })
       darwin.ssh
       darwin.git
       (darwin.home-manager' {
@@ -104,15 +116,6 @@ in
       programs.fish.enable = true;
 
       services.openssh.enable = true;
-      by.ssh = {
-        enable = true;
-        groups = [
-          {
-            users = [ "root" "dylan" ];
-            keys = keys.ssh.groups.privileged.paths;
-          }
-        ];
-      };
 
       # Used for backwards compatibility, please read the changelog before changing.
       # $ darwin-rebuild changelog

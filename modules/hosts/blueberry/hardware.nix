@@ -1,11 +1,14 @@
 {
   inputs,
   ...
-}:
+} @args:
+let
+  inherit (args.config) flake;
+in
 
 {
-  flake.modules.nixos.blueberry-hardware =
-    {
+  flake.modules.nixos.blueberry-hardware = flake.lib.nixos.mkAspect []
+    ({
       lib,
       config,
       ...
@@ -52,5 +55,5 @@
 
       nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
       hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-    };
+    });
 }

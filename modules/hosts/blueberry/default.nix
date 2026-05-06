@@ -10,31 +10,37 @@ let
   inherit (args.config) flake;
 in
 {
-  flake.nixosConfigurations.blueberry =
-    let
-      pkgs = (import inputs.nixpkgs {
-        overlays = [
-          (final: prev: import "${FLAKE_ROOT}/pkgs" { inherit inputs final prev; })
-        ];
-        config.allowUnfree = true;
-      });
-    in
-    inputs.self.lib.mkNixOS {
+  flake.nixosConfigurations.blueberry = inputs.self.lib.mkNixOS rec {
       system = "x86_64-linux";
       specialArgs = {
-        inherit pkgs;
+        pkgs = (import inputs.nixpkgs {
+          inherit system;
+          overlays = [
+            (final: prev: import "${FLAKE_ROOT}/pkgs" { inherit inputs final prev; })
+          ];
+          config.allowUnfree = true;
+        });
       };
-      aspects = with flake.modules;
+      modules = with flake.modules;
       [
         (with flake.tags; flake.lib.use [
           flake-default
           nixos-base
           nixos-desktop
         ])
-        generic.git-secrets
+        #generic.git-secrets
         nixos.blueberry
         nixos.blueberry-hardware
         nixos.blueberry-disk
+        nixos.authorized-keys
+        ({ config, ... }: {
+          by.presets.authorized-keys.groups = [
+            {
+              users = [ "root" "dcurgz" ];
+              keys = config.by.keys.ssh.groups.privileged.paths;
+            }
+          ];
+        })
         nixos.nix-daemon
         nixos.ssh
         nixos.gpg
@@ -47,17 +53,18 @@ in
         nixos.desktop-xdg
         nixos.desktop-audio
         nixos.desktop-wooting
-        (nixos.home-manager' { user = "dcurgz"; })
+        nixos.home-manager
+        {
+          by.presets.home-manager.user = "dcurgz";
+        }
         home-manager.blueberry
         home-manager.niri
         home-manager.dank-material-shell
-      ];
-      modules = [
         # NixOS modules
-        inputs.nixpkgs.nixosModules.readOnlyPkgs
-        ({
-          nixpkgs.pkgs = pkgs;
-        })
+        #inputs.nixpkgs.nixosModules.readOnlyPkgs
+        #{
+        #  nixpkgs.pkgs = pkgs;
+        #}
         # 3rd party modules
         inputs.agenix.nixosModules.default
       ];
@@ -75,13 +82,6 @@ in
       keys = config.by.keys;
     in
     {
-      # Use the systemd-boot EFI boot loader.
-      boot.loader.systemd-boot = {
-        enable = true;
-        configurationLimit = 5;
-      };
-      boot.loader.efi.canTouchEfiVariables = true;
-    
       # Set your time zone.
       time.timeZone = "Europe/London";
     
@@ -153,16 +153,6 @@ in
     
       programs.command-not-found.enable = true;
       programs.fish.enable = true;
-    
-      by.ssh = {
-        enable = true;
-        groups = [
-          {
-            users = [ "root" "dcurgz" ];
-            keys = keys.ssh.groups.privileged.paths;
-          }
-        ];
-      };
     
       ##########################################################################################
       # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .

@@ -1,11 +1,14 @@
 {
   inputs,
   ...
-}:
+} @args:
+let
+  inherit (args.config) flake;
+in
 
 {
-  flake.modules.nixos.linux-sudo = 
-    {
+  flake.modules.nixos.linux-sudo = flake.lib.nixos.mkAspect []
+    ({
       lib,
       config,
       ...
@@ -18,5 +21,5 @@
          # TODO: use some kind of auth for this
          wheelNeedsPassword = false;
        };
-    };
+    });
 }

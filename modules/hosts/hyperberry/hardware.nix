@@ -1,11 +1,14 @@
 {
   inputs,
   ...
-}:
+} @args:
 
+let
+  inherit (args.config) flake;
+in
 {
-  flake.modules.nixos.hyperberry-hardware =
-    {
+  flake.modules.nixos.hyperberry-hardware = flake.lib.nixos.mkAspect []
+    ({
       config,
       lib,
       pkgs,
@@ -90,5 +93,5 @@
         # Optionally, you may need to select the appropriate driver version for your specific GPU.
         package = config.boot.kernelPackages.nvidiaPackages.latest;
       };
-    };
+    });
 }

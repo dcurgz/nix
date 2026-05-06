@@ -1,11 +1,14 @@
 {
   inputs,
   ...
-}:
+} @args:
+let
+  inherit (args.config) flake;
+in
 
 {
-  flake.modules.nixos.linux-groups = 
-    {
+  flake.modules.nixos.linux-groups = flake.lib.nixos.mkAspect []
+    ({
       lib,
       config,
       ...
@@ -24,5 +27,5 @@
         media = mkGroup 3001;
         data  = mkGroup 3002;
       };
-    };
+    });
 }

@@ -29,45 +29,40 @@ in
       (module: (args // { _type = "aspect"; _module = module; }));
 
     use = useTags: lib.pipe flake.modules [
-      # [ [ flake.modules.<class>, flake.modules.<class> ] ]
-      (builtins.mapAttrs (_k: v: v))
-      # [ flake.modules.<class>, flake.modules.<class> ]
-      (builtins.flatten)
-      # [ [ flake.modules.<class>.<aspect>, flake.modules.<class>.<aspect> ] ]
-      (builtins.mapAttrs (_k: v: v))
-      # [ flake.modules.<class>.<aspect>, flake.modules.<class>.<aspect> ]
-      (builtins.flatten)
-      # filter: any aspect that has a tag inside useTags
-      (builtins.filter (aspect: builtins.any (t: lib.lists.elem t useTags)))
+      (builtins.attrValues)
+      (builtins.map builtins.attrValues)
+      (lib.lists.flatten)
+      (builtins.filter (v: (v ? _type) && (v._type == "aspect")))
+      (builtins.filter (v: builtins.any (t: lib.lists.elem t useTags) v.tags))
     ];
 
     # helpers for specific classes
     generic.mkAspect =
-      tags: flake.lib.mkAspect { class = "generic"; inherit tags; }; 
+      tags: (flake.lib.mkAspect { class = "generic"; inherit tags; }); 
     nixos.mkAspect =
-      tags: flake.lib.mkAspect { class = "nixos"; inherit tags; }; 
+      tags: (flake.lib.mkAspect { class = "nixos"; inherit tags; }); 
     darwin.mkAspect =
-      tags: flake.lib.mkAspect { class = "darwin"; inherit tags; }; 
+      tags: (flake.lib.mkAspect { class = "darwin"; inherit tags; }); 
     home-manager.mkAspect =
-      tags: flake.lib.mkAspect { class = "home-manager"; inherit tags; }; 
+      tags: (flake.lib.mkAspect { class = "home-manager"; inherit tags; }); 
 
     mkNixOS =
       {
         system,
-        aspects,
-        modules ? [ ],
+        modules,
         specialArgs ? { },
       } @args:
 
-      (let
-        _ = assert builtins.all (a: a._type == "aspect") -> throw "aspects must all have 'aspect' type"; "";
-        aspects = lib.lists.flatten aspects;
+      let
+        flat = lib.lists.flatten modules;
+        aspects = builtins.filter (a: builtins.isAttrs a && a ? "_type" && a._type == "aspect") flat;
         nixosAspects = builtins.filter (a: a.class == "nixos") aspects;
+        nixosModules = lib.lists.subtractLists aspects flat;
       in
         inputs.nixpkgs.lib.nixosSystem {
-          inherit system; 
-          modules = modules ++ (builtins.map (aspect: aspect._module) nixosAspects);
+          inherit system;
+          modules = nixosModules ++ (builtins.map (aspect: aspect._module) nixosAspects);
           specialArgs = specialArgs // { _classArgs = args; };
-        });
+        };
   }; 
 }

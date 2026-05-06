@@ -1,12 +1,11 @@
 {
   inputs,
-  config,
   ...
-}:
+} @args:
 
 let
   inherit (inputs.nixpkgs) lib;
-  flake-lib = config.flake.lib;
+  inherit (args.config) flake;
 
   g_PRIVILEGED = "privileged";
   g_WG = "wg";
@@ -70,14 +69,12 @@ let
     (mkGuest "vm-mc-wg-1")
     (mkGuest "vm-mc-leedlemon")
   ];
-in
-{
-  options.by.keys = lib.mkOption {
+
+  options = lib.mkOption {
     type = lib.types.attrsOf lib.types.unspecified;
     default = { };
   };
-
-  config.by.keys = {
+  keys = {
     ssh = {
       # An attrset of groups, mapped to an attrset of {paths, keys}.
       groups = lib.listToAttrs (builtins.map (groupname: {
@@ -137,4 +134,15 @@ in
       }) host_defs);
     };
   };
+
+  mkModule = class: flake.lib.${class}.mkAspect (with flake.tags; [ flake-default ])
+    (_args: {
+      config.by.keys = keys;
+    });
+in
+{
+  flake.modules.generic.keys = mkModule "generic";
+  flake.modules.nixos.keys = mkModule "nixos";
+  flake.modules.darwin.keys = mkModule "darwin";
+  flake.modules.home-manager.keys = mkModule "home-manager";
 }

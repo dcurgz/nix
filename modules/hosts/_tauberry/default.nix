@@ -9,7 +9,7 @@
 let
   inherit (globals) FLAKE_ROOT;
   keys = import "${FLAKE_ROOT}/keys" { inherit lib; };
-  secrets = config.by.secrets;
+  secrets = config.by.git-secrets;
 
   by = config.by.host-constants;
   inherit (by) NIXOS_PRESETS;

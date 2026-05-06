@@ -1,73 +1,89 @@
 {
   inputs,
   ...
-}:
+} @args:
 
 let
-  inherit (inputs.self) flake;
+  inherit (args.config) flake;
 in
 {
-  flake.modules.nixos.home-manager' =
-    {
-      user ? "dcurgz"
-    }:
-
-    {
+  flake.modules.nixos.home-manager = flake.lib.nixos.mkAspect []
+    ({
       lib,
-      _flakeArgs,
+      config,
+      _classArgs,
       ...
     }:
 
     let
-      inherit (_flakeArgs) aspects;
-      homeManagerAspects = builtins.filter (aspect: aspect._type == "home-manager") aspects;
+      inherit (_classArgs) modules;
+      aspects = builtins.filter (a: builtins.isAttrs a && a ? "_type" && a._type == "aspect") modules;
+      homeManagerAspects = builtins.filter (aspect: aspect._type == "home-manager") (lib.lists.flatten aspects);
+
+      cfg = config.by.presets.home-manager;
     in
-    flake.lib.mkAspect { class = "nixos"; }
     {
       imports = [
         inputs.home-manager.nixosModules.home-manager
       ];
 
-      home-manager.useGlobalPkgs = true;
-      home-manager.useUserPackages = true;
-      home-manager.backupFileExtension = "bak";
-      home-manager.users.${user} = {
-        home.username = "${user}";
-        home.homeDirectory = "/home/${user}";
-        programs.home-manager.enable = true;
+      options.by.presets.home-manager = {
+        user = lib.mkOption {
+          type = lib.types.str;
+          default = "dcurgz";
+        };
       };
-      home-manager.sharedModules = builtins.map (aspect: aspect._module) homeManagerAspects;
-    };
 
-  flake.modules.darwin.home-manager' =
-    {
-      user ? "dcurgz"
-    }:
+      config = {
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
+        home-manager.backupFileExtension = "bak";
+        home-manager.users.${cfg.user} = {
+          home.username = "${cfg.user}";
+          home.homeDirectory = "/home/${cfg.user}";
+          home.stateVersion = "25.05";
+          programs.home-manager.enable = true;
+        };
+        home-manager.sharedModules = builtins.map (aspect: aspect._module) homeManagerAspects;
+      };
+    });
 
-    {
+  flake.modules.darwin.home-manager = flake.lib.darwin.mkAspect []
+    ({
       lib,
-      _flakeArgs,
+      config,
+      _classArgs,
       ...
     }:
 
     let
-      inherit (_flakeArgs) aspects;
-      homeManagerAspects = builtins.filter (aspect: aspect._type == "home-manager") aspects;
+      inherit (_classArgs) aspects;
+      homeManagerAspects = builtins.filter (aspect: aspect._type == "home-manager") (lib.lists.flatten aspects);
+
+      cfg = config.by.presets.home-manager;
     in
-    flake.lib.mkAspect { class = "darwin"; }
     {
       imports = [
         inputs.home-manager.darwinModules.home-manager
       ];
 
-      home-manager.useGlobalPkgs = true;
-      home-manager.useUserPackages = true;
-      home-manager.backupFileExtension = "bak";
-      home-manager.users.${user} = {
-        home.username = "${user}";
-        home.homeDirectory = "/Users/${user}";
-        programs.home-manager.enable = true;
+      options.by.presets.home-manager = {
+        user = lib.mkOption {
+          type = lib.types.str;
+          default = "dcurgz";
+        };
       };
-      home-manager.sharedModules = builtins.map (aspect: aspect._module) homeManagerAspects;
-    };
+
+      config = {
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
+        home-manager.backupFileExtension = "bak";
+        home-manager.users.${cfg.user} = {
+          home.username = "${cfg.user}";
+          home.homeDirectory = "/Users/${cfg.user}";
+          programs.home-manager.enable = true;
+        };
+        home-manager.sharedModules = builtins.map (aspect: aspect._module) homeManagerAspects;
+      };
+    });
 }

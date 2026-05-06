@@ -2,11 +2,13 @@
   inputs,
   lib,
   ...
-}:
+} @args:
 
 # A set of baseline packages that should be present everywhere.
 let
-  mkPackages = pkgs: with pkgs; [
+  inherit (args.config) flake;
+
+  mkPackages = system: pkgs: with pkgs; [
     busybox
     git
     ripgrep
@@ -27,7 +29,7 @@ let
     # Nix
     nix-output-monitor
     # Encryption
-    agenix
+    inputs.agenix.packages.${system}.agenix
     git-crypt
     gnupg
     gocryptfs
@@ -43,8 +45,8 @@ let
   ]);
 in
 {
-  flake.modules.nixos.packages-core = 
-    {
+  flake.modules.nixos.packages-core = flake.lib.nixos.mkAspect []
+    ({
       lib,
       config,
       pkgs,
@@ -52,11 +54,11 @@ in
     }:
 
     {
-      environment.systemPackages = mkPackages pkgs;
-    };
+      environment.systemPackages = mkPackages pkgs.system pkgs;
+    });
 
-  flake.modules.darwin.packages-core = 
-    {
+  flake.modules.darwin.packages-core = flake.lib.darwin.mkAspect []
+    ({
       lib,
       config,
       pkgs,
@@ -64,12 +66,12 @@ in
     }:
 
     {
-      environment.systemPackages = mkPackages pkgs;
-    };
+      environment.systemPackages = mkPackages pkgs.system pkgs;
+    });
 
   # Intended for standalone home-manager deployments, though I don't use this ATM.
-  flake.modules.home-manager.packages-core = 
-    {
+  flake.modules.home-manager.packages-core = flake.lib.home-manager.mkAspect []
+    ({
       lib,
       config,
       pkgs,
@@ -77,6 +79,6 @@ in
     }:
 
     {
-      home.packages = mkPackages pkgs;
-    };
+      home.packages = mkPackages pkgs.system pkgs;
+    });
 }

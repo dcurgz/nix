@@ -8,17 +8,45 @@
 let
   inherit (globals) FLAKE_ROOT;
   inherit (args.config) flake;
+  inherit (args.config.by) keys;
 in
 {
-  flake.nixosConfigurations.hyperberry = flake.lib.mkNixOS {
+  flake.nixosConfigurations.hyperberry = flake.lib.mkNixOS rec {
     system = "x86_64-linux";
+    specialArgs = {
+      pkgs = import inputs.nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+    };
     aspects = with flake.modules; [
-      generic.flake-default
-      generic.git-secrets
+      (with flake.tags; flake.lib.use [
+        flake-default
+        nixos-base
+      ])
+      #generic.git-secrets
       nixos.hyperberry
       nixos.hyperberry-hardware
-      (nixos.home-manager' { user = "dcurgz"; })
-      home-manager.hyperberry'
+      nixos.authorized-keys
+      {
+        by.presets.authorized-keys = {
+          groups = [
+            {
+              users = [ "root" "dcurgz" ];
+              keys = keys.ssh.groups.privileged.paths;
+            }
+            {
+              users = [ "builder" ];
+              keys = keys.ssh.groups.privileged.paths ++ keys.ssh.groups.wg.paths;
+            }
+          ];
+        };
+      }
+      nixos.home-manager
+      {
+        by.presets.home-manager.user = "dcurgz";
+      }
+      home-manager.hyperberry
     ];
   };
 
@@ -31,8 +59,7 @@ in
     }:  
 
     let
-      by = config.by.host-constants;
-      keys = config.by.keys;
+      inherit (config.by) host-constants;
     in
     {
       # Use the systemd-boot EFI boot loader.
@@ -83,20 +110,6 @@ in
       services.openssh = {
         enable = true;
         settings.PasswordAuthentication = false;
-      };
-
-      by.ssh = {
-        enable = true;
-        groups = [
-          {
-            users = [ "root" "dcurgz" ];
-            keys = keys.ssh.groups.privileged.paths;
-          }
-          {
-            users = [ "builder" ];
-            keys = keys.ssh.groups.privileged.paths ++ keys.ssh.groups.wg.paths;
-          }
-        ];
       };
 
       # Enable Fail2Ban for basic intrusion prevention.
@@ -151,7 +164,7 @@ in
             68
           ];
         };
-        interfaces."${by.hardware.interfaces.ethernet}" = {
+        interfaces."${host-constants.hardware.interfaces.ethernet}" = {
           ipv4.addresses = [{
             address = "192.168.0.10";
             prefixLength = 24;
@@ -159,7 +172,7 @@ in
         };
         defaultGateway = {
           address = "192.168.0.1";
-          interface = by.hardware.interfaces.ethernet;
+          interface = host-constants.hardware.interfaces.ethernet;
         };
       };
 
@@ -350,4 +363,15 @@ in
       ##########################################################################################
       system.stateVersion = "24.11";
     });
+
+  flake.modules.home-manager.hyperberry = flake.lib.home-manager.mkAspect []
+  ({
+    lib,
+    config,
+    ...
+  }:
+
+  {
+    home.stateVersion = "25.05";
+  });
 }

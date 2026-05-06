@@ -10,14 +10,20 @@ let
   inherit (config) flake;
 in
 {
-  flake.modules.home-manager.alacritty' =
-    {
-      package ? pkgs.alacritty,
-    } @cfg:
+  flake.modules.home-manager.alacritty' = flake.lib.home-manager.mkAspect []
+    ({
+      config,
+    }:
 
-    flake.lib.home-manager.mkAspect []
+    let
+      cfg = config.by.programs.alacritty;
+    in
     {
-      home = {
+      options.by.programs.alacritty = {
+        package = lib.mkPackageOption pkgs "alacritty" { nullable = true; };
+      };
+
+      config.home = {
         packages = lib.mkIf (cfg.package != null) [
           cfg.package
         ];
@@ -28,5 +34,5 @@ in
           };
         };
       };
-    };
+    });
 }
