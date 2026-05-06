@@ -19,10 +19,11 @@ in
         config.allowUnfree = true;
       };
     };
-    aspects = with flake.modules; [
+    modules = with flake.modules; [
       (with flake.tags; flake.lib.use [
         flake-default
         nixos-base
+        hyperberry-vm
       ])
       #generic.git-secrets
       nixos.hyperberry
@@ -52,8 +53,8 @@ in
 
   flake.modules.nixos.hyperberry = flake.lib.nixos.mkAspect (with flake.tags; [ hosts ])
     ({
-      config,
       lib,
+      config,
       pkgs,
       ...
     }:  
@@ -62,17 +63,14 @@ in
       inherit (config.by) host-constants;
     in
     {
-      # Use the systemd-boot EFI boot loader.
       boot.loader.systemd-boot = {
         enable = true;
         configurationLimit = 5;
       };
       boot.loader.efi.canTouchEfiVariables = true;
 
-      # Set your time zone.
       time.timeZone = "Europe/London";
 
-      # Select internationalization properties.
       i18n.defaultLocale = "en_GB.UTF-8";
       console = {
         font = "${pkgs.terminus_font}/share/consolefonts/ter-132n.psf.gz";
@@ -80,13 +78,11 @@ in
         keyMap = "uk";
       };
 
-      # Allow building aarch64 and armv7l via QEMU as a remote host.
       boot.binfmt.emulatedSystems = [
         "aarch64-linux"
         "armv7l-linux"
       ];
 
-      # Enable binary cache to make installing CUDA take a sane amount of time.
       nix.settings = {
         substituters = [
           "https://nix-community.cachix.org"
@@ -100,25 +96,18 @@ in
         ];
       };
 
-      # Enable sudo.
       security.sudo = {
         enable = true;
         wheelNeedsPassword = false;
       };
 
-      # Enable the OpenSSH daemon.
       services.openssh = {
         enable = true;
         settings.PasswordAuthentication = false;
       };
 
-      # Enable Fail2Ban for basic intrusion prevention.
       services.fail2ban.enable = true;
 
-      # Enable Docker service.
-      virtualisation.docker.enable = true;
-
-      # Enable Avahi for network service discovery.
       services.avahi = {
         enable = true;
         nssmdns4 = true;
@@ -130,17 +119,10 @@ in
         };
       };
 
-      # Enable vsftpd for FTP service.
-      services.vsftpd = {
-        enable = true;
-        localRoot = "/data";
-      };
-
       services.resolved = {
         enable = true;
       };
 
-      # Setup networking.
       networking = {
         hostName = "hyperberry";
         enableIPv6 = true;
@@ -176,11 +158,9 @@ in
         };
       };
 
-      # Configure systemd-networkd for MicroVM networking
       systemd.network.enable = true;
       networking.useNetworkd = true;
 
-      # Configure bridge for MicroVMs
       systemd.network.netdevs."br0" = {
         netdevConfig = {
           Name = "br0";
@@ -329,7 +309,6 @@ in
         };
       };
 
-      # Define users.
       users.users.dcurgz = {
         isNormalUser = true;
         shell = pkgs.fish;

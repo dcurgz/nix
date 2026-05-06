@@ -11,6 +11,11 @@ let
   inherit (config) flake;
 in
 {
+  # Define options to merge downstream flake lib contributions.
+  options.flake.lib = lib.mkOption {
+    type = lib.types.attrsOf lib.types.anything;
+  };
+
   config.flake.lib = {
     #mkNixOS = args: inputs.nixpkgs.lib.nixosSystem args;
     #mkDarwin = args: inputs.nix-darwin.lib.darwinSystem args;

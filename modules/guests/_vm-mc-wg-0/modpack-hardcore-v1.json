@@ -1,0 +1,342 @@
+[
+    {
+        "filename": "skinlayers3d-fabric-1.8.0-mc1.20.1.jar",
+        "name": "3d-Skin-Layers",
+        "url": "https://modrinth.com/mod/zV5r3pPn",
+        "version": "1.8.0"
+    },
+    {
+        "filename": "appleskin-fabric-mc1.20.1-2.5.1.jar",
+        "name": "AppleSkin",
+        "url": "https://modrinth.com/mod/EsAfCjCV",
+        "version": "2.5.1+mc1.20"
+    },
+    {
+        "filename": "bclib-3.0.14.jar",
+        "name": "BCLib",
+        "url": "https://modrinth.com/mod/BgNRHReB",
+        "version": "3.0.14"
+    },
+    {
+        "filename": "better-end-4.0.11.jar",
+        "name": "Better End",
+        "url": "https://modrinth.com/mod/gc8OEnCC",
+        "version": "4.0.11"
+    },
+    {
+        "filename": "better-end-cities-better-end-1.0.0.jar",
+        "name": "Better End Cities Better End",
+        "url": "https://modrinth.com/mod/DlcfxdlN",
+        "version": "1.0.0"
+    },
+    {
+        "filename": "better-nether-9.0.10.jar",
+        "name": "Better Nether",
+        "url": "https://modrinth.com/mod/MpzVLzy5",
+        "version": "9.0.10"
+    },
+    {
+        "filename": "BetterF3-7.0.2-Fabric-1.20.1.jar",
+        "name": "BetterF3",
+        "url": "https://modrinth.com/mod/8shC1gFX",
+        "version": "7.0.2"
+    },
+    {
+        "filename": "Bookshelf-Fabric-1.20.1-20.2.13.jar",
+        "name": "Bookshelf",
+        "url": "https://modrinth.com/mod/uy4Cnpcm",
+        "version": "20.2.13"
+    },
+    {
+        "filename": "cicada-lib-0.13.0+1.20.1.jar",
+        "name": "CICADA",
+        "url": "https://modrinth.com/mod/IwCkru1D",
+        "version": "0.13.0+1.20.1"
+    },
+    {
+        "filename": "cloth-config-11.1.136-fabric.jar",
+        "name": "Cloth Config v11",
+        "url": "https://modrinth.com/mod/9s6osm5g",
+        "version": "11.1.136"
+    },
+    {
+        "filename": "Clumps-fabric-1.20.1-12.0.0.4.jar",
+        "name": "Clumps",
+        "url": "https://modrinth.com/mod/Wnxd13zP",
+        "version": "12.0.0.4"
+    },
+    {
+        "filename": "combatlog-2.4+1.20.jar",
+        "name": "CombatLog",
+        "url": "https://modrinth.com/mod/nNnLt4Jb",
+        "version": "2.4"
+    },
+    {
+        "filename": "continuity-3.0.0+1.20.1.jar",
+        "name": "Continuity",
+        "url": "https://modrinth.com/mod/1IjD5062",
+        "version": "3.0.0+1.20.1"
+    },
+    {
+        "filename": "Controlling-fabric-1.20.1-12.0.2.jar",
+        "name": "Controlling For Fabric",
+        "url": "https://modrinth.com/mod/xv94TkTM",
+        "version": "12.0.2"
+    },
+    {
+        "filename": "deimos-1.20.1-fabric-2.2.jar",
+        "name": "Deimos",
+        "url": "https://modrinth.com/mod/WQaxNzFg",
+        "version": "2.2"
+    },
+    {
+        "filename": "DistantHorizons-fabric-forge-2.3.2-b-1.20.1.jar",
+        "name": "Distant Horizons",
+        "url": "https://modrinth.com/mod/uCdwusMi",
+        "version": "2.3.2-b"
+    },
+    {
+        "filename": "do_a_barrel_roll-fabric-3.6.1+1.20.1.jar",
+        "name": "Do a Barrel Roll",
+        "url": "https://modrinth.com/mod/6FtRfnLg",
+        "version": "3.6.1+1.20.1"
+    },
+    {
+        "filename": "elytraslot-fabric-6.4.4+1.20.1.jar",
+        "name": "Elytra Slot",
+        "url": "https://modrinth.com/mod/mSQF1NpT",
+        "version": "6.4.4+1.20.1"
+    },
+    {
+        "filename": "elytratrims-fabric-3.5.9+1.20.1.jar",
+        "name": "Elytra Trims",
+        "url": "https://modrinth.com/mod/XpzGz7KD",
+        "version": "3.5.9"
+    },
+    {
+        "filename": "EnchantmentDescriptions-Fabric-1.20.1-17.1.19.jar",
+        "name": "EnchantmentDescriptions",
+        "url": "https://modrinth.com/mod/UVtY3ZAC",
+        "version": "17.1.19"
+    },
+    {
+        "filename": "fabric-api-0.92.6+1.20.1.jar",
+        "name": "Fabric API",
+        "url": "https://modrinth.com/mod/P7dR8mSH",
+        "version": "0.92.6+1.20.1"
+    },
+    {
+        "filename": "fabric-language-kotlin-1.13.4+kotlin.2.2.0.jar",
+        "name": "Fabric Language Kotlin",
+        "url": "https://modrinth.com/mod/Ha28R6CL",
+        "version": "1.13.4+kotlin.2.2.0"
+    },
+    {
+        "filename": "fallingleaves-1.15.6+1.20.1.jar",
+        "name": "Falling Leaves",
+        "url": "https://modrinth.com/mod/WhbRG4iK",
+        "version": "1.15.6"
+    },
+    {
+        "filename": "consistentexpcost-1.20.1-fabric-0.1.jar",
+        "name": "Flat EXP Costs",
+        "url": "https://modrinth.com/mod/rN9rp7X0",
+        "version": "0.1"
+    },
+    {
+        "filename": "geckolib-fabric-1.20.1-4.7.2.jar",
+        "name": "GeckoLib 4",
+        "url": "https://modrinth.com/mod/8BmcQJ2H",
+        "version": "4.7.2"
+    },
+    {
+        "filename": "indium-1.0.36+mc1.20.1.jar",
+        "name": "Indium",
+        "url": "https://modrinth.com/mod/Orvt0mRa",
+        "version": "1.0.36+mc1.20.1"
+    },
+    {
+        "filename": "iris-1.7.6+mc1.20.1.jar",
+        "name": "Iris",
+        "url": "https://modrinth.com/mod/YL57xq9U",
+        "version": "1.7.6+mc1.20.1"
+    },
+    {
+        "filename": "Jade-1.20-Fabric-11.13.1.jar",
+        "name": "Jade",
+        "url": "https://modrinth.com/mod/nvQzSEkH",
+        "version": "11.13.1+fabric"
+    },
+    {
+        "filename": "jei-1.20.1-fabric-15.20.0.112.jar",
+        "name": "Just Enough Items",
+        "url": "https://modrinth.com/mod/u6dRKJwZ",
+        "version": "15.20.0.112"
+    },
+    {
+        "filename": "Kaffee's_Dual_Ride-mc1.20.1-1.1.0.jar",
+        "name": "Kaffee's Dual Ride",
+        "url": "https://modrinth.com/mod/dv1QW2PN",
+        "version": "1.1.0"
+    },
+    {
+        "filename": "lithium-fabric-mc1.20.1-0.11.3.jar",
+        "name": "Lithium",
+        "url": "https://modrinth.com/mod/gvQqBUqZ",
+        "version": "0.11.3"
+    },
+    {
+        "filename": "modmenu-7.2.2.jar",
+        "name": "Mod Menu",
+        "url": "https://modrinth.com/mod/mOgUt4GM",
+        "version": "7.2.2"
+    },
+    {
+        "filename": "MouseTweaks-fabric-mc1.20-2.26.jar",
+        "name": "Mouse Tweaks",
+        "url": "https://modrinth.com/mod/aC3cM3Vq",
+        "version": "2.26"
+    },
+    {
+        "filename": "notenoughanimations-fabric-1.10.0-mc1.20.1.jar",
+        "name": "NotEnoughAnimations",
+        "url": "https://modrinth.com/mod/MPCX6s5C",
+        "version": "1.10.0"
+    },
+    {
+        "filename": "Ping-Wheel-1.10.3-fabric-1.20.1.jar",
+        "name": "Ping Wheel",
+        "url": "https://modrinth.com/mod/QQXAdCzh",
+        "version": "1.10.3"
+    },
+    {
+        "filename": "Searchables-fabric-1.20.1-1.0.3.jar",
+        "name": "Searchables",
+        "url": "https://modrinth.com/mod/fuuu3xnx",
+        "version": "1.0.3"
+    },
+    {
+        "filename": "sharedhealth-1.2.2.jar",
+        "name": "Shared Health",
+        "url": "https://modrinth.com/mod/xzHWwh0L",
+        "version": "1.2.2"
+    },
+    {
+        "filename": "voicechat-fabric-1.20.1-2.5.32.jar",
+        "name": "Simple Voice Chat",
+        "url": "https://modrinth.com/mod/9eGKb6K1",
+        "version": "1.20.1-2.5.32"
+    },
+    {
+        "filename": "sodium-fabric-0.5.13+mc1.20.1.jar",
+        "name": "Sodium",
+        "url": "https://modrinth.com/mod/AANobbMI",
+        "version": "0.5.13+mc1.20.1"
+    },
+    {
+        "filename": "TerraBlender-fabric-1.20.1-3.0.1.10.jar",
+        "name": "TerraBlender",
+        "url": "https://modrinth.com/mod/kkmrDlKT",
+        "version": "3.0.1.10"
+    },
+    {
+        "filename": "trinkets-3.7.2.jar",
+        "name": "Trinkets",
+        "url": "https://modrinth.com/mod/5aaWibi9",
+        "version": "3.7.2"
+    },
+    {
+        "filename": "Xaeros_Minimap_25.2.6_Fabric_1.20.jar",
+        "name": "Xaero's Minimap",
+        "url": "https://modrinth.com/mod/1bokaNcj",
+        "version": "25.2.6"
+    },
+    {
+        "filename": "XaerosWorldMap_1.39.9_Fabric_1.20.jar",
+        "name": "Xaero's World Map",
+        "url": "https://modrinth.com/mod/NcUtCpym",
+        "version": "1.39.9"
+    },
+    {
+        "filename": "YungsApi-1.20-Fabric-4.0.6.jar",
+        "name": "YUNG's API",
+        "url": "https://modrinth.com/mod/Ua7DFN59",
+        "version": "1.20-Fabric-4.0.6"
+    },
+    {
+        "filename": "YungsBetterDesertTemples-1.20-Fabric-3.0.3.jar",
+        "name": "YUNG's Better Desert Temples",
+        "url": "https://modrinth.com/mod/XNlO7sBv",
+        "version": "1.20-Fabric-3.0.3"
+    },
+    {
+        "filename": "YungsBetterDungeons-1.20-Fabric-4.0.4.jar",
+        "name": "YUNG's Better Dungeons",
+        "url": "https://modrinth.com/mod/o1C1Dkj5",
+        "version": "1.20-Fabric-4.0.4"
+    },
+    {
+        "filename": "YungsBetterEndIsland-1.20-Fabric-2.0.6.jar",
+        "name": "YUNG's Better End Island",
+        "url": "https://modrinth.com/mod/2BwBOmBQ",
+        "version": "1.20-Fabric-2.0.6"
+    },
+    {
+        "filename": "YungsBetterJungleTemples-1.20-Fabric-2.0.5.jar",
+        "name": "YUNG's Better Jungle Temples",
+        "url": "https://modrinth.com/mod/z9Ve58Ih",
+        "version": "1.20-Fabric-2.0.5"
+    },
+    {
+        "filename": "YungsBetterMineshafts-1.20-Fabric-4.0.4.jar",
+        "name": "YUNG's Better Mineshafts",
+        "url": "https://modrinth.com/mod/HjmxVlSr",
+        "version": "1.20-Fabric-4.0.4"
+    },
+    {
+        "filename": "YungsBetterNetherFortresses-1.20-Fabric-2.0.6.jar",
+        "name": "YUNG's Better Nether Fortresses",
+        "url": "https://modrinth.com/mod/Z2mXHnxP",
+        "version": "1.20-Fabric-2.0.6"
+    },
+    {
+        "filename": "YungsBetterOceanMonuments-1.20-Fabric-3.0.4.jar",
+        "name": "YUNG's Better Ocean Monuments",
+        "url": "https://modrinth.com/mod/3dT9sgt4",
+        "version": "1.20-Fabric-3.0.4"
+    },
+    {
+        "filename": "YungsBetterStrongholds-1.20-Fabric-4.0.3.jar",
+        "name": "YUNG's Better Strongholds",
+        "url": "https://modrinth.com/mod/kidLKymU",
+        "version": "1.20-Fabric-4.0.3"
+    },
+    {
+        "filename": "YungsBetterWitchHuts-1.20-Fabric-3.0.3.jar",
+        "name": "YUNG's Better Witch Huts",
+        "url": "https://modrinth.com/mod/t5FRdP87",
+        "version": "1.20-Fabric-3.0.3"
+    },
+    {
+        "filename": "YungsCaveBiomes-1.20.1-Fabric-2.0.5.jar",
+        "name": "YUNG's Cave Biomes",
+        "url": "https://modrinth.com/mod/cs7iGVq1",
+        "version": "1.20.1-Fabric-2.0.5"
+    },
+    {
+        "filename": "yet_another_config_lib_v3-3.6.6+1.20.1-fabric.jar",
+        "name": "YetAnotherConfigLib",
+        "url": "https://modrinth.com/mod/1eAoo2KR",
+        "version": "3.6.6+1.20.1-fabric"
+    },
+    {
+        "filename": "Zoomify-2.14.4+1.20.1.jar",
+        "name": "Zoomify",
+        "url": "https://modrinth.com/mod/w7ThoJFB",
+        "version": "2.14.4+1.20.1"
+    },
+    {
+        "filename": "_bclib_deactivated",
+        "name": "_bclib_deactivated"
+    }
+]

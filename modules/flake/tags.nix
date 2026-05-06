@@ -11,11 +11,15 @@ in
 with lib;
 {
   flake.tags = {
-    hosts = mkTag "hosts";
-    flake-default = mkTag "flake-default";
-    nixos-base = mkTag "nixos-base";
-    nixos-desktop = mkTag "nixos-desktop";
-    darwin-base = mkTag "darwin-base";
+    flake-default  = mkTag "flake-default";
+
+    hosts          = mkTag "hosts";
+
+    nixos-base     = mkTag "nixos-base";
+    nixos-desktop  = mkTag "nixos-desktop";
+    darwin-base    = mkTag "darwin-base";
     darwin-desktop = mkTag "darwin-desktop";
+
+    hyperberry-vm  = mkTag "hyperberry-vm";
   };
 }
