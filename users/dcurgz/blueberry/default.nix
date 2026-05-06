@@ -56,5 +56,7 @@ in
     rpcs3
     tidal-hifi
     zed-editor
+    claude-code
+    by.claude-code-acp
   ];
 }

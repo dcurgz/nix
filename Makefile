@@ -19,7 +19,7 @@ update-index:
 # weird Nix bug where local relative flake inputs are broken when they are
 # garbage collected from the nix store
 update-local-inputs:
-	nix flake update neoforge-server
+	nix flake update neoforge-1-21-1
 	nix flake update nix-time
 	nix flake update weirdfish-server
 

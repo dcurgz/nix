@@ -156,8 +156,9 @@
                 {
                   home-manager.useGlobalPkgs = true;
                   home-manager.useUserPackages = true;
-                  home-manager.users.dcurgz = import ./users/dcurgz/hyperberry;
+                  #home-manager.users.dcurgz = import ./users/dcurgz/hyperberry;
                   home-manager.sharedModules = [
+                    ./users/dcurgz/hyperberry
                     ./modules/home-manager/common
                     ./modules/home-manager/nixos
                     # 3rd party modules
