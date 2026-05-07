@@ -34,7 +34,6 @@ in
 
     flake.modules.darwin.flake-options = flake.lib.darwin.mkAspect (with flake.tags; [ flake-default ])
       (_args:
-
       {
         options.by = commonOptions // {
           # An attrset of hostnames, where each value is an attrset of constants associated with that host.

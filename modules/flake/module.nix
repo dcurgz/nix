@@ -6,7 +6,7 @@
 
 let
   anything = lib.mkOption {
-    type = lib.types.attrsOf lib.types.anything;
+    type = lib.types.attrsOf lib.types.raw;
     default = { };
   };
 in

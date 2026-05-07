@@ -13,7 +13,7 @@ in
 {
   # Define options to merge downstream flake lib contributions.
   options.flake.lib = lib.mkOption {
-    type = lib.types.attrsOf lib.types.anything;
+    type = lib.types.attrsOf lib.types.raw;
   };
 
   config.flake.lib = {

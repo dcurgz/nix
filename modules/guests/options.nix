@@ -96,6 +96,9 @@ in
         {
           options.by.guest = guestOptions;
         }
+        # 3rd party modules
+        inputs.microvm.nixosModules.microvm
+        inputs.microvm.nixosModules.microvm-options
       ];
     in
 
