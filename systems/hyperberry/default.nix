@@ -122,6 +122,9 @@ in
       interfaces."br0".allowedTCPPorts = [
         11434 # ollama
       ];
+      interfaces."tailscale0".allowedTCPPorts = [
+        11434 # ollama
+      ];
     };
     interfaces."${by.hardware.interfaces.ethernet}" = {
       ipv4.addresses = [{
