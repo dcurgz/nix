@@ -13,6 +13,7 @@ let
   by = config.by.constants;
 
   ollamaDir = "/data/open-webui.ollama";
+  lanSubnet = "192.168.0.0/24";
 in
 {
   age.secrets.br1-wg-key = {
@@ -226,6 +227,8 @@ in
         ${ip} route add ${br1-subnet} dev br1 table 51820
         ${ip} route add default dev wg0 table 51820
         ${ip} rule add from ${br1-subnet} table 51820 priority 100
+        # Exception: br1 → LAN bypasses wg0 (for Tailscale direct peering)
+        ${ip} rule add from ${br1-subnet} to ${lanSubnet} lookup main priority 50
 
         # Forward br1 traffic through wg0
         ${nft} add table inet wg-br1
@@ -236,6 +239,7 @@ in
         ${nft} add rule inet wg-br1 postrouting oifname "wg0" ip saddr ${br1-subnet} masquerade
       '';
       postDown = ''
+        ${ip} rule del from ${br1-subnet} to ${lanSubnet} lookup main priority 50 || true
         ${ip} rule del from ${br1-subnet} table 51820 priority 100 || true
         ${ip} route del default dev wg0 table 51820 || true
         ${ip} route del ${br1-subnet} dev br1 table 51820 || true
@@ -254,8 +258,16 @@ in
       content = ''
         chain forward {
           type filter hook forward priority -1; policy accept;
+          # Allow br1 → LAN for direct Tailscale peering (must precede drop)
+          iifname "br1" oifname "${by.hardware.interfaces.ethernet}" ip daddr ${lanSubnet} accept
           # Block br1 from reaching ethernet directly (must use WireGuard)
           iifname "br1" oifname "${by.hardware.interfaces.ethernet}" drop
+        }
+
+        chain postrouting {
+          type nat hook postrouting priority 100;
+          # Masquerade br1 → LAN so LAN peers have a return route to 192.168.0.10
+          iifname "br1" oifname "${by.hardware.interfaces.ethernet}" ip daddr ${lanSubnet} masquerade
         }
       '';
     };
