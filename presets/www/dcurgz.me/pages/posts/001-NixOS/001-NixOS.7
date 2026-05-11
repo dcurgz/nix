@@ -1,6 +1,6 @@
-@include:header@
+@header@
 .Pp
-@include:back@
+@back@
 .
 .Sh NAME
 .Nm 001 NixOS
@@ -53,31 +53,27 @@ counterparts.
 A procedural programming language describes, at a high level, the instructions
 that the computer should execute.
 .Pp
-The __RAW<dfn>fibonacci</dfn>__END function is defined as a recurrence relation:
+The __HTML<dfn>fibonacci</dfn>__ENDHTML function is defined as a recurrence relation:
 .Bd -literal
 fib(0) = 0
 fib(1) = 1
 fib(n) = fib(n-1) + fib(n-2)
 .Ed
-Below is an example of the __RAW<dfn>fibonacci</dfn>__END function written in
+Below is an example of the __HTML<dfn>fibonacci</dfn>__ENDHTML function written in
 C. 
 .Bd -literal
-__POSTPROCESS(cat | grep "int fib(" -A10 | @chroma@ -l c)
-@include:fibonacci.c@
-__END
+__HTML
+@fibonacci-c@
+__ENDHTML
 .Ed
 The C implementation is written iteratively, rather than recursively, because
 this is overwhelmingly more optimal for a typical procedural language such as
 C. The main function and argument parsing have been omitted for brevity. You
 can run the program like so to compute fibonacci of a given `n`.
 .Bd -literal
-__POSTPROCESS(@chroma@ -l bash)
-$ gcc fibonacci.c -o fibonacci
-$ ./fibonacci 23
-$ # ==> __PREPROCESS(gcc -x c - -o fibonacci && ./fibonacci 23)
-@include:fibonacci.c@
-__END
-__END
+__HTML
+@fibonacci-c-output@
+__ENDHTML
 .Ed
 .Pp
 Procedural programming languages are so popular because they are such a great
@@ -86,9 +82,9 @@ suited to functional programming languages.
 .
 Here is an implementation of the same function in Haskell, a functional language.
 .Bd -literal
-__POSTPROCESS(cat | grep "fib ::" -A3 | @chroma@ -l haskell)
-@include:fibonacci.hs@
-__END
+__HTML
+@fibonacci-hs@
+__ENDHTML
 .Ed
 Here, we are able to take advantage of the terseness of a functional language:
 .Bl
@@ -105,18 +101,14 @@ Overall, the syntax is smaller, allowing us to focus on the problem at hand.
 Again, the main function has been omitted for brevity. You can compile and run
 the program like this:
 .Bd -literal
-__POSTPROCESS(@chroma@ -l bash)
-$ ghc fibonacci.hs -o fibonacci
-$ ./fibonacci 23
-$ # ==> __PREPROCESS(ghc --frontend GhcStdin -ffrontend-opt "-o fibonacci" &>/dev/null && ./fibonacci 23)
-@include:fibonacci.hs@
-__END
-__END
+__HTML
+@fibonacci-hs-output@
+__ENDHTML
 .Ed
 It is possible to achieve some terseness with C by writing the function
 recursively, as with the Haskell function. However, it is significantly more
 efficient to write C programs iteratively instead, as C does not implement
-__RAW<dfn>tail-call optimization.</dfn>__END
+__HTML<dfn>tail-call optimization.</dfn>__ENDHTML
 Likewise, if held at gunpoint, a Haskell developer could likely write an
 "iterative" version of a function better expressed recursively. 
 .Pp
@@ -139,6 +131,6 @@ its problem domain - configuration.
 .Ss TODO
 The rest of the article.
 .
-@include:build-time@
+@build-time@
 .Pp
-@include:back@
+@back@

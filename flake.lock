@@ -706,7 +706,7 @@
     "nix-time": {
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-CmwZKPlhcySy0lxLyW/c7exgDb4evrzFyRrbERPAdDY=",
+        "narHash": "sha256-B3hdQtg/9/DFeYxl3SEjA5qqmKBmFnk6yBU3GlaH23k=",
         "path": "./pkgs/external/flockenzeit",
         "type": "path"
       },
@@ -1208,7 +1208,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-buzULRZdtayEP3WDmDAck1QNHtHb9N4ozTgsj0q3cqA=",
+        "narHash": "sha256-vwlxLcGAdNQW6vGU66mfZhkTyE9i8OsOrE0wD8s6Vp4=",
         "path": "./pkgs/weirdfish-server",
         "type": "path"
       },
