@@ -23,8 +23,8 @@
     alias cat='bat -p'
     alias df='dust'
     alias diff='delta'
-    alias l='exa -l'
-    alias ls='exa'
+    alias l='eza -l'
+    alias ls='eza'
 
     # Nix configuration
     alias nix='nix --extra-experimental-features "nix-command flakes"'

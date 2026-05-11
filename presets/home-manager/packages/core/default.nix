@@ -36,6 +36,7 @@
       eza
       ripgrep
       fd
+      mmv
 
       # Modern scripting
       zx # github:google/zx

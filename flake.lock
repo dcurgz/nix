@@ -519,7 +519,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-J132yXCNorkeKu7lReNWYwGZmZncGD6j9qf/NzdlrAo=",
+        "narHash": "sha256-YSnqKyNvmPqj0j2JiR+dahsWbYqZbl2FaaqEGqNbX5Y=",
         "path": "./pkgs/neoforge-1-21-1",
         "type": "path"
       },
