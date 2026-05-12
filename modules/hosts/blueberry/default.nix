@@ -14,13 +14,6 @@ in
   flake.nixosConfigurations.blueberry = inputs.self.lib.mkNixOS rec {
       system = "x86_64-linux";
       specialArgs = {
-        #pkgs = (import inputs.nixpkgs {
-        #  inherit system;
-        #  overlays = [
-        #    (final: prev: import "${FLAKE_ROOT}/pkgs" { inherit inputs final prev; })
-        #  ];
-        #  config.allowUnfree = true;
-        #});
         pkgs = prebuiltPackages.${system};
       };
       modules = with flake.modules;
@@ -50,6 +43,7 @@ in
           by.presets.home-manager.user = "dcurgz";
         }
         home-manager.blueberry
+        home-manager.blueberry-hardware
         # Desktop environment
         home-manager.dank-material-shell
         home-manager.niri

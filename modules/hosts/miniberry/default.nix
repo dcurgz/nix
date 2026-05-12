@@ -2,6 +2,7 @@
   inputs,
   lib,
   globals,
+  prebuiltPackages,
   ...
 } @args:
 
@@ -11,14 +12,18 @@ let
   inherit (args.config.by) keys;
 in
 {
-  flake.darwinConfigurations.miniberry = inputs.self.lib.mkDarwin {
+  flake.darwinConfigurations.miniberry = inputs.self.lib.mkDarwin rec {
     system = "aarch64-darwin";
+    specialArgs = {
+      pkgs = prebuiltPackages.${system};
+    };
     modules = with flake.modules; [
       (with flake.tags; flake.lib.use [
         flake-default
         darwin-base
       ])
       darwin.miniberry
+      darwin.miniberry-hardware
       darwin.authorized-keys
       {
         by.presets.authorized-keys = {
@@ -34,14 +39,14 @@ in
           ];
         };
       }
-      darwin.ssh
-      darwin.git
       darwin.home-manager
       {
         by.presets.home-manager.user = "dcurgz";
       }
-      home-manager.miniberry
+      #home-manager.miniberry
+      home-manager.miniberry-hardware
       home-manager.alacritty
+      home-manager.fish
       # 3rd party modules
       inputs.nix-homebrew.darwinModules.nix-homebrew
     ];

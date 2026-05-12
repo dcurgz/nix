@@ -72,11 +72,11 @@ in
         channel.enable = false;
         optimise = {
           automatic = true;
-          dates = [ "02:45" ];
+          interval = [{ Hour = 2; Minute = 45; }];
         };
         gc = {
           automatic = true;
-          dates = "weekly";
+          interval = [{ Hour = 3; Minute = 0; Weekday = 7; }];
           options = "--delete-older-than 5d";
         };
       };

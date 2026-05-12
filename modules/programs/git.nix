@@ -8,7 +8,7 @@ let
   inherit (config) flake;
 in
 {
-  flake.modules.nixos.git = flake.lib.nixos.mkAspect (with flake.tags; [ nixos-desktop ])
+  flake.modules.home-manager.git = flake.lib.home-manager.mkAspect (with flake.tags; [ nixos-base darwin-base ])
     ({
       lib,
       config,
@@ -16,31 +16,15 @@ in
     }:
 
     let
-      inherit (config.networking) hostName;
+      inherit (config.by.host-constants) hostName;
     in
     {
-      programs.git.enable = true;
-      programs.git.config = {
-        user.email = "${hostName}@curz.sh";
-        user.name = "Dylan Curzon";
-      };
-    });
-
-  flake.modules.darwin.git = flake.lib.darwin.mkAspect (with flake.tags; [ darwin-desktop ])
-    ({
-      lib,
-      config,
-      ...
-    }:
-
-    let
-      inherit (config.networking) hostName;
-    in
-    {
-      programs.git.enable = true;
-      programs.git.config = {
-        user.email = "${hostName}@curz.sh";
-        user.name = "Dylan Curzon";
+      programs.git = {
+        enable = true;
+        settings = {
+          user.email = "${hostName}@curz.sh";
+          user.name = "Dylan Curzon";
+        };
       };
     });
 }

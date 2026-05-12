@@ -16,6 +16,9 @@ let
     git-secrets = unspecified;
     keys = unspecified;
   };
+  moduleOptions = {
+    host-constants = lib.mkOption { type = lib.types.anything; };
+  };
 in
 {
   # These options are in global (flake-parts class) scope.
@@ -26,26 +29,20 @@ in
       (_args:
 
       {
-        options.by = commonOptions // {
-          # An attrset of hostnames, where each value is an attrset of constants associated with that host.
-          host-constants = unspecified;
-        };
+        options.by = commonOptions // moduleOptions;
       });
 
     flake.modules.darwin.flake-options = flake.lib.darwin.mkAspect (with flake.tags; [ flake-default ])
       (_args:
       {
-        options.by = commonOptions // {
-          # An attrset of hostnames, where each value is an attrset of constants associated with that host.
-          host-constants = unspecified;
-        };
+        options.by = commonOptions // moduleOptions;
       });
 
     flake.modules.home-manager.flake-options = flake.lib.home-manager.mkAspect (with flake.tags; [ flake-default ])
       (_args:
 
       {
-        options.by = commonOptions;
+        options.by = commonOptions // moduleOptions;
       });
   };
 }

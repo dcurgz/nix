@@ -32,10 +32,8 @@ in
     }:
 
     {
-      # TODO: does this work?
       programs.gnupg.agent = {
         enable = true;
-        pinentryPackage = lib.mkForce pkgs.pinentry-curses;
       };
     });
 }

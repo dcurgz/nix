@@ -60,6 +60,7 @@ in
         by.presets.home-manager.user = "dcurgz";
       }
       home-manager.hyperberry
+      home-manager.hyperberry-hardware
     ];
   };
 
@@ -277,13 +278,13 @@ in
     home.stateVersion = "25.05";
   });
 
-  flake.deploy.nodes.hyperberry = {
-    hostname = "hyperberry";
-    sshUser = "dcurgz";
-    remoteBuild = false;
-    profiles.system = {
-      user = "root";
-      path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos flake.nixosConfigurations.hyperberry;
-    };
-  };
+  #flake.deploy.nodes.hyperberry = {
+  #  hostname = "hyperberry";
+  #  sshUser = "dcurgz";
+  #  remoteBuild = false;
+  #  profiles.system = {
+  #    user = "root";
+  #    path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos flake.nixosConfigurations.hyperberry;
+  #  };
+  #};
 }

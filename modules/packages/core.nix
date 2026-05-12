@@ -10,7 +10,6 @@ let
 
   mkPackages = system: pkgs: with pkgs; [
     age
-    busybox
     bzip2
     coreutils
     curl
@@ -48,7 +47,6 @@ let
     # Network
     dig
     gnumake
-    iproute2
     netcat-gnu
     speedtest-cli
     sshfs
@@ -56,7 +54,6 @@ let
     # System
     btop
     fastfetch
-    powertop
     # Nix
     nix-index
     nix-output-monitor
@@ -74,6 +71,9 @@ let
     apksigner
   ] ++ (lib.optionals pkgs.stdenv.isLinux [
     # Linux-specific packages
+    busybox
+    iproute2
+    powertop
   ]) ++ (lib.optionals pkgs.stdenv.isDarwin [
     # Darwin-specific packages
     libiconv

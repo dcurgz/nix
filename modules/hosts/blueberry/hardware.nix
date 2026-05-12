@@ -4,6 +4,7 @@
 } @args:
 let
   inherit (args.config) flake;
+  hostName = "blueberry";
 in
 
 {
@@ -48,13 +49,27 @@ in
       boot.extraModulePackages = [ ];
 
       # Expose some constants for the main configuration.
-      by.host-constants.hardware = {
-        interfaces.ethernet = "enp14s0";
+      by.host-constants = {
+        inherit hostName;
+        hardware = {
+          interfaces.ethernet = "enp14s0";
+        };
       };
 
       networking.useDHCP = lib.mkDefault true;
 
       nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
       hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+    });
+
+  flake.modules.home-manager.blueberry-hardware = flake.lib.home-manager.mkAspect []
+    ({
+      lib,
+      config,
+      ...
+    }:
+
+    {
+      config.by.host-constants.hostName = hostName;
     });
 }

@@ -19,7 +19,6 @@
     home-manager.url = "github:nix-community/home-manager";
     isd.url = "github:kainctl/isd"; # systemd tui
     maccel.url = "github:Gnarus-G/maccel"; # mouse acceleration kernel driver
-    mandoc-forked.url = "path:./pkgs/external/mandoc";
     microvm.inputs.nixpkgs.follows = "nixpkgs";
     microvm.url = "github:astro/microvm.nix";
     naersk.inputs.nixpkgs.follows = "nixpkgs";
@@ -43,11 +42,12 @@
     nurpkgs.url = "github:nix-community/NUR"; # Nix user repository
 
     ## local flakes
+    mandoc-forked.url = "path:./vendor/mandoc";
     neoforge-1-21-1.inputs.nixpkgs.follows = "nixpkgs";
     neoforge-1-21-1.url = "path:./vendor/neoforge-1-21-1";
+    nix-time.url = "path:./vendor/flockenzeit";
     weirdfish-server.inputs.nixpkgs.follows = "nixpkgs";
     weirdfish-server.url = "path:./vendor/weirdfish-server";
-    nix-time.url = "path:./vendor/flockenzeit";
 
     import-tree.url = "github:vic/import-tree";
     flake-parts.url = "github:hercules-ci/flake-parts";

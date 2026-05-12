@@ -5,6 +5,7 @@
 
 let
   inherit (args.config) flake;
+  hostName = "hyperberry";
 in
 {
   flake.modules.nixos.hyperberry-hardware = flake.lib.nixos.mkAspect []
@@ -56,12 +57,15 @@ in
       # Load nvidia driver for Xorg and Wayland
       services.xserver.videoDrivers = ["nvidia"];
     
-      by.host-constants.hardware = {
-        # Define ethernet interface.
-        interfaces.ethernet = "eno1";
-    
-        pcie.nvidia_gpu = "0000:01:00.0";
-        pcie.nvidia_audio = "0000:01:00.1";
+      by.host-constants = {
+        inherit hostName;
+        hardware = {
+          # Define ethernet interface.
+          interfaces.ethernet = "eno1";
+      
+          pcie.nvidia_gpu = "0000:01:00.0";
+          pcie.nvidia_audio = "0000:01:00.1";
+        };
       };
       
       hardware.nvidia = {
@@ -93,5 +97,16 @@ in
         # Optionally, you may need to select the appropriate driver version for your specific GPU.
         package = config.boot.kernelPackages.nvidiaPackages.latest;
       };
+    });
+
+  flake.modules.home-manager.hyperberry-hardware = flake.lib.home-manager.mkAspect []
+    ({
+      lib,
+      config,
+      ...
+    }:
+
+    {
+      by.host-constants.hostName = hostName;
     });
 }

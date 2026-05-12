@@ -2,6 +2,7 @@
   inputs,
   lib,
   globals,
+  prebuiltPackages,
   ...
 } @args:
 
@@ -11,8 +12,11 @@ let
   inherit (args.config.by) keys;
 in
 {
-  flake.darwinConfigurations.airberry = inputs.self.lib.mkDarwin {
+  flake.darwinConfigurations.airberry = inputs.self.lib.mkDarwin rec {
     system = "aarch64-darwin";
+    specialArgs = {
+      pkgs = prebuiltPackages.${system};
+    };
     modules = with flake.modules; [
       (with flake.tags; flake.lib.use [
         flake-default
@@ -20,6 +24,7 @@ in
         darwin-desktop
       ])
       darwin.airberry
+      darwin.airberry-hardware
       darwin.authorized-keys
       {
         by.presets.authorized-keys = {
@@ -31,13 +36,13 @@ in
           ];
         };
       }
-      darwin.ssh
-      darwin.git
       darwin.home-manager
       {
         by.presets.home-manager.user = "dylan";
       }
       home-manager.airberry
+      home-manager.airberry-hardware
+      home-manager.fish
       home-manager.alacritty
       # 3rd party modules
       inputs.nix-homebrew.darwinModules.nix-homebrew
@@ -135,7 +140,7 @@ in
 
   flake.deploy.nodes.airberry = {
     hostname = "airberry";
-    sshUser = "dcurgz";
+    sshUser = "dylan";
     remoteBuild = false;
     profiles.system = {
       user = "root";

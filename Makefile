@@ -9,7 +9,7 @@ NOM := --log-format internal-json -v |& nom --json
 
 HOSTNAME := $(shell cat /etc/hostname)
 
-CHECK_MINECRAFT := ssh vm-mc-leedlemon "rcon-cli --password leedlemon list" || true
+CHECK_MINECRAFT := ssh vm-mc-leedlemon -o "ConnectTimeout=3" "rcon-cli --password leedlemon list" || true
 
 .PHONY: hyperberry piberry airberry update
 
@@ -19,12 +19,13 @@ update-index:
 # weird Nix bug where local relative flake inputs are broken when they are
 # garbage collected from the nix store
 update-local-inputs:
+	nix flake update mandoc-forked
 	nix flake update neoforge-1-21-1
 	nix flake update nix-time
 	nix flake update weirdfish-server
 
 # Build host-specific configurations
-hyperberry: update-index
+hyperberry: update-local-inputs update-index
 	# Fix permissions
 	sudo chown -R root:wheel /etc/nixos
 	sudo chmod -R 774 /etc/nixos
@@ -32,47 +33,47 @@ hyperberry: update-index
 	$(CHECK_MINECRAFT)
 	@read -p "Proceed? [y/N] " ans && ans=$${ans:-N} ; \
 	if [ $${ans} = y ] || [ $${ans} = Y ]; then \
-		sudo nixos-rebuild boot --flake .#hyperberry ; \
+		sudo nixos-rebuild switch --flake .#hyperberry ; \
 	fi
 
-blueberry: update-index
+blueberry: update-local-inputs update-index
 	# Fix permissions
 	sudo chown -R root:wheel /etc/nixos
 	sudo chmod -R 774 /etc/nixos
 	# Go!
 	sudo nixos-rebuild switch --flake .#blueberry $(REMOTE_BUILDER) $(NOM)
 
-piberry: update-index
+piberry: update-local-inputs update-index
 	sudo nixos-rebuild $(REMOTE_BUILDER) --max-jobs 0 switch --flake .#piberry
 
-piberry-sdcard: update-index
+piberry-sdcard: update-local-inputs update-index
 	sudo $(NIX) build .#nixosConfigurations.piberry.config.system.build.images.sd-card
 
-tauberry: update-index
+tauberry: update-local-inputs update-index
 	sudo nixos-rebuild $(REMOTE_BUILDER) --max-jobs 0 switch --flake .#tauberry
 
-tauberry-sdcard: update-index
+tauberry-sdcard: update-local-inputs update-index
 	sudo $(NIX) build .#nixosConfigurations.tauberry.config.system.build.images.sd-card
 
-airberry: update-index
+airberry: update-local-inputs update-index
 	sudo darwin-rebuild switch --option builders "ssh://builder@miniberry aarch64-darwin - 16 1" --max-jobs 0 --flake .#airberry 
 
-miniberry: update-index
+miniberry: update-local-inputs update-index
 	sudo darwin-rebuild switch --flake .#miniberry --show-trace
 
-bootstrap-weirdfi.sh: update-index
+bootstrap-weirdfi.sh: update-local-inputs update-index
 	$(NIX) run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./systems/weirdfi.sh-cax11-4gb/hardware-configuration.nix --flake .#weirdfish-cax11-4gb --target-host "root@weirdfi.sh"
 
-bootstrap-publicproxy: update-index
+bootstrap-publicproxy: update-local-inputs update-index
 	$(NIX) run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./systems/publicproxy-cax11-4gb/hardware-configuration.nix --flake .#publicproxy-cax11-4gb --target-host "root@publicproxy"
 
-deploy: update-index
+deploy: update-local-inputs update-index
 ifeq ($(HOSTNAME),hyperberry)
 	# build locally
-	deploy $(HOST) --skip-checks --skip-offline --fast-connection true -- --builders 'ssh://builder@miniberry aarch64-darwin - 16 1' --builders-use-substitutes --max-jobs 16 $(NOM)
+	deploy $(HOST) --skip-checks --skip-offline --fast-connection true --rollback-succeeded false -- --builders 'ssh://builder@miniberry aarch64-darwin - 16 1' --builders-use-substitutes --max-jobs 16 $(NOM)
 else
 	# build remotely
-	deploy $(HOST) --skip-checks --skip-offline --fast-connection false -- $(REMOTE_BUILDER) --builders-use-substitutes --max-jobs 0 $(NOM) 
+	deploy $(HOST) --skip-checks --skip-offline --fast-connection false --rollback-succeeded false -- $(REMOTE_BUILDER) --builders-use-substitutes --max-jobs 0 $(NOM) 
 endif
 
 weirdfi.sh:
