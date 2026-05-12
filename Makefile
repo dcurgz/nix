@@ -9,7 +9,7 @@ NOM := --log-format internal-json -v |& nom --json
 
 HOSTNAME := $(shell cat /etc/hostname)
 
-CHECK_MINECRAFT := ssh -o "ConnectTimeout=3" vm-mc-leedlemon "rcon-cli --password leedlemon list" || true
+CHECK_MINECRAFT := ssh vm-mc-leedlemon "rcon-cli --password leedlemon list" || true
 
 .PHONY: hyperberry piberry airberry update
 
@@ -32,7 +32,7 @@ hyperberry: update-index
 	$(CHECK_MINECRAFT)
 	@read -p "Proceed? [y/N] " ans && ans=$${ans:-N} ; \
 	if [ $${ans} = y ] || [ $${ans} = Y ]; then \
-		sudo nixos-rebuild switch --flake .#hyperberry ; \
+		sudo nixos-rebuild boot --flake .#hyperberry ; \
 	fi
 
 blueberry: update-index
@@ -69,16 +69,16 @@ bootstrap-publicproxy: update-index
 deploy: update-index
 ifeq ($(HOSTNAME),hyperberry)
 	# build locally
-	deploy $(HOST) --skip-checks --skip-offline --fast-connection true -- --builders 'ssh://builder@miniberry aarch64-darwin - 16 1' --builders-use-substitutes --max-jobs 16
+	deploy $(HOST) --skip-checks --skip-offline --fast-connection true -- --builders 'ssh://builder@miniberry aarch64-darwin - 16 1' --builders-use-substitutes --max-jobs 16 $(NOM)
 else
 	# build remotely
-	deploy $(HOST) --skip-checks --skip-offline --fast-connection false -- $(REMOTE_BUILDER) --builders-use-substitutes --max-jobs 0 --show-trace
+	deploy $(HOST) --skip-checks --skip-offline --fast-connection false -- $(REMOTE_BUILDER) --builders-use-substitutes --max-jobs 0 $(NOM) 
 endif
 
-weirdfi.sh: update-index update-local-inputs
+weirdfi.sh:
 	HOST=.#weirdfish-cax11-4gb make deploy 
 
-publicproxy: update-index update-local-input
+publicproxy:
 	HOST=.#publicproxy-cax11-4gb make deploy 
 
 # Update flake inputs and lock file

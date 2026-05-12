@@ -19,12 +19,11 @@
     home-manager.url = "github:nix-community/home-manager";
     isd.url = "github:kainctl/isd"; # systemd tui
     maccel.url = "github:Gnarus-G/maccel"; # mouse acceleration kernel driver
+    mandoc-forked.url = "path:./pkgs/external/mandoc";
     microvm.inputs.nixpkgs.follows = "nixpkgs";
     microvm.url = "github:astro/microvm.nix";
     naersk.inputs.nixpkgs.follows = "nixpkgs";
     naersk.url = "github:nix-community/naersk";
-    neoforge-1-21-1.inputs.nixpkgs.follows = "nixpkgs";
-    neoforge-1-21-1.url = "path:./pkgs/neoforge-1-21-1";
     nfsm.inputs.nixpkgs.follows = "nixpkgs";
     # https://github.com/gvolpe/nfsm/pull/3/changes/211eb44e77ce0b6e10f32b15f78f8aee5340fcbd
     nfsm.url = "github:gvolpe/nfsm?rev=211eb44e77ce0b6e10f32b15f78f8aee5340fcbd";
@@ -34,600 +33,70 @@
     nix-darwin.url = "github:nix-darwin/nix-darwin/master";
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
-    nix-rosetta-builder.url = "github:cpick/nix-rosetta-builder";
     nix-rosetta-builder.inputs.nixpkgs.follows = "nixpkgs";
-    nix-time.url = "path:./pkgs/external/flockenzeit";
+    nix-rosetta-builder.url = "github:cpick/nix-rosetta-builder";
     nixgl.url = "github:nix-community/nixGL";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs-ollama.url = "github:nixos/nixpkgs?rev=9d29d5f667d7467f98efc31881e824fa586c927e";
     nixpkgs-immich.url = "github:nixos/nixpkgs?rev=0fd2db475afdde93c9e4b1625aafb8eb41b99807";
+    nixpkgs-ollama.url = "github:nixos/nixpkgs?rev=9d29d5f667d7467f98efc31881e824fa586c927e";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nurpkgs.inputs.nixpkgs.follows = "nixpkgs";
     nurpkgs.url = "github:nix-community/NUR"; # Nix user repository
+
+    ## local flakes
+    neoforge-1-21-1.inputs.nixpkgs.follows = "nixpkgs";
+    neoforge-1-21-1.url = "path:./vendor/neoforge-1-21-1";
     weirdfish-server.inputs.nixpkgs.follows = "nixpkgs";
-    weirdfish-server.url = "path:./pkgs/weirdfish-server";
-    #nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
-    nix-html.url = "github:NotAShelf/niXhtml";
-    mandoc-forked.url = "path:./pkgs/external/mandoc";
+    weirdfish-server.url = "path:./vendor/weirdfish-server";
+    nix-time.url = "path:./vendor/flockenzeit";
+
+    import-tree.url = "github:vic/import-tree";
+    flake-parts.url = "github:hercules-ci/flake-parts";
   };
 
-  outputs =
-    {
-      self,
-      agenix,
-      dankMaterialShell,
-      deploy-rs,
-      dgop,
-      disko,
-      flake-compat,
-      home-manager,
-      isd,
-      maccel,
-      microvm,
-      naersk,
-      neoforge-1-21-1,
-      nfsm,
-      niri,
-      nix-darwin,
-      nix-homebrew,
-      nix-minecraft,
-      nix-rosetta-builder,
-      nix-time,
-      nixgl,
-      nixpkgs,
-      nixpkgs-ollama,
-      nixpkgs-immich,
-      nurpkgs,
-      weirdfish-server,
-      #nixpkgs-wayland,
-      nix-html,
-      mandoc-forked,
-    }@inputs:
-
+  outputs = inputs:
     let
+      inherit (inputs.nixpkgs) lib;
       globals = {
         FLAKE_ROOT = ./.;
-
-        COMMON_PRESETS = ./presets/common;
-        COMMON_MODULES = ./modules/common;
-        HM_PRESETS     = ./presets/home-manager;
-        HM_MODULES     = ./modules/home-manager;
-        NIXOS_PRESETS  = ./presets/nixos;
-        NIXOS_MODULES  = ./modules/nixos;
       };
-    in
-    {
-      nixosConfigurations = {
-        hyperberry =
-          let
-            system = "x86_64-linux";
-          in
-            nixpkgs.lib.nixosSystem {
-              inherit system;
-              specialArgs = {
-                # Pass arguments to all modules.
-                inherit inputs globals;
-                pkgs-ollama = import nixpkgs-ollama {
-                  inherit system;
-                  config.allowUnfree = true;
-                };
-                pkgs-immich = import nixpkgs-immich { inherit system; };
-              };
-              modules = [
-                # Apply overlays to nixpkgs
-                {
-                  nixpkgs.config.allowUnfree = true;
-                  nixpkgs.config.allowUnfreePredicate = _: true;
-                  nixpkgs.overlays = [
-                    (final: prev: import ./overlays.nix { inherit inputs final prev; })
-                    nixgl.overlay
-                    nurpkgs.overlays.default
-                  ];
-                }
-                ./modules/common
-                ./modules/nixos
-                # git-crypt protected variables
-                ./secrets/berry.enc.nix
-                # Main configuration files
-                ./systems/hyperberry/hardware.nix
-                ./systems/hyperberry
-                ./presets/common/ssh.nix
-                ./presets/common/git.nix
-                ./presets/nixos/misc/nix-daemon.nix
-                ./presets/nixos/misc/nix-secret-key.nix
-                ./presets/nixos/misc/lix.nix
-                ./presets/nixos/security/sudo
-                ./presets/nixos/security/groups
-                ./presets/nixos/networking/dns.nix
-                ./presets/nixos/packages/core
-                ./presets/nixos/packages/encryption
-                ./presets/nixos/packages/python
-                ./presets/nixos/vms/immich
-                #./presets/nixos/vms/minecraft-wg-0
-                ./presets/nixos/vms/minecraft-slime
-                #./presets/nixos/vms/minecraft-slime_staging
-                ./presets/nixos/vms/minecraft-leedlemon
-                #./presets/nixos/vms/minecraft-leedlemon_staging
-                #./presets/nixos/vms/teamspeak
-                ./presets/nixos/vms/jellyfin
-                ./presets/nixos/vms/open-webui
-                ./presets/nixos/vms/vikunja
-                ./presets/nixos/vms/trilium
-                ./presets/nixos/vms/claude
-                ./presets/nixos/vms/vx-jupiter/default.enc.nix
-                {
-                  home-manager.useGlobalPkgs = true;
-                  home-manager.useUserPackages = true;
-                  #home-manager.users.dcurgz = import ./users/dcurgz/hyperberry;
-                  home-manager.sharedModules = [
-                    ./users/dcurgz/hyperberry
-                    ./modules/home-manager/common
-                    ./modules/home-manager/nixos
-                    # 3rd party modules
-                    niri.homeModules.niri
-                    dankMaterialShell.homeModules.dank-material-shell
-                    dankMaterialShell.homeModules.niri
-                  ];
-                  home-manager.extraSpecialArgs = {
-                    # Pass arguments to home
-                    inherit globals;
-                  };
-                  home-manager.backupFileExtension = "bak";
-                }
-                # 3rd party modules
-                home-manager.nixosModules.home-manager
-                microvm.nixosModules.host
-                agenix.nixosModules.default
-              ];
-            };
-
-        blueberry = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = {
-            # Pass arguments to all modules.
-            inherit inputs globals;
-          };
-          modules = [
-            # Apply overlays to nixpkgs
-            {
-              nixpkgs.overlays = [
-                (final: prev: import ./overlays.nix { inherit inputs final prev; })
-                nurpkgs.overlays.default
-                #nixpkgs-wayland.overlays.default
-              ];
-	          nixpkgs.config.allowUnfree = true;
-            }
-            ./modules/common
-            ./modules/nixos
-            # git-crypt protected variables
-            ./secrets/berry.enc.nix
-            # Main configuration files
-            ./systems/blueberry/hardware.nix
-            ./systems/blueberry/disk-config.nix
-            ./systems/blueberry
-            ./presets/common/ssh.nix
-            ./presets/common/git.nix
-            ./presets/nixos/misc/nix-daemon.nix
-            ./presets/nixos/misc/nix-secret-key.nix
-            ./presets/nixos/misc/lix.nix
-            ./presets/nixos/misc/wooting-udev.nix
-            ./presets/nixos/security/sudo
-            ./presets/nixos/security/groups
-            ./presets/nixos/packages/core
-            ./presets/nixos/packages/encryption
-            ./presets/nixos/packages/python
-            ./presets/nixos/drivers/nvidia
-            ./presets/nixos/services/avahi
-            # Desktop environment
-            ./presets/nixos/drivers/maccel
-            ./presets/nixos/desktop/xdg
-            ./presets/nixos/desktop/audio
-            ./presets/nixos/desktop/gpg
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.sharedModules = [
-		      ./modules/home-manager/common
-		      ./modules/home-manager/nixos
-                # 3rd party modules
-                niri.homeModules.niri
-                dankMaterialShell.homeModules.dank-material-shell
-                dankMaterialShell.homeModules.niri
-              ];
-              home-manager.users.dcurgz = import ./users/dcurgz/blueberry;
-              home-manager.extraSpecialArgs = {
-                # Pass arguments to home
-		        inherit inputs globals;
-              };
-              home-manager.backupFileExtension = "bak";
-            }
-            # 3rd party modules
-            home-manager.nixosModules.home-manager
-            microvm.nixosModules.host
-            agenix.nixosModules.default
-            maccel.nixosModules.default
-            disko.nixosModules.disko
-          ];
-        };
-
-        piberry = nixpkgs.lib.nixosSystem {
-          system = "aarch64-linux";
-          specialArgs = {
-            inherit self nixpkgs inputs globals;
-          };
-          modules = [
-            {
-              nixpkgs.overlays = [
-                (final: prev: import ./overlays.nix { inherit inputs final prev; })
-              ];
-            }
-            ./modules/common
-            ./modules/nixos
-            # git-crypt protected variables
-            ./secrets/berry.enc.nix
-            ./systems/piberry
-            ./presets/nixos/misc/nix-daemon.nix
-            ./presets/nixos/misc/lix.nix
-            ./presets/nixos/packages/core
-            ./presets/nixos/security/groups
-            ./presets/nixos/services/home-assistant
-            ./presets/nixos/services/matter
-            # 3rd party modules
-            microvm.nixosModules.host
-            agenix.nixosModules.default
-          ];
-        };
-
-        tauberry = nixpkgs.lib.nixosSystem {
-          system = "aarch64-linux";
-          specialArgs = {
-            inherit self nixpkgs inputs globals;
-          };
-          modules = [
-            {
-              nixpkgs.overlays = [
-                (final: prev: import ./overlays.nix { inherit inputs final prev; })
-              ];
-            }
-            ./modules/common
-            ./modules/nixos
-            # git-crypt protected variables
-            ./secrets/berry.enc.nix
-            ./systems/tauberry
-            ./systems/tauberry/hardware.nix
-            ./presets/nixos/misc/rpi-disable-kernel-modules.nix
-            ./presets/nixos/misc/nix-daemon.nix
-            ./presets/nixos/misc/lix.nix
-            ./presets/nixos/packages/core
-            ./presets/nixos/security/groups
-            ./presets/nixos/services/mopidy
-            # 3rd party modules
-            microvm.nixosModules.host
-            agenix.nixosModules.default
-          ];
-        };
-
-        fooberry = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = {
-            # Pass arguments to all modules.
-            inherit inputs globals;
-          };
-          modules = [
-            # Apply overlays to nixpkgs
-            {
-              nixpkgs.overlays = [
-                (final: prev: import ./overlays.nix { inherit inputs final prev; })
-                nurpkgs.overlays.default
-              ];
-	          nixpkgs.config.allowUnfree = true;
-            }
-            ./modules/common
-            ./modules/nixos
-            # git-crypt protected variables
-            ./secrets/berry.enc.nix
-            # Main configuration files
-            ./systems/fooberry/hardware.nix
-            ./systems/fooberry/disk-config.nix
-            ./systems/fooberry
-            ./presets/common/ssh.nix
-            ./presets/nixos/misc/nix-daemon.nix
-            ./presets/nixos/misc/lix.nix
-            ./presets/nixos/security/sudo
-            ./presets/nixos/security/groups
-            ./presets/nixos/packages/core
-            ./presets/nixos/services/avahi
-            # 3rd party modules
-            microvm.nixosModules.host
-            agenix.nixosModules.default
-            disko.nixosModules.disko
-          ];
-        };
-
-        weirdfish-cax11-4gb = nixpkgs.lib.nixosSystem rec {
-          system = "aarch64-linux";
-          specialArgs = {
-            # Pass arguments to all modules.
-            inherit self inputs globals;
-          };
-          modules = [
-            # Apply overlays to nixpkgs
-            {
-              nixpkgs.overlays = [
-                (final: prev: import ./overlays.nix { inherit inputs final prev; })
-                nixgl.overlay
-                nurpkgs.overlays.default
-              ];
-            }
-            ./modules/common
-            ./modules/nixos
-            ./modules/www
-            # git-crypt protected variables
-            ./secrets/berry.enc.nix
-            # Main configuration files
-            ./systems/weirdfi.sh-cax11-4gb/hardware-configuration.nix
-            ./systems/weirdfi.sh-cax11-4gb/disk-config.nix
-            ./systems/weirdfi.sh-cax11-4gb
-            ./presets/common/ports.nix
-            ./presets/nixos/misc/nix-daemon.nix
-            ./presets/nixos/misc/lix.nix
-            ./presets/nixos/security/sudo
-            ./presets/nixos/security/groups
-            ./presets/nixos/packages/core
-            ./presets/nixos/packages/encryption
-            ./presets/nixos/packages/python
-            # Websites
-            weirdfish-server.nixosModules.${system}.default
-            ./presets/www/dcurgz.me
-            ./presets/www/weirdfi.sh
-            ./presets/nixos/websites/dcurgz.me
-            ./presets/nixos/websites/weirdfi.sh
-            # 3rd party modules
-            microvm.nixosModules.host
-            agenix.nixosModules.default
-            # declarative partition management
-            disko.nixosModules.disko
-          ];
-        };
-
-        publicproxy-cax11-4gb = nixpkgs.lib.nixosSystem rec {
-          system = "aarch64-linux";
-          specialArgs = {
-            # Pass arguments to all modules.
-            inherit self inputs globals;
-          };
-          modules = [
-            # Apply overlays to nixpkgs
-            {
-              nixpkgs.overlays = [
-                (final: prev: import ./overlays.nix { inherit inputs final prev; })
-                nixgl.overlay
-                nurpkgs.overlays.default
-              ];
-            }
-            ./modules/common
-            ./modules/nixos
-            ./modules/www
-            # git-crypt protected variables
-            ./secrets/berry.enc.nix
-            # Main configuration files
-            ./systems/publicproxy-cax11-4gb/hardware-configuration.nix
-            ./systems/publicproxy-cax11-4gb/disk-config.nix
-            ./systems/publicproxy-cax11-4gb
-            ./presets/common/ports.nix
-            ./presets/nixos/misc/nix-daemon.nix
-            ./presets/nixos/misc/lix.nix
-            ./presets/nixos/security/sudo
-            ./presets/nixos/security/groups
-            ./presets/nixos/packages/core
-            ./presets/nixos/packages/encryption
-            ./presets/nixos/packages/python
-            # 3rd party modules
-            microvm.nixosModules.host
-            agenix.nixosModules.default
-            # declarative partition management
-            disko.nixosModules.disko
-          ];
-        };
-      };
-
-      darwinConfigurations."airberry" = nix-darwin.lib.darwinSystem {
-        pkgs = import nixpkgs {
-          system = "aarch64-darwin";
-          overlays = [
-            (final: prev: import ./overlays.nix { inherit inputs final prev; })
-            nixgl.overlay
-            nurpkgs.overlays.default
-          ];
-          config.allowUnfree = true;
-        };
-        specialArgs = {
-          inherit self nix-homebrew inputs globals;
-        };
-        modules = [
-          ./modules/common
-          #./modules/darwin
-          ./secrets/berry.enc.nix
-          ./presets/common/ssh.nix
-          ./presets/darwin/misc/nix-daemon.nix
-          ./presets/darwin/misc/nix-secret-key.nix
-          ./presets/nixos/misc/lix.nix
-          ./systems/airberry
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.dylan = import ./users/dcurgz/airberry;
-            home-manager.sharedModules = [
-              ./modules/home-manager/common
-              ./modules/home-manager/darwin
-            ];
-            home-manager.extraSpecialArgs = {
-              # Pass arguments to home
-              inherit globals;
-            };
-            home-manager.backupFileExtension = "bak";
-          }
-          # 3rd party modules
-          nix-homebrew.darwinModules.nix-homebrew
-          home-manager.darwinModules.home-manager
-          agenix.darwinModules.default
-        ];
-      };
-
-      darwinConfigurations."miniberry" = nix-darwin.lib.darwinSystem {
-        pkgs = import nixpkgs {
-          system = "aarch64-darwin";
-          overlays = [
-            (final: prev: import ./overlays.nix { inherit inputs final prev; })
-            nixgl.overlay
-            nurpkgs.overlays.default
-          ];
-          config.allowUnfree = true;
-        };
-        specialArgs = {
-          inherit self nix-homebrew globals;
-        };
-        modules = [
-          ./modules/common
-          ./systems/miniberry
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.dcurgz = import ./users/dcurgz/miniberry;
-            home-manager.extraSpecialArgs = {
-              # Pass arguments to home
-              inherit globals;
-            };
-          }
-          # 3rd party modules
-          nix-homebrew.darwinModules.nix-homebrew
-          home-manager.darwinModules.home-manager
-        ];
-      };
-
-      packages =
+      systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ];
+      prebuiltPackages =
         let
-          systems = [
-            "x86_64-linux"
-            "aarch64-linux"
-            "x86_64-darwin"
-            "aarch64-darwin"
-          ];
+          mkPkgs = system: (import inputs.nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+            config.nvidia.acceptLicense = true;
+            overlays = import ./overlays {
+              inherit inputs globals;
+              inherit (inputs.nixpkgs) lib;
+            } ++ [ inputs.nurpkgs.overlays.default ];
+          });
+          attrsList = builtins.map (system: {
+            name = system;
+            value = mkPkgs system;
+          }) systems;
+          attrs = builtins.listToAttrs attrsList;
         in
-        nixpkgs.lib.genAttrs systems (
-          system:
+          attrs;
+    in
+    inputs.flake-parts.lib.mkFlake
+      {
+        inherit inputs;
+        specialArgs = {
+          inherit globals prebuiltPackages;
+        };
+      }
+      {
+        inherit systems;
+        imports = (inputs.import-tree.withLib lib).leafs ./modules;
+
+        perSystem = { system, ... }:
           let
-            pkgs = import nixpkgs {
-              inherit system;
-              overlays = [
-                (final: prev: import ./overlays.nix { inherit inputs final prev; })
-                nixgl.overlay
-                nurpkgs.overlays.default
-              ];
-            };
+            pkgs = prebuiltPackages.${system};
           in
           {
-            # Custom packages
-            #keylight = pkgs.by.keylight;
-            weirdfish-server = pkgs.by.weirdfish-server;
-            neoforge-1-21-1 = pkgs.by.neoforge-1-21-1;
-          }
-        );
-
-      # Deploy-rs configuration
-      deploy.nodes = {
-        blueberry = {
-          hostname = "blueberry";
-          sshUser = "dcurgz";
-          remoteBuild = false;
-          profiles.system = {
-            user = "root";
-            path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.blueberry;
+            packages.weirdfish-server = pkgs.by.weirdfish-server;
+            packages.neoforge-1-21-1  = pkgs.by.neoforge-1-21-1;
           };
-        };
-
-        # weird bug where we don't use the build cache if we're remote building to the same host
-        hyperberry = {
-          hostname = "hyperberry";
-          sshUser = "dcurgz";
-          remoteBuild = true;
-          profiles.system = {
-            user = "root";
-            path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.hyperberry;
-          };
-        };
-
-        piberry = {
-          hostname = "piberry";
-          sshUser = "piberry";
-          remoteBuild = false;
-          profiles.system = {
-            user = "root";
-            path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.piberry;
-          };
-        };
-
-        tauberry = {
-          hostname = "tauberry";
-          sshUser = "root";
-          remoteBuild = false;
-          profiles.system = {
-            user = "root";
-            path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.tauberry;
-          };
-        };
-
-        airberry = {
-          hostname = "airberry";
-          sshUser = "dylan";
-          remoteBuild = false;
-          profiles.system = {
-            user = "root";
-            path = deploy-rs.lib.aarch64-darwin.activate.darwin self.darwinConfigurations.airberry;
-          };
-        };
-
-        miniberry = {
-          hostname = "miniberry";
-          sshUser = "dcurgz";
-          remoteBuild = true;
-          profiles.system = {
-            user = "root";
-            path = deploy-rs.lib.aarch64-darwin.activate.darwin self.darwinConfigurations.miniberry;
-          };
-        };
-
-        fooberry = {
-          hostname = "fooberry";
-          sshUser = "dcurgz";
-          remoteBuild = true;
-          profiles.system = {
-            user = "root";
-            path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.fooberry;
-          };
-        };
-
-        weirdfish-cax11-4gb = {
-          hostname = "weirdfi.sh";
-          sshUser = "root";
-          remoteBuild = true;
-          profiles.system = {
-            user = "root";
-            path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.weirdfish-cax11-4gb;
-          };
-        };
-
-        publicproxy-cax11-4gb = {
-          hostname = "publicproxy";
-          sshUser = "root";
-          remoteBuild = true;
-          profiles.system = {
-            user = "root";
-            path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.publicproxy-cax11-4gb;
-          };
-        };
       };
-
-      # This is highly advised, and will prevent many possible mistakes
-      #checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
-    };
 }

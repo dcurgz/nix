@@ -1,7 +1,0 @@
-{
-  pkgs,
-  naersk',
-  ...
-}:
-
-naersk'.buildPackage ./.

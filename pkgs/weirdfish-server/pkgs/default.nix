@@ -1,6 +1,0 @@
-{
-  naersk',
-  ...
-}:
-
-naersk'.buildPackage ./.;

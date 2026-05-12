@@ -1,4 +1,3 @@
-# https://github.com/NixOS/flake-compat
 (import (
   let
     lock = builtins.fromJSON (builtins.readFile ./flake.lock);
