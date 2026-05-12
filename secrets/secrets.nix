@@ -9,6 +9,7 @@ with keys.ssh.groups;
 with keys.ssh.hosts;
 
 {
+  "nix/berry-privileged.age".publicKeys = keys.ssh.groups.privileged.keys;
   ### Wireguard
   "wireguard/001-key.age".publicKeys = (withDefault hyperberry.keys);
   ### Tailscale

@@ -133,6 +133,7 @@
                 ./presets/common/ssh.nix
                 ./presets/common/git.nix
                 ./presets/nixos/misc/nix-daemon.nix
+                ./presets/nixos/misc/nix-secret-key.nix
                 ./presets/nixos/misc/lix.nix
                 ./presets/nixos/security/sudo
                 ./presets/nixos/security/groups
@@ -206,6 +207,7 @@
             ./presets/common/ssh.nix
             ./presets/common/git.nix
             ./presets/nixos/misc/nix-daemon.nix
+            ./presets/nixos/misc/nix-secret-key.nix
             ./presets/nixos/misc/lix.nix
             ./presets/nixos/misc/wooting-udev.nix
             ./presets/nixos/security/sudo
@@ -447,6 +449,7 @@
           ./secrets/berry.enc.nix
           ./presets/common/ssh.nix
           ./presets/darwin/misc/nix-daemon.nix
+          ./presets/darwin/misc/nix-secret-key.nix
           ./presets/nixos/misc/lix.nix
           ./systems/airberry
           {
