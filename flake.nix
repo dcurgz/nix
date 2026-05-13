@@ -36,11 +36,13 @@
     nix-rosetta-builder.url = "github:cpick/nix-rosetta-builder";
     nixgl.url = "github:nix-community/nixGL";
     nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/main";
-    nixpkgs-immich.url = "github:nixos/nixpkgs?rev=0fd2db475afdde93c9e4b1625aafb8eb41b99807";
-    nixpkgs-ollama.url = "github:nixos/nixpkgs?rev=9d29d5f667d7467f98efc31881e824fa586c927e";
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nurpkgs.inputs.nixpkgs.follows = "nixpkgs";
     nurpkgs.url = "github:nix-community/NUR"; # Nix user repository
+
+    nixpkgs-immich.url = "github:nixos/nixpkgs?rev=0fd2db475afdde93c9e4b1625aafb8eb41b99807";
+    nixpkgs-ollama.url = "github:nixos/nixpkgs?rev=9d29d5f667d7467f98efc31881e824fa586c927e";
+    nixpkgs-tailscale.url = "github:nixos/nixpkgs?rev=7aaa00e7cc9be6c316cb5f6617bd740dd435c59d";
 
     ## local flakes
     mandoc-forked.url = "path:./vendor/mandoc";
