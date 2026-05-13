@@ -7,7 +7,7 @@ let
 in
 
 {
-  flake.modules.nixos.dns = flake.lib.nixos.mkAspect []
+  flake.modules.nixos.dns = flake.lib.nixos.mkAspect (with flake.tags; [ nixos-base ])
     ({
       lib,
       config,
@@ -34,6 +34,9 @@ in
       networking = {
         nameservers = [
           "127.0.0.55"
+          #"1.1.1.1"
+          #"1.0.0.1"
+          #"8.8.8.8"
         ];
         dhcpcd.extraConfig = "nohook resolv.conf";
       };

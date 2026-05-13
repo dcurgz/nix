@@ -58,6 +58,7 @@ let
     nix-index
     nix-output-monitor
     nix-weather
+    deploy-rs
     # Encryption
     inputs.agenix.packages.${system}.agenix
     git-crypt

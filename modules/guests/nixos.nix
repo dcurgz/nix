@@ -7,6 +7,7 @@
 } @args:
 let
   inherit (args.config) flake;
+  inherit (args.config.by) keys;
   inherit (globals) FLAKE_ROOT;
 
   guestOptions = {
@@ -87,19 +88,28 @@ in
       flat = lib.lists.flatten extraModules;
       aspects = builtins.filter (a: builtins.isAttrs a && a ? "_type" && a._type == "aspect") flat;
 
-      baseAspects = lib.lists.flatten [
+      baseAspects = with flake.modules; lib.lists.flatten [
         (with flake.tags; flake.lib.use [
           flake-default
           nixos-base
         ])
-        flake.modules.nixos.packages-core
-        flake.modules.nixos.linux-groups # media, data
-        flake.modules.nixos.dns
-        flake.modules.nixos.lix
+        nixos.authorized-keys
       ];
       baseModules = [
+        {
+          by.presets.authorized-keys = {
+            groups = [
+              {
+                keys = keys.ssh.hosts.hyperberry.paths ++ keys.ssh.groups.privileged.paths;
+                users = [ "root" ];
+              }
+            ];
+          };
+        }
         # User config
         config'
+        # 3rd party modules
+        inputs.agenix.nixosModules.default
       ];
 
       nixosAspects = builtins.filter (a: a.class == "nixos") (baseAspects ++ aspects);
@@ -123,7 +133,7 @@ in
       config.by.guests.${hostName} = microvmConfig;
 
       # Host-level tmpfiles configuration
-      systemd.tmpfiles.rules = [
+      config.systemd.tmpfiles.rules = [
         "d /var/lib/microvms/${hostName}                0750 microvm kvm"
         "d /var/lib/microvms/${hostName}/journal        0750 root root"
         "d /var/lib/microvms/${hostName}/tailscale      0750 root root"
@@ -147,9 +157,8 @@ in
         {
           pkgs = pkgs';
           specialArgs = specialArgs // { inherit inputs; };
-          extraModules =
-            nixosModules
-            ++ (builtins.map (aspect: aspect._module) (nixosAspects));
+          extraModules = lib.lists.unique
+            (nixosModules ++ (builtins.map (aspect: aspect._module) (nixosAspects)));
           config = { config, ... }: {
             microvm.hypervisor = lib.mkDefault "cloud-hypervisor";
             system.stateVersion = lib.mkDefault "24.11";
@@ -158,10 +167,12 @@ in
               "nixpkgs=${pkgs'.path}"
             ];
 
+            nix.optimise.automatic = lib.mkForce false;
+
             microvm.interfaces = lib.mkDefault [
               {
                 type = "tap";
-                id = hostName;
+                id = lib.strings.substring 0 15 hostName;
                 mac = vm.networking.macAddress;
               }
             ];

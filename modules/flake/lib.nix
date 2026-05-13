@@ -73,14 +73,11 @@ in
         aspects = builtins.filter (a: builtins.isAttrs a && a ? "_type" && a._type == "aspect") flat;
         nixosAspects = builtins.filter (a: a.class == "nixos") aspects;
         nixosModules = lib.lists.subtractLists aspects flat;
-
-        uniqueAspects = lib.lists.unique nixosAspects;
-        bad = subtractLists nixosAspects uniqueAspects;
       in
-        assert (builtins.length bad == 0) || throw "the following aspect is included more than once: ${builtins.head bad}";
         inputs.nixpkgs.lib.nixosSystem {
           inherit system;
-          modules = nixosModules ++ (builtins.map (aspect: aspect._module) nixosAspects);
+          modules = lib.lists.unique
+            (nixosModules ++ (builtins.map (aspect: aspect._module) nixosAspects));
           specialArgs = specialArgs // { _classArgs = args; };
         };
 
@@ -96,14 +93,11 @@ in
         aspects = builtins.filter (a: builtins.isAttrs a && a ? "_type" && a._type == "aspect") flat;
         darwinAspects = builtins.filter (a: a.class == "darwin") aspects;
         darwinModules = lib.lists.subtractLists aspects flat;
-
-        uniqueAspects = lib.lists.unique darwinAspects;
-        bad = subtractLists darwinAspects uniqueAspects;
       in
-        assert (builtins.length bad == 0) || throw "the following aspect is included more than once: ${builtins.head bad}";
         inputs.nix-darwin.lib.darwinSystem {
           inherit system;
-          modules = darwinModules ++ (builtins.map (aspect: aspect._module) darwinAspects);
+          modules = lib.lists.unique 
+            (darwinModules ++ (builtins.map (aspect: aspect._module) darwinAspects));
           specialArgs = specialArgs // { _classArgs = args; };
         };
   }; 

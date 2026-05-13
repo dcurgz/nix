@@ -2,6 +2,7 @@
   description = "NixOS configuration as a flake";
 
   inputs = {
+    # https://github.com/gvolpe/nfsm/pull/3/changes/211eb44e77ce0b6e10f32b15f78f8aee5340fcbd
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     agenix.url = "github:ryantm/agenix";
     dankMaterialShell.inputs.dgop.follows = "dgop";
@@ -24,7 +25,6 @@
     naersk.inputs.nixpkgs.follows = "nixpkgs";
     naersk.url = "github:nix-community/naersk";
     nfsm.inputs.nixpkgs.follows = "nixpkgs";
-    # https://github.com/gvolpe/nfsm/pull/3/changes/211eb44e77ce0b6e10f32b15f78f8aee5340fcbd
     nfsm.url = "github:gvolpe/nfsm?rev=211eb44e77ce0b6e10f32b15f78f8aee5340fcbd";
     niri.inputs.nixpkgs.follows = "nixpkgs";
     niri.url = "github:sodiboo/niri-flake";
@@ -35,6 +35,7 @@
     nix-rosetta-builder.inputs.nixpkgs.follows = "nixpkgs";
     nix-rosetta-builder.url = "github:cpick/nix-rosetta-builder";
     nixgl.url = "github:nix-community/nixGL";
+    nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/main";
     nixpkgs-immich.url = "github:nixos/nixpkgs?rev=0fd2db475afdde93c9e4b1625aafb8eb41b99807";
     nixpkgs-ollama.url = "github:nixos/nixpkgs?rev=9d29d5f667d7467f98efc31881e824fa586c927e";
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";

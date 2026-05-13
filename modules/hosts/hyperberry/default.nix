@@ -62,6 +62,7 @@ in
       }
       home-manager.hyperberry
       home-manager.hyperberry-hardware
+      home-manager.fish
     ];
   };
 
@@ -241,13 +242,7 @@ in
         home = "/home/dcurgz";
       };
       users.groups.dcurgz = { };
-      users.users.builder = {
-        isNormalUser = true;
-        shell = pkgs.bashInteractive;
-        group = "builder";
-      };
-      users.groups.builder = { };
-      nix.settings.trusted-users = [ "dcurgz" "builder" ];
+      nix.settings.trusted-users = [ "dcurgz" ];
 
       systemd.tmpfiles.rules = [
         "Z /etc/nixos 770 root wheel"

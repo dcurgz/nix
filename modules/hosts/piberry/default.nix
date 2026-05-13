@@ -10,6 +10,25 @@ let
   inherit (globals) FLAKE_ROOT;
   inherit (args.config) flake;
   inherit (args.config.by) keys;
+
+  lib'.mkRaspberryPi =
+    {
+      system,
+      modules,
+      specialArgs ? { },
+    } @args:
+  
+    let
+      flat = lib.lists.flatten modules;
+      aspects = builtins.filter (a: builtins.isAttrs a && a ? "_type" && a._type == "aspect") flat;
+      nixosAspects = builtins.filter (a: a.class == "nixos") aspects;
+      nixosModules = lib.lists.subtractLists aspects flat;
+    in
+      inputs.nixos.raspberrypi.lib.nixosSystem {
+        inherit system;
+        modules = nixosModules ++ (builtins.map (aspect: aspect._module) nixosAspects);
+        specialArgs = specialArgs // { _classArgs = args; };
+      };
 in
 {
   flake.nixosConfigurations.piberry = flake.lib.mkNixOS rec {
@@ -25,6 +44,10 @@ in
       ])
       nixos.piberry
       nixos.piberry-hardware
+      # Raspberry Pi modules
+      (with inputs.nixos-raspberrypi.nixosModules; [
+        raspberry-pi-4.base
+      ])
       nixos.authorized-keys
       {
         by.presets.authorized-keys.groups = [

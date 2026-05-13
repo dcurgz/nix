@@ -23,8 +23,6 @@ in
       pkgs = prebuiltPackages.${system};
       extraModules = [
         inputs.neoforge-1-21-1.nixosModules.${system}.default
-        ### 3rd party modules
-        inputs.agenix.nixosModules.default
       ];
       microvmConfig = {
         networking = {
