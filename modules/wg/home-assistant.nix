@@ -74,7 +74,7 @@ in
        recommendedProxySettings = true;
        virtualHosts =
          let
-           tailscale = secrets.hosts.piberry.ssh.hostname;
+           tailscale = secrets.hosts.piberry.ssh.hostName;
          in
          {
            "${secrets.home-assistant.subdomain}" = {

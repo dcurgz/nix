@@ -56,6 +56,9 @@ in
           }
         ];
       }
+      # Services
+      nixos.home-assistant
+      nixos.matter
     ];
   };
 
