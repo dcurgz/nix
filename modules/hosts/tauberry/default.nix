@@ -10,8 +10,11 @@ let
   inherit (globals) FLAKE_ROOT;
   inherit (args.config) flake;
   inherit (args.config.by) keys;
+  
+  hostName = "tauberry";
 in
 {
+  #TODO nixos-raspberrypi
   flake.nixosConfigurations.tauberry = flake.lib.mkNixOS rec {
     system = "aarch64-linux";
     specialArgs = {
@@ -72,7 +75,7 @@ in
           wifi = by.hardware.interfaces.wifi;
         in
         {
-          hostName = "tauberry";
+          inherit hostName;
           firewall = {
             enable = true;
             allowedTCPPorts = [ 22 ];
@@ -95,8 +98,6 @@ in
             networks."Stan Chappell Roan".pskRaw = "ext:psk";
           };
         };
-
-      services.tailscale.enable = true;
 
       services.avahi = {
         enable = true;
@@ -178,6 +179,14 @@ in
         extraGroups = [ "pipewire" ];
       };
       systemd.services.mopidy.serviceConfig.SupplementaryGroups = [ "pipewire" ];
+
+      age.secrets.tailscale-auth-key.file = "${FLAKE_ROOT}/agenix-secrets/agenix/tailscale/hosts/${hostName}.age";
+    
+      services.tailscale = {
+        enable = true; 
+        authKeyFile = config.age.secrets.tailscale-auth-key.path;
+        useRoutingFeatures = lib.mkDefault "both";
+      };
 
       system.stateVersion = "24.11";
     });

@@ -33,28 +33,28 @@ in
     {
       networking = {
         nameservers = [
-          "127.0.0.55"
-          #"1.1.1.1"
-          #"1.0.0.1"
-          #"8.8.8.8"
+          #"127.0.0.55"
+          "1.1.1.1"
+          "1.0.0.1"
+          "8.8.8.8"
         ];
-        dhcpcd.extraConfig = "nohook resolv.conf";
+        #dhcpcd.extraConfig = "nohook resolv.conf";
       };
 
-      services.dnsproxy = {
-        enable = true;
-        settings = {
-          inherit upstream fallback;
-          listen-addrs = [ "127.0.0.55" ];
-        };
-        flags = [ "--cache" ];
-      };
+      #services.dnsproxy = {
+      #  enable = true;
+      #  settings = {
+      #    inherit upstream fallback;
+      #    listen-addrs = [ "127.0.0.55" ];
+      #  };
+      #  flags = [ "--cache" ];
+      #};
 
-      services.resolved.settings = {
-        Resolve = {
-          FallbackDNS = [ "127.0.0.55" ];
-        };
-      };
+      #services.resolved.settings = {
+      #  Resolve = {
+      #    FallbackDNS = [ "127.0.0.55" ];
+      #  };
+      #};
     });
 
   flake.modules.darwin.dns = flake.lib.darwin.mkAspect []

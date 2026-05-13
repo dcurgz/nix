@@ -1,6 +1,9 @@
 # Makefile to apply the Nix flake configuration to the system
 
-REMOTE_BUILDER := --builders "ssh://builder@hyperberry x86_64-linux - 16 1 ; ssh://builder@miniberry aarch64-darwin - 16 1 ; ssh://builder@publicproxy aarch64-linux - 4 2 ; ssh://builder@weirdfi.sh aarch64-linux - 4 1"
+REMOTE_BUILDER := --builders "\
+				  ssh://builder@hyperberry x86_64-linux - 16 2 ; \
+				  ssh://builder@miniberry aarch64-darwin - 16 4 ; \
+				  ssh://root@vm-mb-build-aarch64 aarch64-linux - 8 4 big-parallel,kvm"
 
 HOME_MANAGER := home-manager --extra-experimental-features "nix-command flakes"
 
@@ -76,13 +79,14 @@ ifeq ($(HOSTNAME),hyperberry)
 		--fast-connection true \
 		--rollback-succeeded false \
 		-- \
+		-vvvvv \
 		--builders-use-substitutes \
 		--always-allow-substitutes \
-		--show-trace \
-		--max-jobs 16 \
+		--max-jobs 0 \
 		--builders '\
-			ssh://builder@miniberry aarch64-darwin - 16 1; \
-			ssh://root@vm-mb-build-aarch64 aarch64-linux - 10 1 big-parallel' $(NOM)
+			ssh://builder@localhost x86_64-linux,aarch64-darwin - 16 1 big-parallel kvm; \
+			ssh://builder@miniberry aarch64-darwin - 16 2; \
+			ssh://root@vm-mb-build-aarch64 aarch64-linux - 8 100 big-parallel' $(NOM)
 else
 	# build remotely
 	deploy $(HOST) --skip-checks --skip-offline --fast-connection false --rollback-succeeded false -- $(REMOTE_BUILDER) --builders-use-substitutes --max-jobs 0 $(NOM) 

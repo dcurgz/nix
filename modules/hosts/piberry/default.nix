@@ -11,6 +11,8 @@ let
   inherit (args.config) flake;
   inherit (args.config.by) keys;
 
+  hostName = "piberry";
+
   lib'.mkRaspberryPi =
     {
       system,
@@ -24,18 +26,15 @@ let
       nixosAspects = builtins.filter (a: a.class == "nixos") aspects;
       nixosModules = lib.lists.subtractLists aspects flat;
     in
-      inputs.nixos.raspberrypi.lib.nixosSystem {
+      inputs.nixos-raspberrypi.lib.nixosSystem {
         inherit system;
         modules = nixosModules ++ (builtins.map (aspect: aspect._module) nixosAspects);
         specialArgs = specialArgs // { _classArgs = args; };
       };
 in
 {
-  flake.nixosConfigurations.piberry = flake.lib.mkNixOS rec {
+  flake.nixosConfigurations.piberry = lib'.mkRaspberryPi rec {
     system = "aarch64-linux";
-    specialArgs = {
-      pkgs = prebuiltPackages.${system};
-    };
     modules = with flake.modules; [
       (with flake.tags; flake.lib.use [
         flake-default
@@ -94,7 +93,7 @@ in
       };
 
       networking = {
-        hostName = "piberry";
+        inherit hostName;
         firewall = {
           enable = true;
           allowedTCPPorts = [
@@ -116,8 +115,6 @@ in
           interface = "end0";
         };
       };
-
-      services.tailscale.enable = true;
 
       services.avahi = {
         enable = true;
@@ -149,6 +146,14 @@ in
       ];
 
       nix.settings.trusted-users = [ "piberry" ];
+
+      age.secrets.tailscale-auth-key.file = "${FLAKE_ROOT}/agenix-secrets/agenix/tailscale/hosts/${hostName}.age";
+    
+      services.tailscale = {
+        enable = true; 
+        authKeyFile = config.age.secrets.tailscale-auth-key.path;
+        useRoutingFeatures = lib.mkDefault "both";
+      };
 
       system.stateVersion = "24.11";
     });

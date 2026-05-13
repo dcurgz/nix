@@ -4,6 +4,7 @@
 } @args:
 let
   inherit (args.config) flake;
+  inherit (args.config.by) keys git-secrets;
 in
 {
   flake.modules.nixos.nix-daemon = flake.lib.nixos.mkAspect (with flake.tags; [ nixos-base ])
@@ -43,6 +44,24 @@ in
           dates = "weekly";
           options = "--delete-older-than 5d";
         };
+        # I'm worried this is required during certain IFD evaluations, but trying without for now.
+        #distributedBuilds = true;
+        #buildMachines = [
+        #  {
+        #    hostName = "miniberry";
+        #    sshUser = "builder";
+        #    sshKey = "/root/.ssh/id_ed25519";
+        #    system = "aarch64-darwin";
+        #    maxJobs = 8;
+        #  }
+        #  {
+        #    hostName = "vm-mb-build-aarch64";
+        #    sshUser = "root";
+        #    sshKey = "/root/.ssh/id_ed25519";
+        #    system = "aarch64-linux";
+        #    maxJobs = 8;
+        #  }
+        #];
       };
     });
 

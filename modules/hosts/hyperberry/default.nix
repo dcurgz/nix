@@ -106,6 +106,11 @@ in
         ];
       };
 
+      boot.binfmt.emulatedSystems = [
+        "aarch64-linux"
+        "armv7l-linux"
+      ];
+
       security.sudo = {
         enable = true;
         wheelNeedsPassword = false;

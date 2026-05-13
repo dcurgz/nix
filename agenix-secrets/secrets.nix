@@ -17,6 +17,8 @@ with keys.ssh.hosts;
   "agenix/tailscale/hosts/hyperberry.age".publicKeys   = (withDefault hyperberry.keys);
   "agenix/tailscale/hosts/blueberry.age".publicKeys    = (withDefault blueberry.keys);
   "agenix/tailscale/hosts/publicproxy.age".publicKeys  = (withDefault publicproxy.keys);
+  "agenix/tailscale/hosts/piberry.age".publicKeys      = (withDefault piberry.keys);
+  "agenix/tailscale/hosts/tauberry.age".publicKeys     = (withDefault tauberry.keys);
   # guests
   "agenix/tailscale/guests/vm-claude.age".publicKeys       = (withDefault vm-claude.keys);
   "agenix/tailscale/guests/vm-immich.age".publicKeys       = (withDefault vm-immich.keys);
