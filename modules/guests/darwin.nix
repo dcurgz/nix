@@ -90,7 +90,21 @@ in
               "virtio-net,unixSocketPath=${vfkit-sock},mac=5a:94:ef:e4:0c:ee"
             ];
           };
+          volumes = [
+            {
+              image = "${microvm-home}/rw-store.img";
+              mountPoint = "/nix/.rw-store";
+              size = 1024 * 32;
+            }
+          ];
           shares = [
+            {
+              source = "/nix/store";
+              mountPoint = "/nix/.ro-store";
+              tag = "ro-store";
+              proto = "virtiofs";
+              readOnly = true;
+            }
             {
               source = "${microvm-home}/ssh-host-keys";
               mountPoint = "/var/lib/ssh-host-keys";
@@ -105,7 +119,7 @@ in
             }
           ];
           writableStoreOverlay = "/nix/.rw-store";
-          storeDiskType = "squashfs";
+          #storeDiskType = "squashfs";
         };
 
         networking = {
