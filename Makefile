@@ -82,8 +82,7 @@ ifeq ($(HOSTNAME),hyperberry)
 		--max-jobs 16 \
 		--builders '\
 			ssh://builder@miniberry aarch64-darwin - 16 1; \
-			ssh://builder@publicproxy aarch64-linux - 8 2; \
-			ssh://builder@weirdfi.sh aarch64-linux - 8 1' $(NOM)
+			ssh://root@vm-mb-build-aarch64 aarch64-linux - 10 1 big-parallel' $(NOM)
 else
 	# build remotely
 	deploy $(HOST) --skip-checks --skip-offline --fast-connection false --rollback-succeeded false -- $(REMOTE_BUILDER) --builders-use-substitutes --max-jobs 0 $(NOM) 
