@@ -78,7 +78,7 @@ in
 
       primaryModule = ({ config, ... }: {
         microvm = {
-          hypervisor = lib.mkForce "vfkit";
+          hypervisor = lib.mkForce "qemu";
           vmHostPackages = prebuiltPackages.aarch64-darwin;
           vfkit = {
             rosetta = {
@@ -98,13 +98,13 @@ in
             }
           ];
           shares = [
-            {
-              source = "/nix/store";
-              mountPoint = "/nix/.ro-store";
-              tag = "ro-store";
-              proto = "virtiofs";
-              readOnly = true;
-            }
+            #{
+            #  source = "/nix/store";
+            #  mountPoint = "/nix/.ro-store";
+            #  tag = "ro-store";
+            #  proto = "virtiofs";
+            #  readOnly = true;
+            #}
             {
               source = "${microvm-home}/ssh-host-keys";
               mountPoint = "/var/lib/ssh-host-keys";
@@ -131,6 +131,7 @@ in
             }
           ];
           writableStoreOverlay = "/nix/.rw-store";
+          storeDiskType = "squashfs";
         };
 
         networking = {
