@@ -24,9 +24,6 @@ in
       microvmConfig = {
         networking = {
           macAddress = "02:00:00:00:00:12";
-          #ipAddress = "10.0.3.2";
-          #ipSubnet = "24";
-          #gateway = "10.0.3.1";
         };
         tailscale = {
           enable = true;
@@ -43,23 +40,9 @@ in
     }:
 
     {
-      microvm.vcpu = 4;
-      microvm.mem = 1024 * 6 + 1;
-      microvm.shares = [
-        # rw-store
-        #{
-        #  source = "/var/lib/microvms/${hostName}/rw-store";
-        #  mountPoint = "/nix/.rw-store";
-        #  tag = "rw-store";
-        #  proto = "virtiofs";
-        #}
-      ];
-      microvm.writableStoreOverlay = "/nix/.rw-store";
+      microvm.vcpu = 10;
+      microvm.mem = 1024 * 12 + 1;
 
       nix.channel.enable = false;
-
-      networking.firewall.allowedTCPPorts = [
-        22
-      ];
     });
 }

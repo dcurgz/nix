@@ -117,9 +117,20 @@ in
               tag = "journal";
               proto = "virtiofs";
             }
+            {
+              source = "/var/lib/microvms/${hostName}/tailscale";
+              mountPoint = "/var/lib/tailscale";
+              tag = "tailscale";
+              proto = "virtiofs";
+            }
+            {
+              source = "/var/lib/microvms/${hostName}/root-home";
+              mountPoint = "/root";
+              tag = "root-home";
+              proto = "virtiofs";
+            }
           ];
           writableStoreOverlay = "/nix/.rw-store";
-          #storeDiskType = "squashfs";
         };
 
         networking = {
@@ -230,9 +241,10 @@ in
       config.system.activationScripts.postActivation.text = lib.mkAfter ''
         # TODO permissions
         mkdir -p "${microvm-home}"
-        mkdir -p "${microvm-home}/rw-store"
         mkdir -p "${microvm-home}/ssh-host-keys"
         mkdir -p "${microvm-home}/journal"
+        mkdir -p "${microvm-home}/tailscale"
+        mkdir -p "${microvm-home}/root-home"
 
         if [ ! -f "${microvm-host-key}" ]; then
           ssh-keygen -t ed25519 -f ${microvm-host-key} -N ""
@@ -241,9 +253,5 @@ in
         chown -R root ${microvm-home}
         chmod -R 700 ${microvm-home}
       '';
-        #if [ ! -f "${rw-store-img}" ]; then
-        #  truncate -s 32768M ${rw-store-img}
-        #  chmod 0777 ${rw-store-img}
-        #fi
     });
 }
