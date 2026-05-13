@@ -73,6 +73,7 @@ let
     (mkGuest "vm-trilium")
     (mkGuest "vm-vikunja")
     (mkGuest "vx-jupiter")
+    (mkGuest "vm-mb-build-aarch64")
   ];
 
   options = lib.mkOption {

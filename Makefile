@@ -1,6 +1,6 @@
 # Makefile to apply the Nix flake configuration to the system
 
-REMOTE_BUILDER := --builders "ssh://builder@hyperberry x86_64-linux,aarch64-linux - 16 1 ; ssh://builder@miniberry aarch64-darwin - 16 1"
+REMOTE_BUILDER := --builders "ssh://builder@hyperberry x86_64-linux - 16 1 ; ssh://builder@miniberry aarch64-darwin - 16 1 ; ssh://builder@publicproxy aarch64-linux - 4 2 ; ssh://builder@weirdfi.sh aarch64-linux - 4 1"
 
 HOME_MANAGER := home-manager --extra-experimental-features "nix-command flakes"
 
@@ -70,7 +70,20 @@ bootstrap-publicproxy: update-local-inputs update-index
 deploy: update-local-inputs update-index
 ifeq ($(HOSTNAME),hyperberry)
 	# build locally
-	deploy $(HOST) --skip-checks --skip-offline --fast-connection true --rollback-succeeded false -- --builders 'ssh://builder@miniberry aarch64-darwin - 16 1' --builders-use-substitutes --max-jobs 16 $(NOM)
+	deploy $(HOST) \
+		--skip-checks \
+		--skip-offline \
+		--fast-connection true \
+		--rollback-succeeded false \
+		-- \
+		--builders-use-substitutes \
+		--always-allow-substitutes \
+		--show-trace \
+		--max-jobs 16 \
+		--builders '\
+			ssh://builder@miniberry aarch64-darwin - 16 1; \
+			ssh://builder@publicproxy aarch64-linux - 8 2; \
+			ssh://builder@weirdfi.sh aarch64-linux - 8 1' $(NOM)
 else
 	# build remotely
 	deploy $(HOST) --skip-checks --skip-offline --fast-connection false --rollback-succeeded false -- $(REMOTE_BUILDER) --builders-use-substitutes --max-jobs 0 $(NOM) 

@@ -7,7 +7,7 @@ let
 in
 
 {
-  flake.modules.nixos.microvm = flake.lib.nixos.mkAspect (with flake.tags; [ ])
+  flake.modules.nixos.microvm = flake.lib.nixos.mkAspect (with flake.tags; [ nixos-base ])
     ({
       lib,
       config,

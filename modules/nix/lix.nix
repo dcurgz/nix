@@ -16,7 +16,7 @@ in
     }:
 
     {
-      nix.package = pkgs.lixPackageSets.stable.lix;
+      nix.package = lib.mkForce pkgs.lixPackageSets.stable.lix;
     });
 
   flake.modules.darwin.lix = flake.lib.darwin.mkAspect (with flake.tags; [ darwin-base ])
@@ -28,6 +28,6 @@ in
     }:
 
     {
-      nix.package = pkgs.lixPackageSets.stable.lix;
+      nix.package = lib.mkForce pkgs.lixPackageSets.stable.lix;
     });
 }

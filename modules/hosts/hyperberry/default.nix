@@ -42,6 +42,7 @@ in
           ];
         };
       }
+      nixos.linux-builder
       # Declarative VMs
       nixos.vm-claude
       nixos.vm-immich
@@ -90,11 +91,6 @@ in
         packages = with pkgs; [ terminus_font ];
         keyMap = "uk";
       };
-
-      boot.binfmt.emulatedSystems = [
-        "aarch64-linux"
-        "armv7l-linux"
-      ];
 
       nix.settings = {
         substituters = [

@@ -32,6 +32,7 @@ with keys.ssh.hosts;
   "agenix/tailscale/guests/vm-trilium.age".publicKeys      = (withDefault vm-trilium.keys);
   "agenix/tailscale/guests/vm-vikunja.age".publicKeys      = (withDefault vm-vikunja.keys);
   "agenix/tailscale/guests/vx-jupiter.age".publicKeys      = (withDefault vx-jupiter.keys);
+  "agenix/tailscale/guests/vm-mb-build-aarch64.age".publicKeys = (withDefault vm-mb-build-aarch64.keys);
   # hyperberry
   "agenix/backup/restic-password.age".publicKeys     = (withDefault hyperberry.keys);
   "agenix/backup/restic-envvars.age".publicKeys      = (withDefault hyperberry.keys);

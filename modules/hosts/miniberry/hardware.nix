@@ -16,7 +16,7 @@ in
     }:
 
     {
-      config.by.host-constants.hostName = hostName;
+      by.host-constants.hostName = hostName;
     });
 
   flake.modules.home-manager.miniberry-hardware = flake.lib.home-manager.mkAspect []
@@ -27,6 +27,6 @@ in
     }:
 
     {
-      config.by.host-constants.hostName = hostName;
+      by.host-constants.hostName = hostName;
     });
 }

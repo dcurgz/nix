@@ -131,7 +131,7 @@ in
     });
 
   flake.deploy.nodes.piberry = {
-    hostname = "piberry";
+    hostname = "piberry.local";
     sshUser = "piberry";
     remoteBuild = false;
     profiles.system = {

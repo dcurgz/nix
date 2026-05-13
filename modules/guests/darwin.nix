@@ -1,0 +1,235 @@
+{
+  inputs,
+  lib,
+  globals,
+  prebuiltPackages,
+  ...
+} @args:
+let
+  inherit (args.config) flake;
+  inherit (args.config.by) keys;
+  inherit (globals) FLAKE_ROOT;
+in
+{
+  flake.lib.darwin.mkMicroVM = 
+    {
+      hostName,
+      system, # must be aarch64-linux
+      extraModules,
+      microvmConfig ? { },
+      tags ? [ ],
+      enable ? false,
+    } @args: config':
+
+    let
+      flat = lib.lists.flatten extraModules;
+      aspects = builtins.filter (a: builtins.isAttrs a && a ? "_type" && a._type == "aspect") flat;
+
+      baseAspects = with flake.modules; lib.lists.flatten [
+        (with flake.tags; flake.lib.use [
+          flake-default
+          nixos-base
+        ])
+        nixos.authorized-keys
+      ];
+      baseModules = [
+        inputs.microvm.nixosModules.microvm
+        # User config
+        config'
+        {
+          by.presets.authorized-keys = {
+            groups = [
+              {
+                keys = keys.ssh.hosts.miniberry.paths ++ keys.ssh.groups.privileged.paths;
+                users = [ "root" ];
+              }
+            ];
+          };
+        }
+      ];
+
+      nixosAspects = builtins.filter (a: a.class == "nixos") (baseAspects ++ aspects);
+      nixosModules = baseModules ++ (lib.lists.subtractLists aspects flat);
+
+      microvmDefaults = {
+        networking = {
+          ipSubnet = "24";
+          gateway = "10.0.0.1";
+        };
+      };
+    in
+
+    flake.lib.darwin.mkAspect tags 
+    ({
+      config,
+      pkgs,
+      ...
+    }:
+    let
+      pkgs' = if ("pkgs" ? args) then args.pkgs else prebuiltPackages.${system};
+      specialArgs' = if ("specialArgs" ? args) then args.specialArgs else { };
+      specialArgs = specialArgs' // { inherit inputs; };
+      
+      vm = lib.recursiveUpdate microvmDefaults microvmConfig;
+
+      microvm-home = "/var/lib/microvms/${hostName}";
+      microvm-host-key = "${microvm-home}/ssh-host-keys/ssh_host_ed25519_key";
+      vfkit-sock = "/tmp/${hostName}-vfkit.sock";
+
+      primaryModule = ({ config, ... }: {
+        microvm = {
+          hypervisor = lib.mkForce "vfkit";
+          vmHostPackages = prebuiltPackages.aarch64-darwin;
+          vfkit = {
+            rosetta = {
+              enable = true;
+              install = true;
+            };
+            extraArgs = [
+              "--device"
+              "virtio-net,unixSocketPath=${vfkit-sock},mac=5a:94:ef:e4:0c:ee"
+            ];
+          };
+          shares = [
+            {
+              source = "${microvm-home}/ssh-host-keys";
+              mountPoint = "/var/lib/ssh-host-keys";
+              tag = "ssh-host-keys";
+              proto = "virtiofs";
+            }
+            {
+              source = "${microvm-home}/journal";
+              mountPoint = "/var/log/journal";
+              tag = "journal";
+              proto = "virtiofs";
+            }
+          ];
+          writableStoreOverlay = "/nix/.rw-store";
+          storeDiskType = "squashfs";
+        };
+
+        networking = {
+          inherit hostName;
+          firewall = {
+            enable = lib.mkDefault true;
+            allowPing = lib.mkDefault true;
+            allowedTCPPorts = [ 22 ];
+          };
+        };
+
+        nix.nixPath = [
+          "nixpkgs=${pkgs'.path}"
+        ];
+
+        nix.optimise.automatic = lib.mkForce false;
+
+        services.openssh = {
+          enable = lib.mkDefault true;
+          settings = {
+            PasswordAuthentication = lib.mkDefault false;
+            PermitRootLogin = lib.mkDefault "prohibit-password";
+          };
+          # Due to permission issues we have to do this manually
+          generateHostKeys = false;
+          hostKeys = [
+            {
+              path = "/var/lib/ssh-host-keys/ssh_host_ed25519_key";
+              type = "ed25519";
+            }
+          ];
+        };
+
+        # This allows the Agenix module to decrypt secrets during early boot.
+        fileSystems."/var/lib/ssh-host-keys".neededForBoot = true;
+
+        age.secrets.tailscale-auth-key = lib.mkIf (vm.tailscale.enable && vm.tailscale.autologin) {
+          file = "${FLAKE_ROOT}/agenix-secrets/agenix/tailscale/guests/${hostName}.age"; 
+          mode = "0440"; 
+        };
+
+        services.tailscale = lib.mkIf (vm.tailscale.enable) {
+          enable = true;
+          authKeyFile = lib.mkIf (vm.tailscale.autologin) config.age.secrets.tailscale-auth-key.path;
+        };
+
+        system.stateVersion = lib.mkDefault "24.11";
+      });
+
+      modules =
+        [ primaryModule ]
+        ++ nixosModules
+        ++ (builtins.map (aspect: aspect._module) (nixosAspects));
+
+      microvm = inputs.nixpkgs.lib.nixosSystem {
+        system = "aarch64-linux";
+        inherit specialArgs modules;
+      };
+      microvm-runner = microvm.config.microvm.declaredRunner;
+      service-script = pkgs.writeShellScript "${hostName}-runner" ''
+        rm -f ${vfkit-sock}
+
+        ${lib.getExe pkgs.gvproxy} \
+          --ssh-port 2222 \
+          --listen-vfkit "unixgram://${vfkit-sock}" \
+          >/tmp/${hostName}-gvproxy.log 2>&1 &
+        GVPROXY_PID=$!
+        trap 'kill $GVPROXY_PID' EXIT
+
+        until [ -S ${vfkit-sock} ]; do sleep 1; done;
+
+        ${lib.getExe pkgs.unixtools.script} -q "/tmp/${hostName}.log" ${lib.getExe microvm-runner} &
+
+        wait -n
+      '';
+    in
+    {
+      # Host-level SSH configuration
+      config.environment.etc."ssh/ssh_config.d/098-${hostName}.conf".text = ''
+        Host ${hostName}
+          User root
+          Hostname localhost
+          Port 2222
+          StrictHostKeyChecking no
+          UserKnownHostsFile /dev/null
+      '';
+
+      #config.users.knownUsers = [ "microvm" ];
+      #config.users.users.microvm = {
+      #  uid = 521;
+      #  gid = 20; # staff
+      #  name = "microvm";
+      #  home = microvm-home;
+      #  shell = pkgs.bashInteractive;
+      #};
+
+      config.launchd.daemons.${hostName} = {
+        command = service-script;
+        serviceConfig = {
+          KeepAlive = true;
+          RunAtLoad = true;
+          WorkingDirectory = microvm-home;
+          StandardOutPath = "/tmp/${hostName}.stdio";
+          StandardErrorPath = "/tmp/${hostName}.stderr";
+        };
+      };
+
+      config.system.activationScripts.postActivation.text = lib.mkAfter ''
+        # TODO permissions
+        mkdir -p "${microvm-home}"
+        mkdir -p "${microvm-home}/rw-store"
+        mkdir -p "${microvm-home}/ssh-host-keys"
+        mkdir -p "${microvm-home}/journal"
+
+        if [ ! -f "${microvm-host-key}" ]; then
+          ssh-keygen -t ed25519 -f ${microvm-host-key} -N ""
+        fi
+
+        chown -R root ${microvm-home}
+        chmod -R 700 ${microvm-home}
+      '';
+        #if [ ! -f "${rw-store-img}" ]; then
+        #  truncate -s 32768M ${rw-store-img}
+        #  chmod 0777 ${rw-store-img}
+        #fi
+    });
+}

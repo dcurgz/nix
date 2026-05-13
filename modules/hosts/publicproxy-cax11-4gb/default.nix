@@ -29,11 +29,12 @@ in
       {
         by.presets.authorized-keys.groups = [
           {
-            users = [ "root" "dcurgz" ];
+            users = [ "root" "dcurgz" "builder" ];
             keys = keys.ssh.groups.privileged.paths;
           }
         ];
       }
+      nixos.linux-builder
     ];
   };
 

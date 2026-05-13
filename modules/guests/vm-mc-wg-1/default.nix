@@ -14,7 +14,7 @@ let
   serverDir = "${dataDir}/wg-creative-forge-1.20.1";
 in
 {
-  flake.modules.nixos.${hostName} = flake.lib.mkMicroVM
+  flake.modules.nixos.${hostName} = flake.lib.nixos.mkMicroVM
     rec {
       inherit hostName;
       system = "x86_64-linux";

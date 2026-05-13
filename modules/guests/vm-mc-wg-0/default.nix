@@ -13,7 +13,7 @@ let
   dataDir = "/data/minecraft-wg-0";
 in
 {
-  flake.modules.nixos.${hostName} = flake.lib.mkMicroVM
+  flake.modules.nixos.${hostName} = flake.lib.nixos.mkMicroVM
     rec {
       inherit hostName;
       system = "x86_64-linux";

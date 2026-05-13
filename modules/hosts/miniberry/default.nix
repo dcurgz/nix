@@ -39,6 +39,9 @@ in
           ];
         };
       }
+      # Declarative VMs
+      darwin.vm-mb-build-aarch64
+      # Home-manager
       darwin.home-manager
       {
         by.presets.home-manager.user = "dcurgz";
@@ -128,7 +131,7 @@ in
   flake.deploy.nodes.miniberry = {
     hostname = "miniberry";
     sshUser = "dcurgz";
-    remoteBuild = true;
+    remoteBuild = false;
     profiles.system = {
       user = "root";
       path = inputs.deploy-rs.lib.aarch64-darwin.activate.darwin flake.darwinConfigurations.miniberry;

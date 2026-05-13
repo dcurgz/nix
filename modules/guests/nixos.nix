@@ -71,7 +71,7 @@ let
   };
 in
 {
-  flake.lib.mkMicroVM = 
+  flake.lib.nixos.mkMicroVM = 
     {
       hostName,
       system,

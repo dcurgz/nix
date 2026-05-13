@@ -14,7 +14,7 @@ let
   trilium_http = 8096;
 in
 {
-  flake.modules.nixos.${hostName} = flake.lib.mkMicroVM
+  flake.modules.nixos.${hostName} = flake.lib.nixos.mkMicroVM
     rec {
       enable = true;
       inherit hostName;

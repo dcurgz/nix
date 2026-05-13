@@ -15,7 +15,7 @@ let
   immich_db = "/data/immich-db";
 in
 {
-  flake.modules.nixos.${hostName} = flake.lib.mkMicroVM
+  flake.modules.nixos.${hostName} = flake.lib.nixos.mkMicroVM
   rec {
       enable = true;
       inherit hostName;
