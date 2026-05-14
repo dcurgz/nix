@@ -129,6 +129,20 @@ in
         };
       };
 
+      age.secrets.wifi = {
+        file = "${FLAKE_ROOT}/agenix-secrets/agenix/wg/Wi-Fi.age";
+        #mode = "770";
+        #owner = "root";
+        #group = "wpa_supplicant";
+      };
+
+      # Setup Wi-Fi.
+      networking.wireless = {
+        enable = true;
+        secretsFile = config.age.secrets.wifi.path;
+        networks."Stan Chappell Roan".pskRaw = "ext:psk";
+      };
+
       services.openssh.enable = true;
 
       users = {
