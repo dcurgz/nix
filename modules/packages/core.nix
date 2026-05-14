@@ -54,6 +54,7 @@ let
     # System
     btop
     fastfetch
+    bubblewrap
     # Nix
     nix-index
     nix-output-monitor

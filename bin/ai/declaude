@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+bwrap \
+  --ro-bind /etc /etc \
+  --ro-bind /nix /nix \
+  --ro-bind /run /run \
+  --ro-bind /usr /usr \
+  --proc /proc \
+  --dev /dev \
+  --symlink /usr/lib64 /lib64 \
+  --tmpfs /tmp \
+  --unshare-all \
+  --share-net \
+  --die-with-parent \
+  --new-session \
+  --bind "$HOME/.claude.json" /claude/.claude.json \
+  --bind "$HOME/.claude" /claude/.claude \
+  --setenv HOME /claude \
+  --setenv IS_SANDBOX 1 \
+  --bind "$(pwd)" "$(pwd)" \
+  --chdir "$(pwd)" \
+  claude --dangerously-skip-permissions "$@"

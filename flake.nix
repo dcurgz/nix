@@ -2,9 +2,9 @@
   description = "NixOS configuration as a flake";
 
   inputs = {
-    # https://github.com/gvolpe/nfsm/pull/3/changes/211eb44e77ce0b6e10f32b15f78f8aee5340fcbd
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     agenix.url = "github:ryantm/agenix";
+    awww.url = "git+https://codeberg.org/LGFae/awww";
     dankMaterialShell.inputs.dgop.follows = "dgop";
     dankMaterialShell.inputs.nixpkgs.follows = "nixpkgs";
     dankMaterialShell.url = "github:AvengeMedia/DankMaterialShell";
@@ -25,10 +25,9 @@
     naersk.inputs.nixpkgs.follows = "nixpkgs";
     naersk.url = "github:nix-community/naersk";
     nfsm.inputs.nixpkgs.follows = "nixpkgs";
-    nfsm.url = "github:gvolpe/nfsm?rev=211eb44e77ce0b6e10f32b15f78f8aee5340fcbd";
+    nfsm.url = "github:gvolpe/nfsm?rev=211eb44e77ce0b6e10f32b15f78f8aee5340fcbd"; # https://github.com/gvolpe/nfsm/pull/3/changes/211eb44e77ce0b6e10f32b15f78f8aee5340fcbd
     niri.inputs.nixpkgs.follows = "nixpkgs";
     niri.url = "github:sodiboo/niri-flake";
-    awww.url = "git+https://codeberg.org/LGFae/awww";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     nix-darwin.url = "github:nix-darwin/nix-darwin/master";
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
@@ -40,6 +39,10 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nurpkgs.inputs.nixpkgs.follows = "nixpkgs";
     nurpkgs.url = "github:nix-community/NUR"; # Nix user repository
+    stylix = {
+      url = "github:nix-community/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     nixpkgs-immich.url = "github:nixos/nixpkgs?rev=0fd2db475afdde93c9e4b1625aafb8eb41b99807";
     nixpkgs-ollama.url = "github:nixos/nixpkgs?rev=9d29d5f667d7467f98efc31881e824fa586c927e";
