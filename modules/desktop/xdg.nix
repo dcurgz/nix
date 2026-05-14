@@ -16,17 +16,28 @@ in
       ...
     }:
 
+    let
+      browser = "firefox.desktop";
+    in
     {
-      xdg.portal = {
-        enable = true;
-        config.common = {
-          default = [ "gnome" ];
+      xdg = {
+        portal = {
+          enable = true;
+          config.common = {
+            default = [ "gtk" ];
+          };
+          xdgOpenUsePortal = true;
+          extraPortals = with pkgs; [
+            xdg-desktop-portal-gtk
+          ];
         };
-        xdgOpenUsePortal = true;
-        extraPortals = with pkgs; [
-          xdg-desktop-portal-gtk
-          xdg-desktop-portal-gnome
-        ];
+        mime.defaultApplications = {
+          "text/html" = browser;
+          "x-scheme-handler/http" = browser;
+          "x-scheme-handler/https" = browser;
+          "x-scheme-handler/about" = browser;
+          "x-scheme-handler/unknown" = browser;
+        };
       };
     });
 
@@ -34,10 +45,13 @@ in
     ({
       lib,
       config,
+      pkgs,
       ...
     }:
 
     {
-      # TODO
+      home.packages = with pkgs; [
+        xdg-utils
+      ];
     });
 }

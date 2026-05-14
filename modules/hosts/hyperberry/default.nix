@@ -256,6 +256,10 @@ in
         "Z /data 770 root data" 
       ];
 
+      services.polkit.enable = true;
+
+      environment.systemPackages = with pkgs; [ polkit_gnome ];
+
       ##########################################################################################
       # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
       # In the vast majority of cases, do not change this version.

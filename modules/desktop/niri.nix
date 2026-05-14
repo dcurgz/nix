@@ -18,7 +18,7 @@ in
 
     let
       browser = "firefox";
-      file-explorer = "nemo";
+      file-explorer = "nautilus";
       bluetooth-manager = "blueman-manager";
       sound-manager = "pavucontrol";
       terminal = "ghostty";
@@ -34,7 +34,7 @@ in
         blueman
         fuzzel
         libnotify
-        nemo
+        nautilus
         nfsm
         nfsm-cli
         pavucontrol
