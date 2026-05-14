@@ -7,6 +7,7 @@
 
 let
   inherit (args.config) flake;
+  inherit (args.config.by) keys;
   inherit (globals) FLAKE_ROOT;
 
   hostName = "vm-mb-build-aarch64";
@@ -17,7 +18,16 @@ in
       inherit hostName;
       system = "aarch64-linux";
       extraModules = [
-        ### aspects
+        {
+          by.presets.authorized-keys = {
+            groups = [
+              {
+                keys = keys.ssh.friends.all.paths;
+                users = [ "root" ];
+              }
+            ];
+          };
+        }
         ### 3rd party modules
         inputs.agenix.nixosModules.default
       ];

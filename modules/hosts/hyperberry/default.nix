@@ -12,7 +12,7 @@ let
   inherit (args.config.by) keys;
 in
 {
-  flake.nixosConfigurations.hyperberry = flake.lib.mkNixOS rec {
+  flake.nixosConfigurations.hyperberry = builtins.break flake.lib.mkNixOS rec {
     system = "x86_64-linux";
     specialArgs = {
       pkgs = prebuiltPackages.${system};

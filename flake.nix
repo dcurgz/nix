@@ -44,6 +44,11 @@
     nixpkgs-ollama.url = "github:nixos/nixpkgs?rev=9d29d5f667d7467f98efc31881e824fa586c927e";
     nixpkgs-tailscale.url = "github:nixos/nixpkgs?rev=7aaa00e7cc9be6c316cb5f6617bd740dd435c59d";
 
+    # friends
+    keys-natter = { url = "https://github.com/Naterjack.keys"; flake = false; };
+    keys-citrus = { url = "https://github.com/citrus-tree.keys"; flake = false; };
+    keys-raka = { url = "https://github.com/raka-gunarto.keys"; flake = false; };
+
     ## local flakes
     mandoc-forked.url = "path:./vendor/mandoc";
     neoforge-1-21-1.inputs.nixpkgs.follows = "nixpkgs";

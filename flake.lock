@@ -495,6 +495,42 @@
         "type": "github"
       }
     },
+    "keys-citrus": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-jSitMPXaNyAID8R2bq+MWjG2UhWpkLTMMLjNNlNxWi0=",
+        "type": "file",
+        "url": "https://github.com/citrus-tree.keys"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/citrus-tree.keys"
+      }
+    },
+    "keys-natter": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-805+2BbOuGpfWghgOlfv+ILmQJsFfWPjmGFQbVHAK0I=",
+        "type": "file",
+        "url": "https://github.com/Naterjack.keys"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/Naterjack.keys"
+      }
+    },
+    "keys-raka": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-/Yq8dfUO6nTmVUCO8aMrDqWdeVtdv3jnrIOlVzL1zEw=",
+        "type": "file",
+        "url": "https://github.com/raka-gunarto.keys"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/raka-gunarto.keys"
+      }
+    },
     "maccel": {
       "locked": {
         "lastModified": 1771614512,
@@ -517,7 +553,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-MW8xNqYEfeFLeEvHFBNI04mwIN8AcOMBROMC6PPMSj8=",
+        "narHash": "sha256-WBlb8ffG5bvs1yXv1KzERkyl881of1hQO618sB+aAec=",
         "path": "./vendor/mandoc",
         "type": "path"
       },
@@ -1127,6 +1163,9 @@
         "home-manager": "home-manager_2",
         "import-tree": "import-tree",
         "isd": "isd",
+        "keys-citrus": "keys-citrus",
+        "keys-natter": "keys-natter",
+        "keys-raka": "keys-raka",
         "maccel": "maccel",
         "mandoc-forked": "mandoc-forked",
         "microvm": "microvm",

@@ -82,6 +82,33 @@ let
   };
   keys = {
     ssh = {
+      friends =
+        let
+          mkListFromKeys = path: lib.pipe path [
+            builtins.readFile
+            (lib.strings.splitString "\n")
+            (lib.lists.filter (str: str != ""))
+          ];
+          mkDefinition = file: {
+            paths = [ file ];
+            keys = mkListFromKeys file;
+          };
+          natter = mkDefinition inputs.keys-natter;
+          citrus = mkDefinition inputs.keys-citrus;
+          raka   = mkDefinition inputs.keys-raka;
+        in 
+        {
+          inherit natter citrus raka;
+          all = rec {
+            paths = [
+              inputs.keys-natter
+              inputs.keys-citrus
+              inputs.keys-raka
+            ];
+            keys = lib.lists.flatten (builtins.map mkListFromKeys paths);
+          };
+        };
+
       # An attrset of groups, mapped to an attrset of {paths, keys}.
       groups = lib.listToAttrs (builtins.map (groupname: {
         name = groupname;
