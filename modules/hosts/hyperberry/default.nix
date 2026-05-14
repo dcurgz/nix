@@ -12,7 +12,7 @@ let
   inherit (args.config.by) keys;
 in
 {
-  flake.nixosConfigurations.hyperberry = builtins.break flake.lib.mkNixOS rec {
+  flake.nixosConfigurations.hyperberry = flake.lib.mkNixOS rec {
     system = "x86_64-linux";
     specialArgs = {
       pkgs = prebuiltPackages.${system};
@@ -255,10 +255,6 @@ in
         "Z /media 770 root media" 
         "Z /data 770 root data" 
       ];
-
-      services.polkit.enable = true;
-
-      environment.systemPackages = with pkgs; [ polkit_gnome ];
 
       ##########################################################################################
       # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .

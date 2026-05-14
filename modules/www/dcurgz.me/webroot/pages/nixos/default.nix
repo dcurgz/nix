@@ -21,97 +21,52 @@ in
       inherit (cfg) templates;
       lib' = cfg.lib;
 
-      fibonacci-c' = pkgs.stdenv.mkDerivation {
-        name = "fibonacci-c-bin";
-        src = ./fibonacci.c;
-        dontUnpack = true;
-        nativeBuildInputs = with pkgs; [ gcc ];
-        buildPhase = ''
-          gcc $src -o fibonacci
-        '';
-        installPhase = ''
-          mkdir -p $out/bin
-          cp -v ./fibonacci $out/bin
-        '';
-        meta.mainProgram = "fibonacci";
-      };
-      fibonacci-hs' = pkgs.stdenv.mkDerivation {
-        name = "fibonacci-hs-bin";
-        src = ./fibonacci.hs;
-        dontUnpack = true;
-        nativeBuildInputs = with pkgs; [ ghc ];
-        buildPhase = ''
-          ghc $src -o fibonacci
-        '';
-        installPhase = ''
-          mkdir -p $out/bin
-          cp -v ./fibonacci $out/bin
-        '';
-        meta.mainProgram = "fibonacci";
-      };
-
-      code = rec {
-        fibonacci-pseudocode = ''
-          fib(0) = 0
-          fib(1) = 1
-          fib(2) = fib(n-1) + fib(n-2)
-        '';
-        fibonacci-c = lib'.renderCode {
-          name = "fibonacci-c";
-          lang = "c";
-          path = ./fibonacci.c;
-        };
-        fibonacci-input = "23";
-        fibonacci-c-output =
-          let
-            result = pkgs.runCommand "fibonacci-c-output" {}
-              ''
-                ${lib.getExe fibonacci-c'} ${fibonacci-input} > "$out"
-              '';
-          in
-          lib'.renderCode {
-            name = "fibonacci-c-output";
-            lang = "bash";
-            path = pkgs.writeText "fibonacci-c-output-text" ''
-              $ gcc fibonacci.c -o fibonacci
-              $ ./fibonacci ${fibonacci-input}
-              $ # ==> ${builtins.readFile result}
-            '';
-          };
-        fibonacci-hs = lib'.renderCode {
-          name = "fibonacci-hs";
-          lang = "haskell";
-          path = ./fibonacci.hs;
-        };
-        fibonacci-hs-output =
-          let
-            result = pkgs.runCommand "fibonacci-hs-output" {}
-              ''
-                ${lib.getExe fibonacci-hs'} ${fibonacci-input} > "$out"
-              '';
-          in
-          lib'.renderCode {
-            name = "fibonacci-hs-output";
-            lang = "bash";
-            path = pkgs.writeText "fibonacci-hs-output-text" ''
-              $ ghc fibonacci.hs -o fibonacci
-              $ ./fibonacci ${fibonacci-input}
-              $ # ==> ${builtins.readFile result}
-            '';
-          };
-      };
+      children = [
+        rec {
+          title = "001.a Declarative Secrets";
+          description = "A two-tiered approach to secrets management with Nix";
+          date = "2026-05-14";
+          slug = "posts/NixOS/001.a-declarative-secrets.html";
+          src = lib.pipe ./declarative-secrets.7 [
+            (path: replaceOptionalVars path { inherit title description; })
+            (path: replaceOptionalVars path templates)
+            (path: lib'.renderMdoc "declarative-secrets.html" path)
+          ];
+        }
+      ];
     in
     {
       config.by.www."dcurgz.me".pages = [
-        {
-          title = "My NixOS config (WIP!)";
-          description = "How I'm using Nix today";
-          date = "2026-05-12";
-          slug = "posts/001-NixOS.html";
-          src = lib.pipe ./001-NixOS.7 [
+        rec {
+          title = "001 Nix and NixOS (series)";
+          description = "A collection of posts about Nix";
+          date = "2026-05-14";
+          slug = "posts/NixOS/index.html";
+          src = lib.pipe ./index.7 [
+            (path: replaceOptionalVars path {
+              inherit title description;
+              series =
+                let
+                  posts = lib.pipe children [
+                    # render as mdoc list
+                    (builtins.map (post: ''
+                      .It
+                      .Lk ${post.slug} ${post.title} 
+                      — ${post.description}
+                      .Em (${post.date})
+                    ''))
+                    # join list to string
+                    (lib.strings.join "\n")
+                  ];
+                in
+                ''
+                  .Bl
+                  ${posts}
+                  .El
+                '';
+            })
             (path: replaceOptionalVars path templates)
-            (path: replaceOptionalVars path code)
-            (path: lib'.renderMdoc "001-NixOS.html" path)
+            (path: lib'.renderMdoc "index.html" path)
           ];
         }
       ];
