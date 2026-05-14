@@ -24,11 +24,13 @@ in
         portal = {
           enable = true;
           config.common = {
-            default = [ "gtk" ];
+            default = [ "gnome" ];
           };
           xdgOpenUsePortal = true;
           extraPortals = with pkgs; [
+            xdg-desktop-portal-gnome
             xdg-desktop-portal-gtk
+            nautilus
           ];
         };
         mime.defaultApplications = {

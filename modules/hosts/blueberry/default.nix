@@ -163,7 +163,7 @@ in
       home.stateVersion = "25.05";
       home.packages = with pkgs; [
         # Socials
-        discord
+        vesktop
         # Editors
         aseprite
         darktable
