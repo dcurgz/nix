@@ -54,7 +54,6 @@ let
     # System
     btop
     fastfetch
-    bubblewrap
     # Nix
     nix-index
     nix-output-monitor
@@ -78,6 +77,7 @@ let
     busybox
     iproute2
     powertop
+    bubblewrap
   ]) ++ (lib.optionals pkgs.stdenv.isDarwin [
     # Darwin-specific packages
     libiconv

@@ -195,6 +195,7 @@ in
 
       microvm = inputs.nixpkgs.lib.nixosSystem {
         system = "aarch64-linux";
+        pkgs = pkgs';
         inherit specialArgs modules;
       };
       microvm-runner = microvm.config.microvm.declaredRunner;

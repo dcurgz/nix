@@ -4,6 +4,10 @@ BUILDER_OPTS := \
 		--option builders-use-substitutes true \
 		--option always-allow-substitutes true
 
+BUILDERS_HB := \
+		ssh://builder@miniberry aarch64-darwin - 16 4 ; \
+		ssh://root@vm-mb-build-aarch64 aarch64-linux - 8 4 big-parallel,kvm
+
 BUILDERS := \
 		ssh://builder@hyperberry x86_64-linux - 16 2 ; \
 		ssh://builder@miniberry aarch64-darwin - 16 4 ; \
@@ -101,7 +105,7 @@ ifeq ($(HOSTNAME),hyperberry)
 		-- \
 		$(BUILDER_OPTS) \
 		--max-jobs 16 \
-		--builders '$(BUILDERS)'
+		--builders '$(BUILDERS_HB)'
 else
 	# build remotely
 	deploy $(HOST) \
