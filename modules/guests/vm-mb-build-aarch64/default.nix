@@ -44,18 +44,18 @@ in
       microvm.mem = 1024 * 12 + 1;
 
       microvm.shares = [
-        {
-          source = "/var/lib/microvms/${hostName}/tmp/rootfs";
-          mountPoint = "/";
-          tag = "rootfs";
-          proto = "virtiofs";
-        }
-        {
-          source = "/var/lib/microvms/${hostName}/tmp/tmp";
-          mountPoint = "/var/tmp";
-          tag = "var-tmp";
-          proto = "virtiofs";
-        }
+        #{
+        #  source = "/var/lib/microvms/${hostName}/tmp/rootfs";
+        #  mountPoint = "/";
+        #  tag = "rootfs";
+        #  proto = "virtiofs";
+        #}
+        #{
+        #  source = "/var/lib/microvms/${hostName}/tmp/tmp";
+        #  mountPoint = "/var/tmp";
+        #  tag = "var-tmp";
+        #  proto = "virtiofs";
+        #}
       ];
 
       systemd.services.nix-daemon.environment.TMPDIR = "/var/tmp";

@@ -16,7 +16,7 @@ stdenv.mkDerivation {
     owner = "nirs";
     repo = "vmnet-broker";
     rev = "v${version}";
-    hash = lib.fakeHash;
+    hash = "sha256-+UStOkhqpkj2EubiY8ntARFQojRJbiMTNUIcxeyJzGU=";
   };
   nativeBuildInputs = [ darwin.sigtool ];
   buildInputs = [ apple-sdk_26 ];

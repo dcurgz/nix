@@ -87,9 +87,9 @@ in
             };
             extraArgs = [
               "--device"
-              #"virtio-net,unixSocketPath=${vfkit-sock},mac=5a:94:ef:e4:0c:ee"
+              "virtio-net,unixSocketPath=${vfkit-sock},mac=5a:94:ef:e4:0c:ee"
               # vmnet-helper requires fd=4
-              "virtio-net,fd=4,mac=${vm.networking.macAddress}"
+              #"virtio-net,fd=4,mac=${vm.networking.macAddress}"
             ];
           };
           volumes = [
@@ -167,11 +167,16 @@ in
           ];
         };
 
+        system.activationScripts.postActivation.text = ''
+          chown root:root /
+          chmod 755 /
+        '';
+
         # This allows the Agenix module to decrypt secrets during early boot.
         fileSystems."/var/lib/ssh-host-keys".neededForBoot = true;
 
         age.secrets.tailscale-auth-key = lib.mkIf (vm.tailscale.enable && vm.tailscale.autologin) {
-          file = "${FLAKE_ROOT}/agenix-secrets/agenix/tailscale/guests/${hostName}.age"; 
+          file = "${FLAKE_ROOT}/secrets/agenix/tailscale/guests/${hostName}.age"; 
           mode = "0440"; 
         };
 
@@ -210,30 +215,34 @@ in
       #  wait -n
       #'';
       service-script = pkgs.writeShellScript "${hostName}-runner" ''
-        exec script -q /dev/null ${pkgs.vmnet-helper} \
-          --network shared # Use vmnet-broker's shared network. \ 
-          -- ${lib.getExe microvm-runner}
+        rm -rf ${vfkit-sock}
+
+        ln -sfn ${microvm-runner} ${microvm-home}/current
+        ${pkgs.external.vmnet-helper}/bin/vmnet-helper \
+          --socket ${vfkit-sock} \
+          --network shared &
+        BROKER_PID=$!
+        trap 'kill $BROKER_PID' EXIT
+
+        until [ -S ${vfkit-sock} ]; do sleep 1; done
+        
+        ${lib.getExe pkgs.unixtools.script} -q /tmp/${hostName}.log ${lib.getExe microvm-runner} &
+
+        wait -n
       '';
     in
     {
-      # Host-level SSH configuration
-      #config.environment.etc."ssh/ssh_config.d/098-${hostName}.conf".text = ''
-      #  Host ${hostName}
-      #    User root
-      #    Hostname localhost
-      #    Port 2222
-      #    StrictHostKeyChecking no
-      #    UserKnownHostsFile /dev/null
-      #'';
-
-      #config.users.knownUsers = [ "microvm" ];
-      #config.users.users.microvm = {
-      #  uid = 521;
-      #  gid = 20; # staff
-      #  name = "microvm";
-      #  home = microvm-home;
-      #  shell = pkgs.bashInteractive;
-      #};
+      # maybe move this out
+      config.launchd.daemons.vmnet-broker = {
+        command = "${pkgs.external.vmnet-broker}/bin/vmnet-broker";
+        serviceConfig = {
+          KeepAlive = true;
+          RunAtLoad = true;
+          # ?
+          MachServices."com.github.nirs.vmnet-broker" = true;
+          EnableTransactions = true;
+        };
+      };
 
       config.launchd.daemons.${hostName} = {
         command = service-script;

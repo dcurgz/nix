@@ -19,7 +19,7 @@ stdenv.mkDerivation {
     owner = "nirs";
     repo = "vmnet-helper";
     rev = "v${version}";
-    hash = lib.fakeHash;
+    hash = "sha256-pqkikynl5QzcPwKP3KdloZ6W5F8EfZW6arpL5jQOR9w=";
   };
   nativeBuildInputs = [
     meson

@@ -1,9 +1,11 @@
 # Makefile to apply the Nix flake configuration to the system
 
-REMOTE_BUILDER := --builders "\
-				  ssh://builder@hyperberry x86_64-linux - 16 2 ; \
-				  ssh://builder@miniberry aarch64-darwin - 16 4 ; \
-				  ssh://root@vm-mb-build-aarch64 aarch64-linux - 8 4 big-parallel,kvm"
+BUILDERS := \
+		ssh://builder@hyperberry x86_64-linux - 16 2 ; \
+		ssh://builder@miniberry aarch64-darwin - 16 4 ; \
+		ssh://root@vm-mb-build-aarch64 aarch64-linux - 8 4 big-parallel,kvm
+
+REMOTE_BUILDER := --builders $(BUILDERS)
 
 HOME_MANAGER := home-manager --extra-experimental-features "nix-command flakes"
 
@@ -62,7 +64,18 @@ airberry: update-local-inputs update-index
 	sudo darwin-rebuild switch --option builders "ssh://builder@miniberry aarch64-darwin - 16 1" --max-jobs 0 --flake .#airberry 
 
 miniberry: update-local-inputs update-index
-	sudo darwin-rebuild switch --flake .#miniberry --show-trace
+	sudo darwin-rebuild switch \
+		--flake .#miniberry \
+		--option builders '\
+			ssh-ng://builder@hyperberry aarch64-linux - 8 1 big-parallel' \
+		--option builders-use-substitutes true \
+		--option always-allow-substitutes true
+	#sudo darwin-rebuild switch \
+	#	--flake .#miniberry \
+	#	--option builders '\
+	#		ssh-ng://vfkit-builder aarch64-linux - 8 1 big-parallel' \
+	#	--option builders-use-substitutes true \
+	#	--option always-allow-substitutes true
 
 bootstrap-weirdfi.sh: update-local-inputs update-index
 	$(NIX) run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./systems/weirdfi.sh-cax11-4gb/hardware-configuration.nix --flake .#weirdfish-cax11-4gb --target-host "root@weirdfi.sh"
