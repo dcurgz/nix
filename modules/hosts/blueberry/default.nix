@@ -35,6 +35,7 @@ in
             }
           ];
         })
+        nixos.avahi
         nixos.drivers-nvidia
         nixos.drivers-maccel
         nixos.desktop-wooting

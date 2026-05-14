@@ -42,6 +42,7 @@ in
           ];
         };
       }
+      nixos.avahi
       nixos.linux-builder
       # Declarative VMs
       nixos.vm-claude
@@ -53,10 +54,10 @@ in
       nixos.vm-trilium
       nixos.vm-vikunja
       nixos.vx-jupiter
-      nixos.home-manager
       # Services
       nixos.ollama
       # Home-manager
+      nixos.home-manager
       {
         by.presets.home-manager.user = "dcurgz";
       }

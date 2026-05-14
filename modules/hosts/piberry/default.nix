@@ -56,6 +56,8 @@ in
           }
         ];
       }
+      # Linux
+      nixos.avahi
       # Services
       nixos.home-assistant
       nixos.matter
@@ -116,17 +118,6 @@ in
         defaultGateway = {
           address = "192.168.0.1";
           interface = "end0";
-        };
-      };
-
-      services.avahi = {
-        enable = true;
-        nssmdns4 = true;
-        nssmdns6 = false;
-        publish = {
-          enable = true;
-          addresses = true;
-          workstation = true;
         };
       };
 

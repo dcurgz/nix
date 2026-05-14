@@ -7,7 +7,7 @@ let
 in
 
 {
-  flake.modules.nixos.avahi = flake.lib.nixos.mkAspect (with flake.tags; [ nixos-base ])
+  flake.modules.nixos.avahi = flake.lib.nixos.mkAspect []
     ({
       lib,
       config,

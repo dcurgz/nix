@@ -37,6 +37,8 @@ in
           }
         ];
       }
+      # Linux
+      nixos.avahi
     ];
   };
 
@@ -98,17 +100,6 @@ in
             networks."Stan Chappell Roan".pskRaw = "ext:psk";
           };
         };
-
-      services.avahi = {
-        enable = true;
-        nssmdns4 = true;
-        nssmdns6 = false;
-        publish = {
-          enable = true;
-          addresses = true;
-          workstation = true;
-        };
-      };
 
       services.openssh.enable = true;
 
