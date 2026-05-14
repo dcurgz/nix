@@ -1,11 +1,13 @@
 # Makefile to apply the Nix flake configuration to the system
 
+BUILDER_OPTS := \
+		--option builders-use-substitutes true \
+		--option always-allow-substitutes true
+
 BUILDERS := \
 		ssh://builder@hyperberry x86_64-linux - 16 2 ; \
 		ssh://builder@miniberry aarch64-darwin - 16 4 ; \
 		ssh://root@vm-mb-build-aarch64 aarch64-linux - 8 4 big-parallel,kvm
-
-REMOTE_BUILDER := --builders $(BUILDERS)
 
 HOME_MANAGER := home-manager --extra-experimental-features "nix-command flakes"
 
@@ -46,36 +48,41 @@ blueberry: update-local-inputs update-index
 	sudo chown -R root:wheel /etc/nixos
 	sudo chmod -R 774 /etc/nixos
 	# Go!
-	sudo nixos-rebuild switch --flake .#blueberry $(REMOTE_BUILDER) $(NOM)
+	sudo nixos-rebuild switch --flake .#blueberry \
+		$(BUILDER_OPTS) \
+		--builders '$(BUILDERS)' \
+		$(NOM)
 
 piberry: update-local-inputs update-index
-	sudo nixos-rebuild $(REMOTE_BUILDER) --max-jobs 0 switch --flake .#piberry
+	sudo nixos-rebuild --max-jobs 0 switch --flake .#piberry \
+		$(BUILDER_OPTS) \
+		--builders '$(BUILDERS)' 
 
 piberry-sdcard: update-local-inputs update-index
 	sudo $(NIX) build .#nixosConfigurations.piberry.config.system.build.images.sd-card
 
 tauberry: update-local-inputs update-index
-	sudo nixos-rebuild $(REMOTE_BUILDER) --max-jobs 0 switch --flake .#tauberry
+	sudo nixos-rebuild --max-jobs 0 switch --flake .#tauberry \
+		$(BUILDER_OPTS) \
+		--builders '$(BUILDERS)' \
+		$(NOM)
 
 tauberry-sdcard: update-local-inputs update-index
 	sudo $(NIX) build .#nixosConfigurations.tauberry.config.system.build.images.sd-card
 
 airberry: update-local-inputs update-index
-	sudo darwin-rebuild switch --option builders "ssh://builder@miniberry aarch64-darwin - 16 1" --max-jobs 0 --flake .#airberry 
+	sudo darwin-rebuild switch \
+		$(BUILDER_OPTS) \
+		--option builders '$(BUILDERS)' \
+		--max-jobs 0 \
+		--flake .#airberry 
 
 miniberry: update-local-inputs update-index
 	sudo darwin-rebuild switch \
 		--flake .#miniberry \
-		--option builders '\
-			ssh-ng://builder@hyperberry aarch64-linux - 8 1 big-parallel' \
+		--option builders '$(BUILDERS)'
 		--option builders-use-substitutes true \
 		--option always-allow-substitutes true
-	#sudo darwin-rebuild switch \
-	#	--flake .#miniberry \
-	#	--option builders '\
-	#		ssh-ng://vfkit-builder aarch64-linux - 8 1 big-parallel' \
-	#	--option builders-use-substitutes true \
-	#	--option always-allow-substitutes true
 
 bootstrap-weirdfi.sh: update-local-inputs update-index
 	$(NIX) run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./systems/weirdfi.sh-cax11-4gb/hardware-configuration.nix --flake .#weirdfish-cax11-4gb --target-host "root@weirdfi.sh"
@@ -92,16 +99,21 @@ ifeq ($(HOSTNAME),hyperberry)
 		--fast-connection true \
 		--rollback-succeeded false \
 		-- \
-		--builders-use-substitutes \
-		--always-allow-substitutes \
+		$(BUILDER_OPTS) \
 		--max-jobs 16 \
-		--builders '\
-			ssh://builder@localhost x86_64-linux,aarch64-darwin - 16 1 big-parallel kvm; \
-			ssh://builder@miniberry aarch64-darwin - 16 2;' #\
-			#ssh://root@vm-mb-build-aarch64 aarch64-linux - 8 100 big-parallel' $(NOM)
+		--builders '$(BUILDERS)'
 else
 	# build remotely
-	deploy $(HOST) --skip-checks --skip-offline --fast-connection false --rollback-succeeded false -- $(REMOTE_BUILDER) --builders-use-substitutes --max-jobs 0 $(NOM) 
+	deploy $(HOST) \
+		--skip-checks \
+		--skip-offline \
+		--fast-connection false \
+		--rollback-succeeded false \
+		-- \
+		$(BUILDER_OPTS) \
+		--builders '$(BUILDERS)' \
+		--max-jobs 0 \
+		$(NOM) 
 endif
 
 weirdfi.sh:
