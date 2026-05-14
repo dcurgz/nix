@@ -28,6 +28,7 @@
     nfsm.url = "github:gvolpe/nfsm?rev=211eb44e77ce0b6e10f32b15f78f8aee5340fcbd";
     niri.inputs.nixpkgs.follows = "nixpkgs";
     niri.url = "github:sodiboo/niri-flake";
+    awww.url = "git+https://codeberg.org/LGFae/awww";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     nix-darwin.url = "github:nix-darwin/nix-darwin/master";
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";

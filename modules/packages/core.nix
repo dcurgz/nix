@@ -70,6 +70,8 @@ let
     uv
     # Android
     apksigner
+    # Local scripts
+    by.bin'
   ] ++ (lib.optionals pkgs.stdenv.isLinux [
     # Linux-specific packages
     busybox

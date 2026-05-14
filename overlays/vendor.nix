@@ -33,7 +33,7 @@ _final: prev: {
     weirdfish-server = inputs.weirdfish-server.packages.${prev.system}.default;
 
     # Local bin scripts
-    local-scripts = prev.stdenv.mkDerivation {
+    bin' = prev.stdenv.mkDerivation {
       name = "local-scripts";
       src = "${FLAKE_ROOT}/bin";
       installPhase = ''

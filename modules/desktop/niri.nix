@@ -21,7 +21,7 @@ in
       file-explorer = "nautilus";
       bluetooth-manager = "blueman-manager";
       sound-manager = "pavucontrol";
-      terminal = "ghostty";
+      terminal = "alacritty";
       app-launcher = "fuzzel";
     in
     {
@@ -30,15 +30,15 @@ in
       ];
 
       home.packages = with pkgs; [
-        ghostty
         blueman
         fuzzel
+        alacritty
         libnotify
         nautilus
         nfsm
         nfsm-cli
         pavucontrol
-        swww
+        awww
         wlsunset
         xwayland-satellite
       ];
@@ -88,11 +88,12 @@ in
         "Mod+Shift+S".action.screenshot = {};
         "Mod+Shift+E".action.quit = {};
         "Mod+Shift+Q".action.close-window = {};
+        "Mod+Equal".action.switch-preset-column-width = {};
       };
 
       programs.niri.settings.spawn-at-startup = [
         { argv = ["nfsm"]; }
-        { argv = ["swww-daemon"]; }
+        { argv = ["awww-daemon"]; }
         { argv = ["way-displays"]; }
         { argv = ["wlsunset"]; }
         { argv = ["xwayland-satellite"]; }
@@ -100,7 +101,13 @@ in
 
       programs.niri.settings.prefer-no-csd = true;
 
-      programs.niri.settings.layout.gaps = 2;
+      programs.niri.settings.layout.gaps = 8;
+      programs.niri.settings.layout.struts = {
+        left   = 16;
+        right  = 16;
+        top    = 16;
+        bottom = 16;
+      };
       programs.niri.settings.layout.preset-column-widths = [
         { proportion = 1. / 3.; }
         { proportion = 1. / 2.; }
@@ -115,5 +122,12 @@ in
       programs.niri.settings.input.keyboard.repeat-delay = 225;
       programs.niri.settings.input.keyboard.repeat-rate = 20;
       programs.niri.settings.input.mouse.accel-speed = -1;
+
+      programs.niri.settings.window-rules = [
+        {
+          matches = [{ app-id = "Alacritty"; }];
+          opacity = 0.95;
+        }
+      ];
     });
 }
