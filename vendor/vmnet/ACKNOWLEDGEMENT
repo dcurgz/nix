@@ -1,0 +1,4 @@
+Thanks to
+- https://github.com/rzhikharevich/nixos/blob/main/packages/vmnet-broker.nix
+- https://github.com/rzhikharevich/nixos/blob/main/packages/vmnet-helper.nix
+- https://github.com/rzhikharevich/nixos/blob/main/modules/microvm-darwin.nix

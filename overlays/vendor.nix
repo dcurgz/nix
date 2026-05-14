@@ -14,6 +14,7 @@ _final: prev: {
     claude-code-acp =  prev.callPackage "${vendor}/claude-code-acp" { };
     firefox-csshacks = prev.callPackage "${vendor}/firefox-csshacks" { };
     flockenzeit =      prev.callPackage "${vendor}/flockenzeit" { };
+    vmnet-helper =     prev.callPackage "${vendor}/vmnet-helper" { };
   };
 
   by = prev.by // {

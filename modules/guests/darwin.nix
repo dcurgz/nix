@@ -78,7 +78,7 @@ in
 
       primaryModule = ({ config, ... }: {
         microvm = {
-          hypervisor = lib.mkForce "qemu";
+          hypervisor = lib.mkForce "vfkit";
           vmHostPackages = prebuiltPackages.aarch64-darwin;
           vfkit = {
             rosetta = {
@@ -87,7 +87,9 @@ in
             };
             extraArgs = [
               "--device"
-              "virtio-net,unixSocketPath=${vfkit-sock},mac=5a:94:ef:e4:0c:ee"
+              #"virtio-net,unixSocketPath=${vfkit-sock},mac=5a:94:ef:e4:0c:ee"
+              # vmnet-helper requires fd=4
+              "virtio-net,fd=4,mac=${vm.networking.macAddress}"
             ];
           };
           volumes = [
@@ -191,33 +193,38 @@ in
         inherit specialArgs modules;
       };
       microvm-runner = microvm.config.microvm.declaredRunner;
+      #service-script = pkgs.writeShellScript "${hostName}-runner" ''
+      #  rm -f ${vfkit-sock}
+
+      #  ${lib.getExe pkgs.gvproxy} \
+      #    --ssh-port 2222 \
+      #    --listen-vfkit "unixgram://${vfkit-sock}" \
+      #    >/tmp/${hostName}-gvproxy.log 2>&1 &
+      #  GVPROXY_PID=$!
+      #  trap 'kill $GVPROXY_PID' EXIT
+
+      #  until [ -S ${vfkit-sock} ]; do sleep 1; done;
+
+      #  ${lib.getExe pkgs.unixtools.script} -q "/tmp/${hostName}.log" ${lib.getExe microvm-runner} &
+
+      #  wait -n
+      #'';
       service-script = pkgs.writeShellScript "${hostName}-runner" ''
-        rm -f ${vfkit-sock}
-
-        ${lib.getExe pkgs.gvproxy} \
-          --ssh-port 2222 \
-          --listen-vfkit "unixgram://${vfkit-sock}" \
-          >/tmp/${hostName}-gvproxy.log 2>&1 &
-        GVPROXY_PID=$!
-        trap 'kill $GVPROXY_PID' EXIT
-
-        until [ -S ${vfkit-sock} ]; do sleep 1; done;
-
-        ${lib.getExe pkgs.unixtools.script} -q "/tmp/${hostName}.log" ${lib.getExe microvm-runner} &
-
-        wait -n
+        exec script -q /dev/null ${pkgs.vmnet-helper} \
+          --network shared # Use vmnet-broker's shared network. \ 
+          -- ${lib.getExe microvm-runner}
       '';
     in
     {
       # Host-level SSH configuration
-      config.environment.etc."ssh/ssh_config.d/098-${hostName}.conf".text = ''
-        Host ${hostName}
-          User root
-          Hostname localhost
-          Port 2222
-          StrictHostKeyChecking no
-          UserKnownHostsFile /dev/null
-      '';
+      #config.environment.etc."ssh/ssh_config.d/098-${hostName}.conf".text = ''
+      #  Host ${hostName}
+      #    User root
+      #    Hostname localhost
+      #    Port 2222
+      #    StrictHostKeyChecking no
+      #    UserKnownHostsFile /dev/null
+      #'';
 
       #config.users.knownUsers = [ "microvm" ];
       #config.users.users.microvm = {

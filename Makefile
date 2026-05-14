@@ -79,14 +79,13 @@ ifeq ($(HOSTNAME),hyperberry)
 		--fast-connection true \
 		--rollback-succeeded false \
 		-- \
-		-vvvvv \
 		--builders-use-substitutes \
 		--always-allow-substitutes \
-		--max-jobs 0 \
+		--max-jobs 16 \
 		--builders '\
 			ssh://builder@localhost x86_64-linux,aarch64-darwin - 16 1 big-parallel kvm; \
-			ssh://builder@miniberry aarch64-darwin - 16 2; \
-			ssh://root@vm-mb-build-aarch64 aarch64-linux - 8 100 big-parallel' $(NOM)
+			ssh://builder@miniberry aarch64-darwin - 16 2;' #\
+			#ssh://root@vm-mb-build-aarch64 aarch64-linux - 8 100 big-parallel' $(NOM)
 else
 	# build remotely
 	deploy $(HOST) --skip-checks --skip-offline --fast-connection false --rollback-succeeded false -- $(REMOTE_BUILDER) --builders-use-substitutes --max-jobs 0 $(NOM) 
