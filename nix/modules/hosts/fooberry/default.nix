@@ -128,7 +128,7 @@ in
 
       services.nginx =
         let
-          destination = secrets.hosts.vm-jellyfin.ssh.hostName;
+          destination = "100.91.239.123";
         in
         {
           enable = true;
