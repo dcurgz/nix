@@ -10,11 +10,15 @@
   outputs = { self, nixpkgs, flake-utils }: flake-utils.lib.eachDefaultSystem (system:
     let
       pkgs = nixpkgs.legacyPackages.${system};
+      package = pkgs.callPackage ./package.nix { };
     in
     {
-      devShell = pkgs.mkShell rec {
-      };
+      packages.default = package;
+      packages.pine    = package;
 
-      packages.default = pkgs.callPackage ./package.nix { };
+      devShell = pkgs.mkShell rec {
+        inherit (package) nativeBuildInputs buildInputs;
+        #LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath package.buildInputs;
+      };
     });
 }

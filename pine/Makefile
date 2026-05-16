@@ -1,15 +1,12 @@
-# This Makefile kinda cursed but...oh well.
 NIX_FLAGS=--extra-experimental-features 'nix-command flakes flake-self-attrs'
 
-shell:
-	nix-shell -E 'with import <nixpkgs> { }; callPackage ./package.nix { }'
+develop:
+	nix develop $(NIX_FLAGS)
 
-build:
-	mkdir build
-	cd build
-	cmake ..
-	make
-	cd ..
+compile:
+	mkdir build || true
+	cmake -S . -B build
+	cd build && make
 
-run: build
+run: compile
 	./build/pine
