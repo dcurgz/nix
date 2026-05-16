@@ -168,6 +168,7 @@ in
         aseprite
         darktable
         zed-editor
+        helix
         # Browsers
         # - firefox included with module
         chromium
