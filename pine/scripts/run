@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+if [ -e /etc/nixos ]; then
+  nix develop --command bash -c "cd build && cmake .. && make && ./pine"
+else
+  cd build && cmake .. && make && ./pine
+fi
