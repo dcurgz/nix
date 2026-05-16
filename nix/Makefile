@@ -16,7 +16,7 @@ BUILDERS := \
 HOME_MANAGER := home-manager --extra-experimental-features "nix-command flakes"
 
 NIX := nix --extra-experimental-features "nix-command flakes" --extra-deprecated-features url-literals
-NOM := --log-format internal-json -v |& nom --json
+NOM := --log-format internal-json -v 2>&1 | nom --json
 
 HOSTNAME := $(shell cat /etc/hostname)
 

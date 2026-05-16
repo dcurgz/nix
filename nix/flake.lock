@@ -727,7 +727,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-WBlb8ffG5bvs1yXv1KzERkyl881of1hQO618sB+aAec=",
+        "narHash": "sha256-MW8xNqYEfeFLeEvHFBNI04mwIN8AcOMBROMC6PPMSj8=",
         "path": "./vendor/mandoc",
         "type": "path"
       },
@@ -810,7 +810,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-hfrRwxtHW9N+r/Lm2PENytTs+T4kTzsY8l70xcz0JHI=",
+        "narHash": "sha256-bn45r6ry064KM6lJnY/oEdid38eejAdqOR/d3Hw6D2c=",
         "path": "./vendor/neoforge-1-21-1",
         "type": "path"
       },
@@ -982,7 +982,7 @@
     "nix-time": {
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-CmwZKPlhcySy0lxLyW/c7exgDb4evrzFyRrbERPAdDY=",
+        "narHash": "sha256-B3hdQtg/9/DFeYxl3SEjA5qqmKBmFnk6yBU3GlaH23k=",
         "path": "./vendor/flockenzeit",
         "type": "path"
       },
@@ -1761,7 +1761,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-8RSR6bwh8L6pcyQC1fvU2ooDF9wJ+7nlcv6AOjgt+Qs=",
+        "narHash": "sha256-Ol7GfuqSsH1T4isIAK6tM9/ghI4e9yKZQfvepXFkXNg=",
         "path": "./vendor/weirdfish-server",
         "type": "path"
       },
