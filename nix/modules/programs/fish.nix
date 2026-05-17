@@ -41,7 +41,9 @@ in
         alias ls='exa'
 
         # Nix configuration
-        alias nix='nix --extra-experimental-features "nix-command flakes"'
+        alias nix='nix --extra-experimental-features "nix-command flakes flake-self-attrs"'
+
+        direnv hook fish | source
       '';
     });
 }

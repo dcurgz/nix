@@ -29,6 +29,8 @@ in
           experimental-features = [
             "nix-command"
             "flakes"
+            # seems to be required to use submodules in flake derivations?
+            "flake-self-attrs"
           ];
         };
         extraOptions = ''

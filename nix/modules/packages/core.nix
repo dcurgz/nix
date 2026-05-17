@@ -18,7 +18,6 @@ let
     findutils
     gawk
     git
-    glow
     gnugrep
     gnused
     gnutar
@@ -60,16 +59,8 @@ let
     nix-weather
     deploy-rs
     # Encryption
-    inputs.agenix.packages.${system}.agenix
     git-crypt
     gnupg
-    gocryptfs
-    #pinentry-curses
-    # Python
-    python313
-    uv
-    # Android
-    apksigner
     # Local scripts
     by.bin'
   ] ++ (lib.optionals pkgs.stdenv.isLinux [

@@ -21,6 +21,7 @@ in
       (with flake.tags; flake.lib.use [
         flake-default
         darwin-base
+        darwin-workstation
         darwin-desktop
       ])
       darwin.airberry

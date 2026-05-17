@@ -21,6 +21,7 @@ in
       (with flake.tags; flake.lib.use [
         flake-default
         nixos-base
+        nixos-workstation
         nixos-privileged
       ])
       nixos.hyperberry
