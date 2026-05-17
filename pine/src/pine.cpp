@@ -39,7 +39,7 @@ int main() {
     Light light = { };
     light.position = Vector2 { 25.0f, 25.0f };
     light.color = Vector3 { 1.0f, 1.0f, 1.0f };
-    light.strength = 1.0f;
+    light.strength = 10.0f;
 
     Shader shader = LoadShader("shaders/light.vert",
                                "shaders/light.frag");
@@ -53,6 +53,7 @@ int main() {
     }
 
     int shader_texture_loc = GetShaderLocation(shader, "tileTexture_sampler2d");
+    int shader_normal_loc = GetShaderLocation(shader, "tileNormal_sampler2d");
 
     int tile_width = 32;
     int tilemap_width  = V_SCREEN_WIDTH/tile_width;
@@ -79,6 +80,7 @@ int main() {
         for (int i=0; i<tilemap_width; i++) {
             for (int j=0; j<tilemap_height; j++) {
                 SetShaderValueTexture(shader, shader_texture_loc, *tilemap[i][j]);
+                SetShaderValueTexture(shader, shader_normal_loc, BRICK_NORMAL);//TODO
                 DrawTexture(*tilemap[i][j], i*tile_width, j*tile_width, WHITE);
             }
         }
