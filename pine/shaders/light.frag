@@ -31,8 +31,8 @@ void main() {
     float norm_c = max(dot(normal, light_dir), 0.0f);
 
     float dist  = distance(lightPos_vec2, fragPosition.xy);
-    //float atten = lightStrength_f / (2.5 + 0.1 * dist + 0.001 * dist * dist);
-    float atten = smoothstep(100, 0, dist);
-    vec3 diffuse = lightColor_vec3 * atten * max(0.4f, norm_c);
+    float atten = lightStrength_f / (2.5 + 0.1 * dist + 0.001 * dist * dist);
+    //float atten = smoothstep(100, 0, dist);
+    vec3 diffuse = lightColor_vec3 * atten * max(0.3f, norm_c);
     finalColor = vec4(diffuse * base_color, 1.0f);
 }
