@@ -87,6 +87,7 @@ in
           experimental-features = [
             "nix-command"
             "flakes"
+            "flake-self-attrs"
           ];
         };
         extraOptions = ''
