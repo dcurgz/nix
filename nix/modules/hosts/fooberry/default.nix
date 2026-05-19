@@ -12,6 +12,23 @@ let
   inherit (args.config.by) keys;
 in
 {
+  flake.metadata.fooberry = {
+    type = flake.things.host;
+    description = ''
+      fooberry is a 2014 Dell Inspiron laptop that now serves as a makeshift
+      Tailscale subnet router for my parents' place. 
+    '';
+    attributes = {
+      uplinks.tailscale0.ipAddress = "100.64.*.*";
+      services.nginx = {
+        description = ''
+          I use nginx to serve an HTTPS proxy on the local network, then route
+          the connection over the tailnet to the relevant service VM.
+        '';
+      };
+    };
+  };
+
   flake.nixosConfigurations.fooberry = flake.lib.mkNixOS rec {
     system = "x86_64-linux";
     specialArgs = {

@@ -41,6 +41,18 @@ let
       };
 in
 {
+  flake.metadata.piberry = {
+    type = flake.things.host;
+    description = ''
+      piberry is a Raspberry Pi 4 Model B that runs home automation software
+      for my house. 
+    '';
+    attributes = {
+      uplinks.tailscale0.ipAddress = "100.64.*.*";
+      services.home-assistant = {};
+    };
+  };
+
   flake.nixosConfigurations.piberry = lib'.mkRaspberryPi rec {
     system = "aarch64-linux";
     modules = with flake.modules; [

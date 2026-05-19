@@ -12,6 +12,18 @@ let
   inherit (args.config.by) keys;
 in
 {
+  flake.metadata.airberry = {
+    type = flake.things.host;
+    description = ''
+      My M2 Macbook Air, which serves as my portable workstation. To save
+      battery life (though the M-chip's power efficiency is unmatched), it uses
+      miniberry to build its `nix-darwin` system configuration.
+    '';
+    attributes = {
+      uplinks.tailscale0.ipAddress = "100.64.*.*";
+    };
+  };
+
   flake.darwinConfigurations.airberry = inputs.self.lib.mkDarwin rec {
     system = "aarch64-darwin";
     specialArgs = {

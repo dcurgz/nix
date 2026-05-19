@@ -14,6 +14,17 @@ let
   hostName = "tauberry";
 in
 {
+  flake.metadata.tauberry = {
+    type = flake.things.host;
+    description = ''
+      tauberry, another Raspberry Pi 4 Model B, was originally provisioned as a
+      Hi-Fi audio server, but currently it is not in use.
+    '';
+    attributes = {
+      uplinks.tailscale0.ipAddress = "100.64.*.*";
+    };
+  };
+
   #TODO nixos-raspberrypi
   flake.nixosConfigurations.tauberry = flake.lib.mkNixOS rec {
     system = "aarch64-linux";

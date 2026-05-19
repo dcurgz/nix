@@ -12,6 +12,18 @@ let
   inherit (args.config.by) keys;
 in
 {
+  flake.metadata.miniberry = {
+    type = flake.things.host;
+    description = ''
+      A Mac Mini M4 that lives under the television. It serves as a build
+      server for Darwin and aarch64-linux. Occasionally, it also doubles as a
+      "budget" Amazon fire stick. Hey, I got it on a good deal.
+    '';
+    attributes = {
+      uplinks.tailscale0.ipAddress = "100.64.*.*";
+    };
+  };
+
   flake.darwinConfigurations.miniberry = inputs.self.lib.mkDarwin rec {
     system = "aarch64-darwin";
     specialArgs = {

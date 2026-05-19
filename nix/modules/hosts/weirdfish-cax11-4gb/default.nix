@@ -12,6 +12,28 @@ let
   inherit (args.config.by) keys;
 in
 {
+  flake.metadata.weirdfish-cax11-4gb = {
+    type = flake.things.vps;
+    description = ''
+      This Hetzer node hosts my personal websites.
+    '';
+    attributes = {
+      uplinks.tailscale0.ipAddress = "100.64.*.*";
+      services.nginx = {
+        description = ''
+          Nginx serves as a TLS termination proxy, which forwards to Anubis
+          internally.
+        '';
+      };
+      services.anubis = {
+        description = ''
+          Anubis is a filter proxy for my website, which is configured to allow
+          only genuine visitors and typical search engine crawlers. 
+        '';
+      };
+    };
+  };
+
   flake.nixosConfigurations.weirdfish-cax11-4gb = flake.lib.mkNixOS rec {
     system = "aarch64-linux";
     specialArgs = {

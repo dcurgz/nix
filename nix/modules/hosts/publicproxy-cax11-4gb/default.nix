@@ -12,6 +12,19 @@ let
   inherit (args.config.by) keys;
 in
 {
+  flake.metadata.publicproxy-cax11-4gb = {
+    type = flake.things.vps;
+    description = ''
+      Sometimes I need to share services on my tailnet with people over the
+      public internet. This Hetzner VPS acts as an internet gateway.
+
+      I might choose to decommission this node in favour of Tailscale Funnel.
+    '';
+    attributes = {
+      uplinks.tailscale0.ipAddress = "100.64.*.*";
+    };
+  };
+
   flake.nixosConfigurations.publicproxy-cax11-4gb = flake.lib.mkNixOS rec {
     system = "aarch64-linux";
     specialArgs = {

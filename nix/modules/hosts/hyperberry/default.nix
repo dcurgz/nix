@@ -12,6 +12,28 @@ let
   inherit (args.config.by) keys;
 in
 {
+  flake.metadata.hyperberry = {
+    type = flake.things.host;
+    description = ''
+      My primary home-lab server, which runs the majority of my self-hosted
+      services as declarative MicroVMs. It also functions as a build server,
+      and usually serves as a build coordinator when I'm deploying changes to
+      one of my nodes.
+    '';
+    attributes = {
+      uplinks.tailscale0.ipAddress = "100.64.*.*";
+      uplinks.wg0.ipAddress = "10.64.0.1";
+      uplinks.br0 = {
+        ipAddress = "10.0.0.1";
+        managed = true;
+      };
+      uplinks.br1 = {
+        ipAddress = "10.0.9.1";
+        managed = true;
+      };
+    };
+  };
+
   flake.nixosConfigurations.hyperberry = flake.lib.mkNixOS rec {
     system = "x86_64-linux";
     specialArgs = {

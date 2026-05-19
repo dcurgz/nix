@@ -11,6 +11,17 @@ let
   inherit (args.config) flake;
 in
 {
+  flake.metadata.blueberry = {
+    type = flake.things.host;
+    description = ''
+      My daily driver Linux desktop. It's called blueberry because the case is
+      blue. The similarities with blueberries end there.
+    '';
+    attributes = {
+      uplinks.tailscale0.ipAddress = "100.64.*.*";
+    };
+  };
+
   flake.nixosConfigurations.blueberry = inputs.self.lib.mkNixOS rec {
       system = "x86_64-linux";
       specialArgs = {
